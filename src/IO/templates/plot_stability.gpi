@@ -1,0 +1,229 @@
+set term postscript enhanced color
+extension = "ps"
+set output data_path."/stability_1.".extension
+set xrange [minmass:maxmass]
+plot data_path."/stability_1.dat" u 1:2 lc 3 lt -1 with lines title "Runaway mass transfer",\
+     data_path."/stability_1.dat" u 1:3 lc 4 lt -1 with lines title "Disk formation",\
+     data_path."/stability_1.dat" u 1:4 lc 2 lt -1 with lines title "Eddington"
+
+set output data_path."/stability_2.".extension
+set yrange [] writeback
+plot data_path."/stability_2.dat" u 1:2 lc 3 lt -1 with lines title "Runaway mass transfer",\
+     data_path."/stability_2.dat" u 1:3 lc 4 lt -1 with lines title "Disk formation",\
+     data_path."/stability_2.dat" u 1:4 lc 2 lt -1 with lines title "Eddington"
+set yrange restore
+
+
+
+
+
+set output data_path."/mdot_eq.".extension
+set multiplot
+set lmargin at screen 0.10
+set rmargin at screen 0.85
+set bmargin at screen 0.15
+set tmargin at screen 0.95
+set pm3d map
+set palette rgbformulae 33,13,10
+set title   "Equilibrium Mass Transfer Rate"
+set xlabel "Accretor Mass"
+set ylabel "Donor Mass"
+set format z  "10^{%L}"
+set format cb "10^{%L}"
+set log z
+set log cb
+splot data_path."/stability_sweep.dat" u 1:2:(-$5) notitle
+unset xtics
+unset ytics
+unset title
+unset xlabel
+unset ylabel
+plot data_path."/stability_2.dat" u 1:2 lc -1 lt -1 lw 1 with lines title "Runaway mass transfer",\
+     data_path."/stability_2.dat" u 1:3 lc -1 lt  0 lw 3 with lines title "Disk formation",\
+     data_path."/stability_2.dat" u 1:4 lc -1 lt  2 lw 3 with lines title "Eddington"
+unset multiplot
+
+set xtics
+set ytics
+set xlabel
+set ylabel
+
+set output data_path."/mdot_eddington.".extension
+set multiplot
+set lmargin at screen 0.10
+set rmargin at screen 0.85
+set bmargin at screen 0.15
+set tmargin at screen 0.95
+set pm3d map
+set palette rgbformulae 33,13,10
+set title   "Eddington Mass Transfer Rate"
+set xlabel "Accretor Mass"
+set ylabel "Donor Mass"
+set format z  "10^{%L}"
+set format cb "10^{%L}"
+set log z
+set log cb
+splot data_path."/stability_sweep.dat" u 1:2:($6) notitle
+unset xtics
+unset ytics
+unset title
+unset xlabel
+unset ylabel
+plot data_path."/stability_2.dat" u 1:2 lc -1 lt -1 lw 1 with lines title "Runaway mass transfer",\
+     data_path."/stability_2.dat" u 1:3 lc -1 lt  0 lw 3 with lines title "Disk formation",\
+     data_path."/stability_2.dat" u 1:4 lc -1 lt  2 lw 3 with lines title "Eddington"
+unset multiplot
+
+set xtics
+set ytics
+set xlabel
+set ylabel
+
+set output data_path."/mdot_eq_over_eddington.".extension
+set multiplot
+set lmargin at screen 0.10
+set rmargin at screen 0.85
+set bmargin at screen 0.15
+set tmargin at screen 0.95
+set pm3d map
+set palette rgbformulae 33,13,10
+set title   "Mdot Equilibrium / Mdot Eddington"
+set xlabel "Accretor Mass"
+set ylabel "Donor Mass"
+set format z  "10^{%L}"
+set format cb "10^{%L}"
+set log z
+set log cb
+splot data_path."/stability_sweep.dat" u 1:2:(-($5/$6)) notitle
+unset xtics
+unset ytics
+unset title
+unset xlabel
+unset ylabel
+plot data_path."/stability_2.dat" u 1:2 lc -1 lt -1 lw 1 with lines title "Runaway mass transfer",\
+     data_path."/stability_2.dat" u 1:3 lc -1 lt  0 lw 3 with lines title "Disk formation",\
+     data_path."/stability_2.dat" u 1:4 lc -1 lt  2 lw 3 with lines title "Eddington"
+unset multiplot
+
+set xtics
+set ytics
+set xlabel
+set ylabel
+
+set output data_path."/periods.".extension
+set multiplot
+set lmargin at screen 0.10
+set rmargin at screen 0.85
+set bmargin at screen 0.15
+set tmargin at screen 0.95
+set pm3d map
+set palette rgbformulae 33,13,10
+set title   "Binary Period"
+set xlabel "Accretor Mass"
+set ylabel "Donor Mass"
+set format z  "%g"
+set format cb "%g"
+unset log z
+unset log cb
+splot data_path."/stability_sweep.dat" u 1:2:3 notitle
+unset xtics
+unset ytics
+unset title
+unset xlabel
+unset ylabel
+plot data_path."/stability_2.dat" u 1:2 lc -1 lt -1 lw 1 with lines title "Runaway mass transfer",\
+     data_path."/stability_2.dat" u 1:3 lc -1 lt  0 lw 3 with lines title "Disk formation",\
+     data_path."/stability_2.dat" u 1:4 lc -1 lt  2 lw 3 with lines title "Eddington"
+unset multiplot
+set xtics
+set ytics
+set xlabel
+set ylabel
+
+set output data_path."/critical_mass_ratio.".extension
+set multiplot
+set lmargin at screen 0.10
+set rmargin at screen 0.85
+set bmargin at screen 0.15
+set tmargin at screen 0.95
+set pm3d map
+set palette rgbformulae 33,13,10
+set title   "Critical Mass Ratio - Mass Ratio"
+set xlabel "Accretor Mass"
+set ylabel "Donor Mass"
+set format z  "%g"
+set format cb "%g"
+unset log z
+unset log cb
+splot data_path."/stability_sweep.dat" u 1:2:($16-$14) notitle
+unset xtics
+unset ytics
+unset title
+unset xlabel
+unset ylabel
+plot data_path."/stability_2.dat" u 1:2 lc -1 lt -1 lw 1 with lines title "Runaway mass transfer",\
+     data_path."/stability_2.dat" u 1:3 lc -1 lt  0 lw 3 with lines title "Disk formation",\
+     data_path."/stability_2.dat" u 1:4 lc -1 lt  2 lw 3 with lines title "Eddington"
+unset multiplot
+
+set xtics
+set ytics
+set xlabel
+set ylabel
+
+set output data_path."/luminosity.".extension
+set multiplot
+set lmargin at screen 0.10
+set rmargin at screen 0.85
+set bmargin at screen 0.15
+set tmargin at screen 0.95
+set pm3d map
+set palette rgbformulae 33,13,10
+set title  "Luminosity"
+set xlabel "Accretor Mass"
+set ylabel "Donor Mass"
+set format z  "%g"
+set format cb "%g"
+unset log z
+unset log cb
+splot data_path."/stability_sweep.dat" u 1:2:($8) notitle
+unset xtics
+unset ytics
+unset title
+unset xlabel
+unset ylabel
+plot data_path."/stability_2.dat" u 1:2 lc -1 lt -1 lw 1 with lines title "Runaway mass transfer",\
+     data_path."/stability_2.dat" u 1:3 lc -1 lt  0 lw 3 with lines title "Disk formation",\
+     data_path."/stability_2.dat" u 1:4 lc -1 lt  2 lw 3 with lines title "Eddington"
+unset multiplot
+
+set xtics
+set ytics
+set xlabel
+set ylabel
+
+set output data_path."/luminosity_infty.".extension
+set multiplot
+set lmargin at screen 0.10
+set rmargin at screen 0.85
+set bmargin at screen 0.15
+set tmargin at screen 0.95
+set pm3d map
+set palette rgbformulae 33,13,10
+set title  "Luminosity, naively calculated"
+set xlabel "Accretor Mass"
+set ylabel "Donor Mass"
+set format z  "%g"
+set format cb "%g"
+unset log z
+unset log cb
+splot data_path."/stability_sweep.dat" u 1:2:($9) notitle
+unset xtics
+unset ytics
+unset title
+unset xlabel
+unset ylabel
+plot data_path."/stability_2.dat" u 1:2 lc -1 lt -1 lw 1 with lines title "Runaway mass transfer",\
+     data_path."/stability_2.dat" u 1:3 lc -1 lt  0 lw 3 with lines title "Disk formation",\
+     data_path."/stability_2.dat" u 1:4 lc -1 lt  2 lw 3 with lines title "Eddington"
+unset multiplot

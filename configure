@@ -1,0 +1,34 @@
+#!/bin/bash
+
+compiler="gfortran-mp-4.6"
+makedecs="bash/Makefile.decs"
+maketemp="bash/Makefile.temp"
+
+echo "COMPILER = $compiler" >  $makedecs
+echo " "                    >> $makedecs
+echo "# Listing obj units"  >> $makedecs
+echo "units = ode physics driver component IO Mkracken medium" >> $makedecs
+echo "umods = \${patsubst %, %.o, \${units}}" >> $makedecs
+echo "VPATH = \${patsubst %, src/%, \${units}}" >> $makedecs
+echo "VPATH += src" >> $makedecs
+echo " " >> $makedecs
+
+for i in "ode" "physics" "driver" "component" "IO" "Mkracken" "medium"
+do
+  ls src/$i/*.f90 | sed "s/\.f90//g" | sed "s#src/$i/##g" | cat
+  echo "$i =\\" > dum1
+  ls src/$i/*.f90 | sed "s_src/$i/__" | sed 's_$_ \\_g' >> dum1
+  sed '$s/\\//g' dum1 > dum2 && rm dum1
+  echo "# Source files from $i unit" > dum1
+  echo "$i\_obj = \${patsubst %.f90, %.o ,\${$i}}" | sed 's_\\__g'  > dum3
+  echo "$i\_all = \${patsubst %, obj/% ,\${$i\_obj}}" | sed 's_\\__g'  > dum4
+  echo " " > dum5
+  cat dum1 dum2 dum3 dum4 dum5 >> $makedecs && rm dum1 dum2 dum3 dum4 dum5
+done
+
+  echo " " >> $makedecs
+  echo "obj           = \${ode_obj} \${physics_obj} \${driver_obj} \${component_obj} \${IO_obj} \${Mkracken_obj} \${medium_obj}" >> $makedecs
+  echo "obj_with_path = \${ode_all} \${physics_all} \${driver_all} \${component_all} \${IO_all} \${Mkracken_all} \${medium_all}" >> $makedecs
+  echo " " >> $makedecs
+
+  cat $makedecs $maketemp > Makefile

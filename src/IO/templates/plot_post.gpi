@@ -1,0 +1,22 @@
+set term postscript enhanced color
+extension = "ps"
+set ylabel "Density (g/cc)"
+set title "Density at Impact"
+set output data_path."/density".suffix.".".extension
+plot data_path."/mdot_post.dat" u 1:38 lt -1 lc 3 title "Density" with lines
+
+set ylabel "Timescale (yr)"
+set log y
+set format y "10^{%L}"
+set title "Characteristic Timescales as a Function of Time"
+set output data_path."/timescales_post".suffix.".".extension
+plot data_path."/mdot_post.dat" u 1:($41/year) lt -1 lc 3 title "Nuclear timescale" with lines,\
+     data_path."/mdot_post.dat" u 1:($42/year) lt -1 lc 1 title "Dynamical timescale" with lines 
+
+set ylabel "Temperature (K)"
+set title "Virial Temperature"
+set yrange [1e4:maxtemp]
+set format y "%.1t 10^{%L}"
+set output data_path."/temperature".suffix.".".extension
+plot data_path."/mdot_post.dat" u 1:39 lt -1 lc 3 title "Temperature" with lines,\
+     data_path."/mdot_post.dat" u 1:40 lt -1 lc 1 title "Kinetic Energy" with lines

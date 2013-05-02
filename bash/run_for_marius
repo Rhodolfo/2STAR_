@@ -1,0 +1,22 @@
+#!/bin/bash
+
+accmode="marius"
+
+# Making run directories
+mkdir data/$accmode
+mkdir data/$accmode/wd
+mkdir data/$accmode/ns
+
+echo -n " "
+echo -n "RUNNING WD"
+echo -n " "
+
+echo "0.9 1.2 0.01" > data/$accmode/wd/mdot_time.par
+./mdot_time data/$accmode/wd wd
+
+echo -n " "
+echo -n "RUNNING NS"
+echo -n " "
+
+echo "0.9 1.2 0.01" > data/$accmode/ns/mdot_time.par
+./mdot_time data/$accmode/ns ns

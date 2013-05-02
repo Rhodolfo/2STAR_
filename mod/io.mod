@@ -1,0 +1,181 @@
+GFORTRAN module version '6' created from src/IO/IO.f90 on Fri Mar  1 11:34:56 2013
+MD5:85bb23b2482bff2713470dd8adc9b0ab -- If you edit this, you'll get what you deserve.
+
+(() () () () () () () () () () () () () () () () () () () () () () () ()
+() () ())
+
+()
+
+(('io_2string' 'io' 2 3 4))
+
+()
+
+()
+
+()
+
+(5 'io' 'io' 'io' 1 ((MODULE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN UNKNOWN
+0 0) (UNKNOWN 0 0 0 UNKNOWN ()) 0 0 () () 0 () () () 0 0)
+6 'io_allocate_data' 'io' 'io_allocate_data' 1 ((PROCEDURE
+UNKNOWN-INTENT MODULE-PROC BODY UNKNOWN 0 0 EXTERNAL SUBROUTINE) (
+UNKNOWN 0 0 0 UNKNOWN ()) 7 0 (8) () 0 () () () 0 0)
+9 'io_clen' 'io' 'io_clen' 1 ((PARAMETER UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 INTEGER ()) 0 0 () (CONSTANT (
+INTEGER 4 0 0 INTEGER ()) 0 '100') () 0 () () () 0 0)
+10 'io_data' 'io' 'io_data' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0 ALLOCATABLE DIMENSION) (REAL 8 0 0 REAL ()) 0
+0 () (1 0 DEFERRED () ()) 0 () () () 0 0)
+11 'io_deallocate_data' 'io' 'io_deallocate_data' 1 ((PROCEDURE
+UNKNOWN-INTENT MODULE-PROC BODY UNKNOWN 0 0 EXTERNAL SUBROUTINE) (
+UNKNOWN 0 0 0 UNKNOWN ()) 12 0 () () 0 () () () 0 0)
+13 'io_file' 'io' 'io_file' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0) (CHARACTER 1 0 0 CHARACTER ((CONSTANT (
+INTEGER 4 0 0 INTEGER ()) 0 '100'))) 0 0 () () 0 () () () 0 0)
+14 'io_first_pass' 'io' 'io_first_pass' 1 ((VARIABLE UNKNOWN-INTENT
+UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0) (LOGICAL 4 0 0 LOGICAL ()) 0 0 ()
+() 0 () () () 0 0)
+15 'io_ifrm' 'io' 'io_ifrm' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0) (CHARACTER 1 0 0 CHARACTER ((CONSTANT (
+INTEGER 4 0 0 INTEGER ()) 0 '4'))) 0 0 () () 0 () () () 0 0)
+16 'io_ilen' 'io' 'io_ilen' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 INTEGER ()) 0 0 () () 0 () ()
+() 0 0)
+4 'io_int2string' 'io' 'io_int2string' 1 ((PROCEDURE UNKNOWN-INTENT
+MODULE-PROC DECL UNKNOWN 0 0 FUNCTION) (CHARACTER 1 0 0 CHARACTER ((
+VARIABLE (INTEGER 4 0 0 INTEGER ()) 0 16 ()))) 17 0 (18) () 4 () () () 0
+0)
+19 'io_log' 'io' 'io_log' 1 ((PROCEDURE UNKNOWN-INTENT MODULE-PROC BODY
+UNKNOWN 0 0 EXTERNAL SUBROUTINE) (UNKNOWN 0 0 0 UNKNOWN ()) 20 0 (21) ()
+0 () () () 0 0)
+22 'io_logf' 'io' 'io_logf' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0) (CHARACTER 1 0 0 CHARACTER ((CONSTANT (
+INTEGER 4 0 0 INTEGER ()) 0 '100'))) 0 0 () () 0 () () () 0 0)
+23 'io_newline' 'io' 'io_newline' 1 ((PROCEDURE UNKNOWN-INTENT
+MODULE-PROC BODY UNKNOWN 0 0 EXTERNAL SUBROUTINE) (UNKNOWN 0 0 0 UNKNOWN
+()) 24 0 (25 26) () 0 () () () 0 0)
+27 'io_open' 'io' 'io_open' 1 ((PROCEDURE UNKNOWN-INTENT MODULE-PROC
+BODY UNKNOWN 0 0 EXTERNAL SUBROUTINE ALWAYS_EXPLICIT) (UNKNOWN 0 0 0
+UNKNOWN ()) 28 0 (29 30) () 0 () () () 0 0)
+31 'io_path' 'io' 'io_path' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0) (CHARACTER 1 0 0 CHARACTER ((CONSTANT (
+INTEGER 4 0 0 INTEGER ()) 0 '100'))) 0 0 () () 0 () () () 0 0)
+32 'io_plot' 'io' 'io_plot' 1 ((PROCEDURE UNKNOWN-INTENT MODULE-PROC
+BODY UNKNOWN 0 0 EXTERNAL SUBROUTINE) (UNKNOWN 0 0 0 UNKNOWN ()) 33 0 ()
+() 0 () () () 0 0)
+34 'io_plot_ballistic' 'io' 'io_plot_ballistic' 1 ((PROCEDURE
+UNKNOWN-INTENT MODULE-PROC BODY UNKNOWN 0 0 EXTERNAL SUBROUTINE) (
+UNKNOWN 0 0 0 UNKNOWN ()) 35 0 () () 0 () () () 0 0)
+36 'io_plot_mdot' 'io' 'io_plot_mdot' 1 ((PROCEDURE UNKNOWN-INTENT
+MODULE-PROC BODY UNKNOWN 0 0 EXTERNAL SUBROUTINE) (UNKNOWN 0 0 0 UNKNOWN
+()) 37 0 () () 0 () () () 0 0)
+38 'io_plot_now' 'io' 'io_plot_now' 1 ((VARIABLE UNKNOWN-INTENT
+UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0) (LOGICAL 4 0 0 LOGICAL ()) 0 0 ()
+() 0 () () () 0 0)
+39 'io_plot_stability' 'io' 'io_plot_stability' 1 ((PROCEDURE
+UNKNOWN-INTENT MODULE-PROC BODY UNKNOWN 0 0 EXTERNAL SUBROUTINE) (
+UNKNOWN 0 0 0 UNKNOWN ()) 40 0 () () 0 () () () 0 0)
+41 'io_quick_write' 'io' 'io_quick_write' 1 ((PROCEDURE UNKNOWN-INTENT
+MODULE-PROC BODY UNKNOWN 0 0 EXTERNAL SUBROUTINE ALWAYS_EXPLICIT) (
+UNKNOWN 0 0 0 UNKNOWN ()) 42 0 (43 44 45) () 0 () () () 0 0)
+46 'io_read_command_line_options' 'io' 'io_read_command_line_options' 1
+((PROCEDURE UNKNOWN-INTENT MODULE-PROC BODY UNKNOWN 0 0 EXTERNAL
+SUBROUTINE) (UNKNOWN 0 0 0 UNKNOWN ()) 47 0 () () 0 () () () 0 0)
+3 'io_real2string' 'io' 'io_real2string' 1 ((PROCEDURE UNKNOWN-INTENT
+MODULE-PROC DECL UNKNOWN 0 0 FUNCTION) (CHARACTER 1 0 0 CHARACTER ((
+VARIABLE (INTEGER 4 0 0 INTEGER ()) 0 48 ()))) 49 0 (50) () 3 () () () 0
+0)
+2 'io_real2string_array' 'io' 'io_real2string_array' 1 ((PROCEDURE
+UNKNOWN-INTENT MODULE-PROC DECL UNKNOWN 0 0 DIMENSION FUNCTION
+ALWAYS_EXPLICIT) (CHARACTER 1 0 0 CHARACTER ((VARIABLE (INTEGER 4 0 0
+INTEGER ()) 0 48 ()))) 51 0 (52) (1 0 EXPLICIT (CONSTANT (INTEGER 4 0 0
+INTEGER ()) 0 '1') (FUNCTION (INTEGER 4 0 0 INTEGER ()) 0 53 (('' (
+VARIABLE (REAL 8 0 0 REAL ()) 1 52 ((ARRAY (FULL 0))))) ('' ()) ('' ()))
+'' 0 'size')) 2 () () () 0 0)
+54 'io_rfrm' 'io' 'io_rfrm' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0) (CHARACTER 1 0 0 CHARACTER ((CONSTANT (
+INTEGER 4 0 0 INTEGER ()) 0 '10'))) 0 0 () () 0 () () () 0 0)
+48 'io_rlen' 'io' 'io_rlen' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 INTEGER ()) 0 0 () () 0 () ()
+() 0 0)
+55 'io_save' 'io' 'io_save' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0) (LOGICAL 4 0 0 LOGICAL ()) 0 0 () () 0 () ()
+() 0 0)
+56 'io_save_data' 'io' 'io_save_data' 1 ((PROCEDURE UNKNOWN-INTENT
+MODULE-PROC BODY UNKNOWN 0 0 EXTERNAL SUBROUTINE ALWAYS_EXPLICIT) (
+UNKNOWN 0 0 0 UNKNOWN ()) 57 0 (58 59) () 0 () () () 0 0)
+60 'io_unit' 'io' 'io_unit' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 INTEGER ()) 0 0 () () 0 () ()
+() 0 0)
+61 'io_verb' 'io' 'io_verb' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0) (LOGICAL 4 0 0 LOGICAL ()) 0 0 () () 0 () ()
+() 0 0)
+62 'io_write_header' 'io' 'io_write_header' 1 ((PROCEDURE UNKNOWN-INTENT
+MODULE-PROC BODY UNKNOWN 0 0 EXTERNAL SUBROUTINE ALWAYS_EXPLICIT) (
+UNKNOWN 0 0 0 UNKNOWN ()) 63 0 (64 65 66) () 0 () () () 0 0)
+67 'io_write_header_sweep' 'io' 'io_write_header_sweep' 1 ((PROCEDURE
+UNKNOWN-INTENT MODULE-PROC BODY UNKNOWN 0 0 EXTERNAL SUBROUTINE) (
+UNKNOWN 0 0 0 UNKNOWN ()) 68 0 (69 70) () 0 () () () 0 0)
+8 'ii' '' 'ii' 7 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0 DUMMY) (
+INTEGER 4 0 0 INTEGER ()) 0 0 () () 0 () () () 0 0)
+58 'path' '' 'path' 57 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+OPTIONAL DUMMY) (CHARACTER 1 0 0 CHARACTER (())) 0 0 () () 0 () () () 0
+0)
+59 'file' '' 'file' 57 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+OPTIONAL DUMMY) (CHARACTER 1 0 0 CHARACTER (())) 0 0 () () 0 () () () 0
+0)
+29 'path' '' 'path' 28 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+OPTIONAL DUMMY) (CHARACTER 1 0 0 CHARACTER (())) 0 0 () () 0 () () () 0
+0)
+30 'file' '' 'file' 28 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+OPTIONAL DUMMY) (CHARACTER 1 0 0 CHARACTER (())) 0 0 () () 0 () () () 0
+0)
+25 'p' '' 'p' 24 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN UNKNOWN
+0 0 DUMMY) (CHARACTER 1 0 0 CHARACTER (())) 0 0 () () 0 () () () 0 0)
+26 'f' '' 'f' 24 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN UNKNOWN
+0 0 DUMMY) (CHARACTER 1 0 0 CHARACTER (())) 0 0 () () 0 () () () 0 0)
+64 'unit' '' 'unit' 63 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+OPTIONAL DUMMY) (INTEGER 4 0 0 INTEGER ()) 0 0 () () 0 () () () 0 0)
+65 'path' '' 'path' 63 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+OPTIONAL DUMMY) (CHARACTER 1 0 0 CHARACTER (())) 0 0 () () 0 () () () 0
+0)
+66 'file' '' 'file' 63 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+OPTIONAL DUMMY) (CHARACTER 1 0 0 CHARACTER (())) 0 0 () () 0 () () () 0
+0)
+43 'path' '' 'path' 42 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+OPTIONAL DUMMY) (CHARACTER 1 0 0 CHARACTER (())) 0 0 () () 0 () () () 0
+0)
+44 'file' '' 'file' 42 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+OPTIONAL DUMMY) (CHARACTER 1 0 0 CHARACTER (())) 0 0 () () 0 () () () 0
+0)
+45 'message' '' 'message' 42 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN
+0 0 DUMMY) (CHARACTER 1 0 0 CHARACTER (())) 0 0 () () 0 () () () 0 0)
+21 'message' '' 'message' 20 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN UNKNOWN 0 0 DUMMY) (CHARACTER 1 0 0 CHARACTER (())) 0 0 () () 0
+() () () 0 0)
+69 'p' '' 'p' 68 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN UNKNOWN
+0 0 DUMMY) (CHARACTER 1 0 0 CHARACTER (())) 0 0 () () 0 () () () 0 0)
+70 'f' '' 'f' 68 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN UNKNOWN
+0 0 DUMMY) (CHARACTER 1 0 0 CHARACTER (())) 0 0 () () 0 () () () 0 0)
+18 'ii' '' 'ii' 17 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN
+UNKNOWN 0 0 DUMMY) (INTEGER 4 0 0 INTEGER ()) 0 0 () () 0 () () () 0 0)
+50 'ii' '' 'ii' 49 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN
+UNKNOWN 0 0 DUMMY) (REAL 8 0 0 REAL ()) 0 0 () () 0 () () () 0 0)
+52 'ii' '' 'ii' 51 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN
+UNKNOWN 0 0 DIMENSION DUMMY) (REAL 8 0 0 REAL ()) 0 0 () (1 0
+ASSUMED_SHAPE (CONSTANT (INTEGER 4 0 0 INTEGER ()) 0 '1') ()) 0 () () ()
+0 0)
+53 'size' '(intrinsic)' 'size' 51 ((PROCEDURE UNKNOWN-INTENT
+UNKNOWN-PROC UNKNOWN UNKNOWN 0 0 FUNCTION) (UNKNOWN 0 0 0 UNKNOWN ()) 0
+0 () () 53 () () () 0 0)
+)
+
+('io' 0 5 'io_allocate_data' 0 6 'io_clen' 0 9 'io_data' 0 10
+'io_deallocate_data' 0 11 'io_file' 0 13 'io_first_pass' 0 14 'io_ifrm'
+0 15 'io_ilen' 0 16 'io_int2string' 0 4 'io_log' 0 19 'io_logf' 0 22
+'io_newline' 0 23 'io_open' 0 27 'io_path' 0 31 'io_plot' 0 32
+'io_plot_ballistic' 0 34 'io_plot_mdot' 0 36 'io_plot_now' 0 38
+'io_plot_stability' 0 39 'io_quick_write' 0 41
+'io_read_command_line_options' 0 46 'io_real2string' 0 3
+'io_real2string_array' 0 2 'io_rfrm' 0 54 'io_rlen' 0 48 'io_save' 0 55
+'io_save_data' 0 56 'io_unit' 0 60 'io_verb' 0 61 'io_write_header' 0 62
+'io_write_header_sweep' 0 67)

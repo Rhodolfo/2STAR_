@@ -1,0 +1,441 @@
+HELLO!
+
+This README is divided in the following sections
+
+- SECTION 0: QUICKSTART
+- SECTION 1: BASIC FUNCTIONALITY
+- SECTION 2: IMPORTANT PROGRAM OPTIONS AND OPTION VALID VALUES
+- SECTION 3: OBSCURE TIPS AND TRICKS
+- SECTION 4: VERSION HISTORY
+
+
+
+
+
+
+
+
+
+
+  SECTION 0: QUICKSTART
+
+
+  To compile, simply running configure and make will do it:
+$ ./configure && make
+  You can change the compiler in the configure script, default compiler is gfortran.
+  To run it, a line such as:
+
+$ ./2STAR_ -mode  mdot   -accmass 1.2   -donmass 0.3 
+           -path  test   -accmode he_wd -donmode co_wd
+	   -setup period -period  300
+
+  should do the trick. Hopefully most things are self explanatory,
+  documentation will be done at some point. For now, this README 
+  and some reading into the code will have to do.
+
+
+
+
+
+
+
+
+
+
+  SECTION 1: BASIC FUNCTIONALITY
+
+
+
+  Finally, my mdot evolution code is fully functional.
+  In case you are using it and you aren't me, here's the fundamentals.
+  This version has now collapsed most functionalities into a single program.
+
+
+
+
+
+   1.1 Mass transfer rate history.
+
+   One can use this code in many different ways, it was mainly written
+   in order to solve for the mass transfer history of compact binary mergers.
+   To see an example of how to incorporate this functionality, see the 
+   "dr_perform_mdot_evolution" routine in the driver unit.
+   The "2STAR_" program incorporates this functionality in the "mdot" mode, 
+   just run it with the option "-mode mdot":
+
+$ ./2STAR_ -mode mdot
+
+   For the fundamental equations, see Ghokale or Marsh. 
+   I have incorporated prescriptions for a mass transfer rate and mass loss 
+   at super Eddington accretion.
+   Also incorporated (not yet tested) option for the disk to retain mass,
+   instead of feeding it all back to the accretor.
+   Tidal interactions are still incorporated throught the following options:
+
+> ./2STAR_ -mode mdot -tidal .true. -dontau 100 -acctau 100000
+
+   where the options -dontau and -acctau set the synchronization timescales 
+   of each component (in years).
+   So far, the system always begins synchronized.
+   Treatment for breakup rotation speeds is unincorporated.
+   Evolution with tidal terms is highly experimental at this point.
+
+
+
+
+
+   1.2. Postprocessing of Mass Transfer History Calculations.
+
+   An "mdot.dat" file should be on your data directory, 
+   the code will read it in and get the virial temperature,
+   the density at impact and other things.
+   Basically, this mode calculates ballistic trayectories
+   consistent with the data in mdot.dat and gets the parameters
+   you need to calculate t_nuclear.
+
+
+
+
+
+   1.3. Ballistic trayectories.
+   
+   The secondary function is to solve for trayectories in a FIXED Roche potential.
+   To see an example of this, take a look at the "perform_ballistic_evolution" 
+   subroutine of the module.
+   The program "2STAR_" has this functionality in its "ballistic" mode,
+
+$ ./2STAR_ -mode ballistic
+
+   I have found that the orbital separation and mass transfer timescales
+   are much longer than the time it takes to get from the Lagrange point
+   to the accretor surface, so to an excellent approximation, mdot is 
+   constant during the plunge and one can fix the Roche potential 
+   (plus coriolis contribution) in the ballistic equations of motion.
+   Of course, if the mass transfer is too high, this approximation is not valid,
+   but at that regime one should use a hydro code anyway.
+
+
+
+
+
+   1.4. Hybrid Mode.
+
+   There are some parameters that can only be calculated by solving
+   for ballistic trayectories (say, the virial temperature of the
+   stream virial_temperature).
+   One can solve for both ballistic trayectories and mass transfer rates 
+   at the same time by setting HYBRID = .true. in the command line:
+
+>  ./2STAR_ -hybrid .true. -mode mdot
+
+   What this will do is solve for ballistic trayectories every time
+   the setup routine is called (every time step, or half time step
+   in the case of RG4 integration for the mass transfer history).
+   
+   Since we are solving for ballistic trayectories as well, the data
+   is automatically postprocessed.
+
+   Ghokale's paper requires such a treatment.
+   This will solve for the ballistic trayectories every time the setup routine 
+   is done. Said integration is important when the angular momentum of the
+   impacting stream must be known.
+
+   NOTE: This mode is slow as hell, only run like this if needed, 
+   postprocessing of the data with "-mode post" is preferred to running 
+   in hybrid mode.
+
+
+
+
+
+   1.5. Stability Diagrams.
+
+   To get the stability regimes, all one needs to do is call the "2STAR_"
+   program in stability mode,
+
+> ./2STAR_ -mode stability -accmode ns -donmode he_wd -minmass 0.1 -maxmass 1.4 -dmacc 0.01 -dmdon 0.02
+
+   This example will get the stability curves for a He WD donor and NS accretor,
+   with an accretor mass between 0.1 and 1.4 solar masses, 
+   using a mass step of 0.01 solar masses in accretor mass and 0.02 in donor mass. 
+   
+   There are two phases for the stability criteria, phase 1 is a brute force scan
+   of all parameter space. 
+   Phase 2 takes the results of phase 1 and runs a modified midpoint scheme 
+   to refine the stability curve.
+   Phase 3 makes a run of simulations in the parameter space givem by the stability curves.
+
+
+
+
+
+
+
+
+
+
+
+  SECTION 2: IMPORTANT PROGRAM OPTIONS AND VALID OPTION VALUES
+
+
+
+  I tried to code this thing into a single coherent program,
+  so that one can easily change variables by just calling
+  the program with different options, for example
+
+> ./2STAR_ -mode  mdot   -accmass 1.2   -donmass 0.3 
+          -path  test   -accmode he_wd -donmode co_wd
+          -setup period -period  300
+
+  will initialize the clculation of mass transfer history 
+  of a 0.3 Msun CO White Dwarf donor with a HE White Dwarf
+  companion, beginning with a period of 300 seconds, 
+  data will be saved in the "test" directory.
+
+  In what follows, I will specify the options I most
+  commonly use to run my stuff, this list is NOT 
+  comprehensive, one should take a look at the 
+  "IO_read_command_line_options"  routine in src/IO/IO_main.f90 
+  for a comprehensive list of options and corresponding variables.
+
+
+
+
+
+  2.1 MODE
+
+
+
+  The most basic option, -mode accepts "ballistic", "mdot" 
+  and "stability" as valid values. 
+
+  When using "mdot" as a mode, one can set -hybrid to .true.
+  in order to evaluate ballistic trayectories alongside it,
+
+> ./2STAR_ -mode mdot -hybrid .true.
+
+  When using "stability" as a mode, one can specify the phase 
+  of the stability you want to begin (so that if you had already
+  started, you don't start from the beginning), provided you
+  have the data files from past phases. For example,
+
+> ./2STAR_ -mode stability -phase 2 -path stable
+
+  will begin the second phase of the stability analysis,
+  provided the file "stable/stability_1.dat" generated by
+  past phases of the code is present.
+  If the phase is not specified, the code starts at the beginning
+  of the stability analysis.
+
+
+
+
+
+  2.2 ACCMASS, DONMASS, ACCMODE, DONMODE, ADVECTION
+
+
+
+  The options -accmass and -donmass set the donor mass and accretor mass,
+  respectively, this mass is given in solar masses,
+  note that for WD stars, one cannot exceed the Chandrasehkar mass.
+  The options -accmode and -donmode set the donor type and accretor type,
+  these can take the values "he_wd", "co_wd" and "ns",
+  note that "ns" is an invalid mode for a donor.
+  The line
+
+> ./2STAR_ -donmass 1.3 -accmass 2.4 -donmode co_wd -accmode ns
+
+  will initialize the evolution for a 1.3 Msun CO WD donor with a
+  2.4 Msun NS companion.
+
+  The code is naturally adaptative to the size of the accretor,
+  it can decide whether the system is "direct impact" or "disk accretion"
+  depending on the accretor size compared to the distance of minimum approach
+  of a ballistic trayectory with initial conditions as in Lubow and Shu 1975.
+  The prescence of a disk changes the structure of mass flows and 
+  angular momentum transfer in the system, it is crucial for mass transfer
+  history computations and stability diagrams.
+
+  One can force the code to act as if the system were direct impact or 
+  disk accretion, this effectively removes/adds angular momentum terms in 
+  the variables q_a and q_stable, computed in src/component/component_evol.f90.
+  The option -advection takes care of this, and can be set to take
+  the string values "adaptative" (default), "disk", or "impact".
+  For example,
+
+> ./2STAR_ -advection disk
+
+  forces the code to assume the system is a disk accretion system.
+
+
+
+
+
+  2.3 SETUP
+
+
+
+  Here is an explanation for the different setup modes.
+  Please note that any variables the setup routine has to use must be initialized 
+  before calling it, the masses of the binary components must always be specified.
+
+- dr_mode_period        - Given a period (binary_period), 
+                          computes the orbital parameters corresponding to said period.
+- dr_mode_separation    - Given a separation (binary_separation), computes the orbital parameters 
+                          corresponding to said separation.
+- dr_mode_mdot          - Given a mass transfer rate (mdot_donor), computes the orbital 
+                          parameters that yield said mass transfer rate. 
+	                  This can be slow to initialize, since it uses a midpoint scheme 
+	   	          to converge to the mass transfer rate.
+- dr_mode_roche_LIMIT   - Computes the orbital parameters that yield the separation 
+                          corresponding to the Roche limit.
+- dr_mode_contact       - Computes the orbital parameters that yield a zero mass transfer rate 
+                          (right at contact). 
+- dr_mode_overflow_EQ   - Computes the orbital parameters that yield a zero mass transfer rate 
+                         change, meaning that the system will be initialized in a steady state 
+		         (no significant evolution should occur). Note that, depending on your 
+		         mass ratio, such a state may not exist!
+- dr_mode_separation_EQ - Computes the orbital parameters that yield a zero binary separation 
+                          change, meaning that the system will be initialized at the point of 
+		          minimal separation. The basic thinking is that stable binary will start 
+		          to merge and then separate because of mass transfer.
+                          The system is initialized right when the system is beginning to separate.
+ 
+  To use these modes in the command line the following option should do the trick,
+> ./2STAR_ -setup some_setup
+  where some_setup can be "contact", "separation" and so on without the quotes.
+  If using period, separation or mdot as input variables, you shuld specify them,
+> ./2STAR_ -setup period -period 100
+  this will initialize the system at a period of 100s.
+  Note that when specifying a mass transfer rate, units are given in solar units.
+> ./2STAR_ -setup mdot -mdot 0.000001
+  will initialize the system at a mass transfer rate of 1e-6 Msolar/year.
+
+  I try to follow most standards, so you'll find the source code in src/,
+  useful shell scripts for compiling, plotting and running in bash/,
+  all the results I try to dump on the data/ directory.
+
+  For the love of all science, don't mess with the plot templates in 
+  src/IO/templates if you don't know how they're called!
+
+
+
+
+
+
+
+
+
+
+  SECTION 3: OBSCURE TIPS AND QUIRKS
+
+
+
+  If you're going to open up a file, just don't use 42,43,44 as the file unit,
+  IO_unit (the default file identifier declared somewhere in the module)
+  is set to 42, so let's not bump into each other here.
+  Obviously, you can change this variable if you must, this variable is
+  declared in the IO module src/IO/IO.f90
+
+  There are a few logical variables that characterize how annoying the output is.
+  If -verbose evaluates to true, the module prints out the most useful parameters 
+  every time they are calculated, if -interrupting evaluates to true, then any 
+  integration you do will print out the data every time step
+  (undesirable for high resoltion in time, but useful when performing diagnostics).
+  Any logical that has the subscript _FLAG simply prints out data relevant to the 
+  variable it is diagnosing, setting such a variable to true will print out all 
+  sorts of obscure meaningless numbers and messages.
+  Finally, you can stop the program from saving any data at all by setting 
+  IO_save = .false., I found this useful to perform the stability curve 
+  (a la Marsh) calculations.
+
+
+
+
+
+
+
+
+
+
+  SECTION 4: POORLY DOCUMENTED VERSION HISTORY (I doubt anyone will use this, this is mainly for myself)
+
+
+  VERSION 2.0 (October 10th, 2012): 
+
+- Big update! All functionalities have been broken up into units, 
+  which run their own modules. This has sped up the program by orders of magnitude!
+- Current units: driver, physics, component, IO, ode, and Mkracken.
+
+* Incorporate breakup rates.
+
+
+
+
+  VERSION 1.3 (August 7th, 2012):
+
+- Documentation in README is somewhat clearer.
+- Tidal terms are incorporated.
+
+  Todo:
+
+* Provide treatment for breakup rotation speeds, finish up tewsting of tidal torque terms.
+
+
+
+  VERSION 1.3 (July 31, 2012):
+
+- Code is somewhat documented.
+- All functionalities provided by the module have been integrated into a single program 2STAR_,
+  which has a variety of modes (ballistic, mdot and stability).
+- More arguments are now included through external libraries, less recompilations are necessary.
+- Stub routines and data declarations are ready to accept the tidal terms.
+
+  Todo:
+
+* Include tides properly, observe tidally induced oscillations.
+* Postprocessing of mdot tracks should be included as an additional mode.
+* Write a makefile.
+
+
+
+  VERSION 1.2 (July 4, 2012):
+
+- Stub routines for the tidal terms have been included.
+- Arguments are now included through external libraries.
+
+  Todo:
+
+* Document.
+
+
+
+  VERSION 1.1 (May 20, 2012):
+
+- Hybrid ballistic / mdot integration mode is implemented and in working order.
+- Some programs now accept arguments when running, minimizing unnecessary recompilation.
+
+  Todo:
+
+* Document.
+* Tidal terms (should be simple by now).
+
+
+
+  VERSION 1.0 (April 27, 2012):
+
+- Can solve m_dot curves versus time.
+- Super Eddington mass transfer rates can be treated.
+- Different modes on angular momentum advection can be incorporated (disk accretion, direct impact).
+- Neutron star and He/CO White Dwarves can be treated for both accretor and donor. 
+- Can integrate stream trayectories and from there obtain a virialization temperature.
+- Initialization of the system can be done in five ways: Initial contact, equilibrium mass transfer, and given mass transfer, separation, or period.
+- Can now plot stability diagrams with src/stability.f90.
+
+
+
+  Things to do, in no particular order:
+
+* DOCUMENT THE CODE PROPERLY: Right now only I can read it well, who knows in one year.
+* Make a flowchart that describes the flow and interaction of the subroutines and variables.
+* Introduce tidal interactions so that one can see tidally induced oscillations of the orbit.
