@@ -28,7 +28,7 @@
 
 
 
-subroutine cp_auxiliary_parameters
+  subroutine cp_auxiliary_parameters
   use driver   , only: dr_hybrid,dr_perform_ballistic_evolution
   use component, only: cp_star_parameters,cp_binary_parameters,cp_star_parameters
   implicit none
@@ -50,5 +50,5 @@ subroutine cp_auxiliary_parameters
   end if
 ! Driver terms and effective exponents for the mdot evolution
   call cp_evolution_coefficients
-return
-end subroutine cp_auxiliary_parameters
+  return
+  end subroutine cp_auxiliary_parameters

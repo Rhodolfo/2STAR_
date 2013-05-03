@@ -1,0 +1,5 @@
+The physics unit is in charge of storing physical constants
+and various physics formulas and prescriptions of different nature. 
+
+I keep the constants of the physics unit free of the ph_prefix,
+routines and functions keep this prefix.

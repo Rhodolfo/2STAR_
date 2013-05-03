@@ -1,0 +1,22 @@
+# Compiler and flags
+COMPILER_FLAGS = -Jmod -fdefault-real-8 -fbounds-check -fbacktrace -finit-real=nan
+
+# Executable name and general rule
+.SUFFIXES:
+.SUFFIXES: .f90 .o 
+
+# Compile main program 
+EXE    = RELAX_
+part   = main.o ${uobjs}
+full   = ${patsubst %, obj/%, ${part}}
+${EXE}: main.o
+	${COMPILER} -o $@ ${full}
+main.o : ${uobjs}
+
+# General rule
+%.o     : %.f90 
+	${COMPILER} ${COMPILER_FLAGS} -c -o obj/$@ $<
+
+# Cleanup
+clean: 
+	rm -f obj/*.o mod/*.mod ${EXE}

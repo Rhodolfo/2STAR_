@@ -1,4 +1,4 @@
-subroutine dr_interrupt_ballistic
+  subroutine dr_interrupt_ballistic
   use        IO, only: IO_log,IO_2string
   use    driver, only: dr_exit_trigger,dr_line_tolerance,dr_res_factor,&
                        dr_maximum_radius,dr_exit_trigger,dr_force_write,&
@@ -37,4 +37,4 @@ subroutine dr_interrupt_ballistic
     call dr_store_ballistic_data
     if (.not.dr_force_write) dr_file_counter = dr_file_counter + 1
   end if
-end subroutine dr_interrupt_ballistic
+  end subroutine dr_interrupt_ballistic

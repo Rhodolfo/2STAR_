@@ -1,15 +1,15 @@
   subroutine dr_perform_mdot_evolution(setmode,dm,am,invar,donfreq,accfreq)
 ! Integrates the evolution equations for the period, masses and
 ! frequencies (if tides are included).
-  use rho_ode_solver, only: rho_bs_step,rho_error_control,rho_dt_suggested
-  use driver,         only: dr_init,&
-                            dr_time,dr_time_tolerance,dr_time_step,&
-                            dr_exit_trigger,dr_interrupt,dr_update,&
-                            dr_mdot_vector_old,dr_mdot_vector_new,&
-                            mdot_source_function,dr_setup_mode
-  use component,      only: cp_donor_mass,cp_accretor_mass,cp_donor_freq,&
+  use       ode, only: ode_bs_step,ode_error_control,ode_dt_suggested
+  use    driver, only: dr_init,&
+                       dr_time,dr_time_tolerance,dr_time_step,&
+                       dr_exit_trigger,dr_interrupt,dr_update,&
+                       dr_mdot_vector_old,dr_mdot_vector_new,&
+                       mdot_source_function,dr_setup_mode
+  use component, only: cp_donor_mass,cp_accretor_mass,cp_donor_freq,&
                             cp_accretor_freq,cp_setup_var,cp_binary_separation
-  use        IO,      only: IO_log,IO_verb
+  use        IO, only: IO_log,IO_verb
   implicit none
   integer, optional :: setmode
   real,    optional :: dm,am,invar,donfreq,accfreq
@@ -41,7 +41,7 @@
   do while ( (dr_time.lt.dr_time_tolerance).and.(.not.dr_exit_trigger) )
     call dr_interrupt
     if (dr_exit_trigger) exit
-    call rho_bs_step(dr_time,dr_time_step,&
+    call ode_bs_step(dr_time,dr_time_step,&
                     dr_mdot_vector_old,dr_mdot_vector_new,&
                     mdot_source_function)
     call dr_update

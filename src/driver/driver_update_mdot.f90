@@ -1,6 +1,5 @@
-
-subroutine dr_update_mdot
-  use rho_ode_solver, only: rho_reject_step,rho_dt_suggested
+  subroutine dr_update_mdot
+  use ode, only: ode_reject_step,ode_dt_suggested
   use   physics, only: chandra_mass
   use    driver, only: dr_hybrid,dr_include_tides,dr_accretion_flow,&
                        dr_is_sub_eddington,dr_is_super_eddington,&
@@ -19,8 +18,8 @@ subroutine dr_update_mdot
   real :: donmass,accmass,invar,donfreq,accfreq
   logical :: nullmass,superchandra,accwd
 ! Advancing time and shit
-  if (rho_reject_step) then 
-    dr_time_step = min(0.9*rho_dt_suggested,0.5*dr_time_step)
+  if (ode_reject_step) then 
+    dr_time_step = min(0.9*ode_dt_suggested,0.5*dr_time_step)
     return
   else 
   end if
@@ -72,5 +71,5 @@ subroutine dr_update_mdot
     cp_mintemp = min(cp_mintemp,cp_virial_temperature)
     cp_maxtemp = max(cp_maxtemp,cp_virial_temperature)
   end if
-return
-end subroutine dr_update_mdot
+  return
+  end subroutine dr_update_mdot

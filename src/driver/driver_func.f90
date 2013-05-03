@@ -1,4 +1,4 @@
-function stream_source_function(some_phase_point,time_value)
+  function stream_source_function(some_phase_point,time_value)
   use component, only: cp_donor_mass,cp_donor_position,&
                        cp_accretor_mass,cp_accretor_position,&
                        cp_binary_frequency
@@ -73,5 +73,5 @@ function mdot_source_function(somevector,sometime)
     mdot_source_function(5) = cp_driver_accretor_freq+cp_zeta_accretor_freq*cp_mdot_accretor/cp_accretor_mass
   else
   end if
-return
-end function mdot_source_function
+  return
+  end function mdot_source_function

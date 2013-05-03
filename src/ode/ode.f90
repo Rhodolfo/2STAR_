@@ -1,19 +1,19 @@
-module rho_ode_solver
+  module ode
 
-  integer :: rho_bs_k        = 13
+  integer :: ode_bs_k        = 13
   integer, parameter :: kmax = 15
 
-  real :: rho_tolerance       = 1.
-  real :: rho_norm_truncation = 1.
-  real :: rho_dt_suggested    = 1.
-  real :: rho_order           = 4.      
-  real :: rho_scalar          = 1.
-  real, dimension(:), allocatable :: rho_ref_scale
+  real :: ode_tolerance       = 1.
+  real :: ode_norm_truncation = 1.
+  real :: ode_dt_suggested    = 1.
+  real :: ode_order           = 4.      
+  real :: ode_scalar          = 1.
+  real, dimension(:), allocatable :: ode_ref_scale
 
-  logical :: rho_error_control = .true.
-  logical :: rho_reject_step   = .false.
+  logical :: ode_error_control = .true.
+  logical :: ode_reject_step   = .false.
 
-contains
+  contains
 
 
 
@@ -45,22 +45,22 @@ contains
 
 ! So far, I've incorporated the following routines to the solver:
 
-! - rho_euler_step(t,dt,u_old,u_new,source_function)
+! - ode_euler_step(t,dt,u_old,u_new,source_function)
 !   Takes a time step from time "t" to time "dt" using the naive Euler first  
 !   order method. Returns u_new that is calculated from u_old through the procedure
 !   "source_function."
 
-! - rho_leapfrog_step(t,dt,u_old,u_mid,u_new,source_function)
+! - ode_leapfrog_step(t,dt,u_old,u_mid,u_new,source_function)
 !   Takes a time step from time "t" to time "dt" using the Leapfrog second  
 !   order method. Returns u_new that is calculated from u_old and u_mid through the procedure
 !   "source_function."
 
-! - rho_rg4_step(t,dt,u_old,u_new,source_function):
+! - ode_rg4_step(t,dt,u_old,u_new,source_function):
 !   Takes a time step from time "t" to time "dt" using the Runge-Kutta fourth
 !   order method. Returns u_new that is calculated from u_old through the procedure
 !   "source_function."
 
-! - rho_bs_step(t,dt,u_old,u_new,source_function,nmax):
+! - ode_bs_step(t,dt,u_old,u_new,source_function,nmax):
 !   Takes a time step from time "t" to time "dt" using the Brulirsch-Stuer
 !   order method. Note that the additional variable nmax determines how many 
 !   iterations of the recursive formula for the BS method is used. 
@@ -113,7 +113,7 @@ contains
 
 
 
-  subroutine rho_euler_step(time_value,time_step,solution_old,solution_new,source_function) 
+  subroutine ode_euler_step(time_value,time_step,solution_old,solution_new,source_function) 
   implicit none
   real, intent(in) :: time_value,time_step
   real, dimension(:), intent(in)  :: solution_old
@@ -127,7 +127,7 @@ contains
   end interface
   solution_new = solution_old + time_step * source_function(solution_old,time_value)
   return
-  end subroutine rho_euler_step
+  end subroutine ode_euler_step
 
 
 
@@ -138,7 +138,7 @@ contains
 
 
 
-  subroutine rho_leapfrog_step(time_value,time_step,solution_old,solution_mid,solution_new,source_function) 
+  subroutine ode_leapfrog_step(time_value,time_step,solution_old,solution_mid,solution_new,source_function) 
   implicit none
   real, intent(in) :: time_value,time_step
   real, dimension(:), intent(in)  :: solution_old
@@ -153,7 +153,7 @@ contains
   end interface
   solution_new = solution_old + 2.0 * time_step * source_function(solution_mid,time_value)
   return
-  end subroutine rho_leapfrog_step
+  end subroutine ode_leapfrog_step
 
 
 
@@ -164,7 +164,7 @@ contains
 
 
 
-  subroutine rho_rg4_step(time_value,time_step,solution_old,solution_new,source_function) 
+  subroutine ode_rg4_step(time_value,time_step,solution_old,solution_new,source_function) 
   implicit none
   real, intent(in) :: time_value,time_step
   real, dimension(:), intent(in)  :: solution_old
@@ -183,7 +183,7 @@ contains
   k4 = source_function(solution_old +     time_step*k3,time_value +     time_step)
   solution_new = solution_old + time_step * ( (k1+2.0*k2+2.0*k3+k4) / 6.0 )
   return
-  end subroutine rho_rg4_step
+  end subroutine ode_rg4_step
 
 
 
@@ -194,7 +194,7 @@ contains
 
 
 
-  subroutine rho_mm_step(time_value,time_step,solution_old,solution_new,source_function,nmax) 
+  subroutine ode_mm_step(time_value,time_step,solution_old,solution_new,source_function,nmax) 
   implicit none
   real, intent(in) :: time_value,time_step
   real, dimension(:), intent(in)  :: solution_old
@@ -221,7 +221,7 @@ contains
 ! Now that we have all the z's, we are ready to take the full time step
   solution_new(:) = z(:,nmax)/2. + (z(:,nmax-1)+h*source_function(z(:,nmax),time_value+time_step))/2.
   return
-  end subroutine rho_mm_step
+  end subroutine ode_mm_step
 
 
 
@@ -232,7 +232,7 @@ contains
 
 
 
-  subroutine rho_bs_step(time_value,time_step,solution_old,solution_new,source_function)
+  subroutine ode_bs_step(time_value,time_step,solution_old,solution_new,source_function)
   implicit none
   real, intent(in) :: time_value,time_step
   real, dimension(:), intent(in)  :: solution_old
@@ -260,17 +260,17 @@ contains
   real, dimension(size(solution_old)) :: S,NE
 
 ! Error control
-  kk = rho_bs_k
+  kk = ode_bs_k
   S1 = 0.05
   S2 = 0.05
   S3 = 0.02
   S4 = 4.0
   F  = S3**(1./(2.*real(kk)+1))
   done            = .false.
-  rho_reject_step = .false.
-  if (rho_error_control) then
-    if (allocated(rho_ref_scale)) then
-    S = rho_ref_scale 
+  ode_reject_step = .false.
+  if (ode_error_control) then
+    if (allocated(ode_ref_scale)) then
+    S = ode_ref_scale 
     else 
     S = 1.
     end if
@@ -283,7 +283,7 @@ contains
   end do
 
 ! Calculating the number of function evaluations for error control
-  if (rho_error_control) then
+  if (ode_error_control) then
   Ak(1) = n(1)
   do ii = 2,kmax
     Ak(ii) = Ak(ii-1) + n(ii)
@@ -292,17 +292,17 @@ contains
 
 ! On to the BS method:
 ! Doing the first integration
-  call rho_mm_step(time_value,time_step,solution_old,solution_dum,source_function,n(1))
+  call ode_mm_step(time_value,time_step,solution_old,solution_dum,source_function,n(1))
   T(:,1,1) = solution_dum(:)
 ! Let's complete the tableau
   do ii = 1,kmax
-    call rho_mm_step(time_value,time_step,solution_old,solution_dum,source_function,n(ii))
+    call ode_mm_step(time_value,time_step,solution_old,solution_dum,source_function,n(ii))
     T(:,ii,1) = solution_dum(:) 
     do jj = 2,ii
       T(:,ii,jj) = T(:,ii,jj-1) + (T(:,ii,jj-1)-T(:,ii-1,jj-1))/((real(n(ii))/(real(n(ii-jj+1))))**2-1)
     end do
   ! Some error control stuff
-    if (rho_error_control) then
+    if (ode_error_control) then
       if (ii.eq.1) delta(1) = 0.
       if (ii.gt.1) delta(:) = T(:,ii,ii)-T(:,ii,ii-1)
       if (ii.eq.2) delta(1) = delta(2)
@@ -314,7 +314,7 @@ contains
       Wk(ii)   = Ak(ii)/Hk(ii)
     end if
   ! Testing for convergence
-    if (rho_error_control) then
+    if (ode_error_control) then
     ! Testing for convergence in the kk-1 row
       if (ii.eq.kk-1) then
       ! Time step and k recipe
@@ -335,14 +335,14 @@ contains
         if (E(kk-1).lt.1.) then 
           done             = .true.
           kdone            = kk-1
-          rho_bs_k         = knew
-          rho_dt_suggested = hnew
+          ode_bs_k         = knew
+          ode_dt_suggested = hnew
           solution_new(:)  = T(:,kk-1,kk-1)
         else 
           if (E(kk-1).gt.((n(kk)/n(1))**2)*((n(kk+1)/n(1))**2)) then
-            rho_reject_step  = .true.
-            rho_bs_k         = knew
-            rho_dt_suggested = hnew
+            ode_reject_step  = .true.
+            ode_bs_k         = knew
+            ode_dt_suggested = hnew
           end if 
         end if
       ! Done
@@ -366,14 +366,14 @@ contains
         if (E(kk).lt.1.) then
           done             = .true.
           kdone            = kk
-          rho_bs_k         = knew
-          rho_dt_suggested = hnew
+          ode_bs_k         = knew
+          ode_dt_suggested = hnew
           solution_new(:)  = T(:,kk,kk)
         else
           if (E(kk).gt.(n(kk+1)/n(1))**2) then
-            rho_reject_step  = .true.
-            rho_bs_k         = knew
-            rho_dt_suggested = hnew
+            ode_reject_step  = .true.
+            ode_bs_k         = knew
+            ode_dt_suggested = hnew
           end if 
         end if
     ! Testing convergence for row kk+1
@@ -395,48 +395,48 @@ contains
         if (E(kk+1).le.1.) then
           done             = .true.
           kdone            = kk+1
-          rho_bs_k         = knew
-          rho_dt_suggested = hnew
+          ode_bs_k         = knew
+          ode_dt_suggested = hnew
           solution_new(:)  = T(:,kk+1,kk+1)
         else 
-          rho_reject_step  = .true.
-          rho_bs_k         = knew
-          rho_dt_suggested = hnew
+          ode_reject_step  = .true.
+          ode_bs_k         = knew
+          ode_dt_suggested = hnew
         end if
       end if
     end if
   ! Error control is done
   ! Now some other refinements
-    if (rho_error_control) then 
-      rho_bs_k = min(rho_bs_k,kmax-1)
-      rho_bs_k = max(3,knew)
+    if (ode_error_control) then 
+      ode_bs_k = min(ode_bs_k,kmax-1)
+      ode_bs_k = max(3,knew)
       if (hnew/time_step.ge.1./F) then
         hnew             = time_step / F
-        rho_dt_suggested = hnew
+        ode_dt_suggested = hnew
       else if (hnew/time_step.le.F/S4) then
         hnew             = time_step*F/S4
-        rho_dt_suggested = hnew
+        ode_dt_suggested = hnew
       end if
-      if (rho_reject_step) then
-        rho_dt_suggested = min(time_step,hnew)
-        rho_bs_k         = min(knew,kk)
+      if (ode_reject_step) then
+        ode_dt_suggested = min(time_step,hnew)
+        ode_bs_k         = min(knew,kk)
       end if
-      rho_bs_k = min(rho_bs_k,kmax-1)
-      rho_bs_k = max(3,knew) 
+      ode_bs_k = min(ode_bs_k,kmax-1)
+      ode_bs_k = max(3,knew) 
     end if
     if (done) exit
-    if (rho_reject_step) then 
-      rho_dt_suggested = 0.85*rho_dt_suggested
+    if (ode_reject_step) then 
+      ode_dt_suggested = 0.85*ode_dt_suggested
       exit
     end if 
   end do
 ! Saving solution if kmax is correct
-! write(*,*) "[ode]",time_step,hnew,kk,rho_bs_k,rho_reject_step
-  if (.not.rho_error_control) solution_new(:) = T(:,kmax,kmax)
-  end subroutine rho_bs_step
+! write(*,*) "[ode]",time_step,hnew,kk,ode_bs_k,ode_reject_step
+  if (.not.ode_error_control) solution_new(:) = T(:,kmax,kmax)
+  end subroutine ode_bs_step
 
 
 
 
 
-end module rho_ode_solver
+  end module ode

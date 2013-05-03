@@ -1,5 +1,5 @@
-subroutine dr_interrupt_mdot
-  use rho_ode_solver
+  subroutine dr_interrupt_mdot
+  use       ode
   use   physics, only: G,solar_mass,year
   use component, only: cp_binary_separation,cp_binary_period,cp_donor_radius,&
                        cp_mdot_donor,cp_mdot_eddington,cp_mdot_eq,cp_donor_mass,cp_total_mass,&
@@ -51,7 +51,7 @@ subroutine dr_interrupt_mdot
    call IO_log(IO_2string(dr_time/dr_time_tolerance)//" "//&
                IO_2string(dr_time)//" "//&
                IO_2string(dr_time_step_old)//" "//&
-               IO_2string(rho_dt_suggested)//" "//&
+               IO_2string(ode_dt_suggested)//" "//&
                IO_2string(abs(cp_mdot_donor)*year/solar_mass)//" "//&
                IO_2string(cp_binary_period)//" "//&
                IO_2string(cp_min_timescale)//" "//&
@@ -65,4 +65,4 @@ subroutine dr_interrupt_mdot
     if (.not.dr_force_write) dr_file_counter = dr_file_counter + 1
   end if
   IO_verb = dumverb
-end subroutine dr_interrupt_mdot
+  end subroutine dr_interrupt_mdot

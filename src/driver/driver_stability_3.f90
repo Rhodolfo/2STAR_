@@ -1,4 +1,4 @@
-subroutine dr_perform_phase_3
+  subroutine dr_perform_phase_3
   use   physics, only: solar_mass,year,ph_triple_alpha_timescale,chandra_mass
   use    driver, only: dr_setup_mode,dr_mode_period,dr_mode_contact,&
                        dr_integration_mode,dr_mode_mdot,dr_mode_ballistic,&

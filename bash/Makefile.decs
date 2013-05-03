@@ -1,30 +1,8 @@
-COMPILER = gfortran-mp-4.6
- 
 # Listing obj units
-units = ode physics driver component IO Mkracken medium
+units = driver ode IO Mkracken component medium physics
 umods = ${patsubst %, %.o, ${units}}
 VPATH = ${patsubst %, src/%, ${units}}
 VPATH += src
- 
-# Source files from ode unit
-ode =\
-ode.f90 
-ode_obj = ${patsubst %.f90, %.o ,${ode}}
-ode_all = ${patsubst %, obj/% ,${ode_obj}}
- 
-# Source files from physics unit
-physics =\
-physics.f90 \
-physics_eggleton.f90 \
-physics_grav.f90 \
-physics_inertial.f90 \
-physics_main.f90 \
-physics_ns.f90 \
-physics_nuclear.f90 \
-physics_roche.f90 \
-physics_wd.f90 
-physics_obj = ${patsubst %.f90, %.o ,${physics}}
-physics_all = ${patsubst %, obj/% ,${physics_obj}}
  
 # Source files from driver unit
 driver =\
@@ -54,8 +32,29 @@ driver_update.f90 \
 driver_update_ballistic.f90 \
 driver_update_mdot.f90 \
 driver_update_tstep.f90 
-driver_obj = ${patsubst %.f90, %.o ,${driver}}
-driver_all = ${patsubst %, obj/% ,${driver_obj}}
+uobjs  += ${patsubst %.f90, %.o ,${driver}}
+ 
+# Source files from ode unit
+ode =\
+ode.f90 
+uobjs  += ${patsubst %.f90, %.o ,${ode}}
+ 
+# Source files from IO unit
+IO =\
+IO.f90 \
+IO_data.f90 \
+IO_file_handling.f90 \
+IO_header.f90 \
+IO_log.f90 \
+IO_main.f90 \
+IO_plot.f90 \
+IO_write_header_sweep.f90 
+uobjs  += ${patsubst %.f90, %.o ,${IO}}
+ 
+# Source files from Mkracken unit
+Mkracken =\
+Mkracken.f90 
+uobjs  += ${patsubst %.f90, %.o ,${Mkracken}}
  
 # Source files from component unit
 component =\
@@ -73,27 +72,7 @@ component_stream.f90 \
 component_system.f90 \
 component_system_slaves.f90 \
 component_timescales.f90 
-component_obj = ${patsubst %.f90, %.o ,${component}}
-component_all = ${patsubst %, obj/% ,${component_obj}}
- 
-# Source files from IO unit
-IO =\
-IO.f90 \
-IO_data.f90 \
-IO_file_handling.f90 \
-IO_header.f90 \
-IO_log.f90 \
-IO_main.f90 \
-IO_plot.f90 \
-IO_write_header_sweep.f90 
-IO_obj = ${patsubst %.f90, %.o ,${IO}}
-IO_all = ${patsubst %, obj/% ,${IO_obj}}
- 
-# Source files from Mkracken unit
-Mkracken =\
-Mkracken.f90 
-Mkracken_obj = ${patsubst %.f90, %.o ,${Mkracken}}
-Mkracken_all = ${patsubst %, obj/% ,${Mkracken_obj}}
+uobjs  += ${patsubst %.f90, %.o ,${component}}
  
 # Source files from medium unit
 medium =\
@@ -103,10 +82,18 @@ medium_calc.f90 \
 medium_func.f90 \
 medium_init.f90 \
 medium_main.f90 
-medium_obj = ${patsubst %.f90, %.o ,${medium}}
-medium_all = ${patsubst %, obj/% ,${medium_obj}}
+uobjs  += ${patsubst %.f90, %.o ,${medium}}
  
- 
-obj           = ${ode_obj} ${physics_obj} ${driver_obj} ${component_obj} ${IO_obj} ${Mkracken_obj} ${medium_obj}
-obj_with_path = ${ode_all} ${physics_all} ${driver_all} ${component_all} ${IO_all} ${Mkracken_all} ${medium_all}
+# Source files from physics unit
+physics =\
+physics.f90 \
+physics_eggleton.f90 \
+physics_grav.f90 \
+physics_inertial.f90 \
+physics_main.f90 \
+physics_ns.f90 \
+physics_nuclear.f90 \
+physics_roche.f90 \
+physics_wd.f90 
+uobjs  += ${patsubst %.f90, %.o ,${physics}}
  

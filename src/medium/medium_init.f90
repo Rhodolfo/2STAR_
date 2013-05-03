@@ -2,7 +2,7 @@
   use physics, only: nucleon_mass
   use  medium, only: gamma_ism,gamma_bub,kappa,factor,&
                      xi,eta,zeta,A,B,ism_dens
-  use rho_ode_solver, only: rho_ref_scale
+  use     ode, only: ode_ref_scale
   implicit none
 ! Some fundamental things about the ism and bubble gas
   gamma_ism = 5./3.
@@ -18,7 +18,7 @@
   A    = 3.*eta + zeta
   B    = 2.*eta + xi
 ! ODE considerations
-  if (allocated(rho_ref_scale)) deallocate(rho_ref_scale)
-  allocate(rho_ref_scale(2))
-  rho_ref_scale = (/ 1e15, 1e8 /)
+  if (allocated(ode_ref_scale)) deallocate(ode_ref_scale)
+  allocate(ode_ref_scale(2))
+  ode_ref_scale = (/ 1e15, 1e8 /)
   end subroutine medium_init

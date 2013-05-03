@@ -1,4 +1,4 @@
-subroutine dr_perform_mdot_postprocessing
+  subroutine dr_perform_mdot_postprocessing
   use    physics, only: solar_mass,year
   use     driver, only: dr_time,dr_time_step,dr_setup_mode,&
                         dr_mode_post,dr_mode_ballistic,dr_mode_period,&
@@ -90,4 +90,4 @@ subroutine dr_perform_mdot_postprocessing
   dr_integration_mode = dr_mode_post
   call IO_log("Done postprocessing data")
   call IO_read_command_line_options
-end subroutine dr_perform_mdot_postprocessing
+  end subroutine dr_perform_mdot_postprocessing

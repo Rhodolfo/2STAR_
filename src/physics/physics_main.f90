@@ -1,25 +1,25 @@
 ! Basic mathematical functions
 
-function ph_norm(vec)
+  function ph_norm(vec)
   implicit none
   real :: ph_norm
   real, dimension(:) :: vec
   ph_norm = sqrt(dot_product(vec,vec))
-end function ph_norm
+  end function ph_norm
 
 
 
-function ph_cross(vec1,vec2)
+  function ph_cross(vec1,vec2)
   implicit none
   real, dimension(3) :: vec1,vec2,ph_cross
   ph_cross(1) = vec1(2)*vec2(3)-vec1(3)*vec2(2)
   ph_cross(2) = vec1(3)*vec2(1)-vec1(1)*vec2(3)
   ph_cross(3) = vec1(1)*vec2(2)-vec1(2)*vec2(1)
-end function ph_cross
+  end function ph_cross
 
 
 
-function ph_midpoint_root(func,lowbound,higbound,rtol,ntol)
+  function ph_midpoint_root(func,lowbound,higbound,rtol,ntol)
   implicit none
   interface 
     function func(arg)
@@ -50,4 +50,4 @@ function ph_midpoint_root(func,lowbound,higbound,rtol,ntol)
     if (abs(aux3).le.rtol.or.n.gt.ntol) done = .true.
   end do
   ph_midpoint_root = midpoint
-end function ph_midpoint_root
+  end function ph_midpoint_root

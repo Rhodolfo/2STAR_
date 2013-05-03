@@ -1,4 +1,4 @@
-subroutine dr_update
+  subroutine dr_update
   use driver, only: dr_integration_mode,dr_mode_ballistic,dr_mode_mdot,&
                     dr_update_ballistic,dr_update_mdot,dr_abort
   implicit none
@@ -10,5 +10,5 @@ subroutine dr_update
   case default
     call dr_abort("dr_update","Invalid mode for dr_update routine")
   end select
-return
-end subroutine dr_update
+  return
+  end subroutine dr_update

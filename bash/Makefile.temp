@@ -1,28 +1,12 @@
-# Compiler and flags
-# COMPILER_FLAGS = -Jmod -fdefault-real-8 -g -fbounds-check -Wall -fbacktrace -finit-real=nan -pedantic
-COMPILER_FLAGS = -Jmod -fdefault-real-8 -fbounds-check -fbacktrace -finit-real=nan
-
-# Executable name and general rule
-.SUFFIXES:
-.SUFFIXES: .f90 .o 
-
 # Compile main program 
-
-#EXE   = 2STAR_
-#${EXE}: main.o ${obj}
-#	${COMPILER} -o ${EXE} ${obj_with_path} obj/main.o
-#main.o: ${umods}
-
-PAPER = PAPER_
-${PAPER}: paper.o ${obj}
-	${COMPILER} -o ${PAPER} ${obj_with_path} obj/paper.o
-paper.o: ${umods}
-
-# modules: ${umods}
-
-# General rule
-%.o     : %.f90 
-	${COMPILER} ${COMPILER_FLAGS} -c -o obj/$@ $< 
+EXE    = STAR_
+part   = main.o ${uobjs}
+full   = ${patsubst %, obj/%, ${part}}
+${EXE}: ${full}
+	${COMPILER} -o $@ ${full}
+PST    = PAPER_
+${PST}: ${full}
+	${COMPILER} -o $@ ${full}
 
 # Cleanup
 clean: 

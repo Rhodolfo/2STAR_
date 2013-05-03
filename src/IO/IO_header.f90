@@ -1,8 +1,17 @@
   subroutine IO_write_header(unit,path,file)
-  use physics
-  use IO, only: IO_save,IO_unit,IO_path,IO_file,IO_verb
-  use component
-  use driver
+  use   physics, only: solar_mass,solar_luminosity,pi,year
+  use        IO, only: IO_save,IO_unit,IO_path,IO_file,IO_verb
+  use component, only: cp_mass_ratio,cp_q_stable,cp_binary_separation,cp_binary_period,cp_binary_frequency,&
+                       cp_donor_mass,cp_donor_radius,cp_donor_density,cp_donor_position,&
+                       cp_accretor_mass,cp_accretor_radius,cp_accretor_density,cp_accretor_position,&
+                       cp_roche_radius,cp_overflow_par,cp_mdot_donor,cp_mdot_eq,cp_mdot_eddington,&
+                       cp_stream_theta,cp_stream_sound_speed,cp_stream_temperature,&
+                       cp_mass_transfer_timescale,cp_gravitational_timescale,cp_total_timescale,&
+                       cp_tau_star,cp_L_eddington,cp_initial_position,cp_initial_velocity
+  use    driver, only: dr_integration_mode,dr_mode_mdot,dr_mode_post,dr_mode_ballistic,&
+                       dr_donor_mode,dr_accretor_mode,dr_mode_he_white_dwarf,dr_mode_co_white_dwarf,dr_mode_neutron_star,&
+                       dr_advection_mode,dr_mode_direct_impact,dr_mode_disk_accretion,dr_mode_adaptative,&
+                       dr_eddington,dr_hybrid,dr_res_factor,dr_time_step,dr_abort
   implicit none
   integer      , intent(in), optional :: unit
   character*(*), intent(in), optional :: path,file
@@ -103,7 +112,7 @@
     write(un,*) comment//"Mass transfer rate =",cp_mdot_donor*year/solar_mass,"Solar masses per year"
     write(un,*) comment//"Binary frequency   =",cp_binary_frequency,"periods per second"
     write(un,*) comment//"Total binary mass  =",(cp_donor_mass+cp_accretor_mass)/solar_mass,"Solar masses"
-    write(un,*) comment//""
+    write(un,*) comment//" "
 ! Data relevant to the path integration in the ballistic code
     write(un,*) comment//"PARAMETERS FOR THE INTEGRATION OF STREAM"
     write(un,*) comment//"Donor position     =",cp_donor_position(1)/cp_binary_separation   ,"binary separation units"

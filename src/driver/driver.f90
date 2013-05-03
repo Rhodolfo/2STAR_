@@ -1,4 +1,4 @@
-module driver
+  module driver
   implicit none
 
 ! setup modes
@@ -281,4 +281,4 @@ module driver
 
   end interface
 
-end module driver
+  end module driver

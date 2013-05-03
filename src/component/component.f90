@@ -1,6 +1,7 @@
-module component
+  module component
   use physics, only: nucleon_mass
   implicit none
+
 ! A dummy parameter
   real :: cp_setup_var              = 0.
 
@@ -313,4 +314,4 @@ module component
 
   end interface 
 
-end module component
+  end module component

@@ -1,9 +1,9 @@
   subroutine medium_calc(fullpath,ma,md)
-  use IO     , only: IO_path
+  use      IO, only: IO_path
   use physics, only: c,pi,G,nucleon_mass,parsec,year,stefan_boltzmann,solar_mass
   use  medium, only: tem,mate,mdte,vesc,dens,mdot,time,posi,taup,mdotdon,mdotedd,mdotacc,Lum,sepa,teff,&
                      medium_init,medium_func,medium_Lfunc,sol,solnew,jjcurrent
-  use rho_ode_solver, only: rho_bs_step,rho_rg4_step
+  use     ode, only: ode_bs_step,ode_rg4_step
   implicit none
 ! Inout
   real                          :: ma,md
@@ -223,7 +223,7 @@
     ! write(*,*) sol/solnew
     ! t = minval(abs(sol/solnew))
     ! write(*,*) "haz"
-    ! call rho_rg4_step(time(jjcurrent),1e-3*t,sol,solnew,medium_func)
+    ! call ode_rg4_step(time(jjcurrent),1e-3*t,sol,solnew,medium_func)
     ! write(*,*) "step"
     ! write(*,*) sol
     ! write(*,*) solnew

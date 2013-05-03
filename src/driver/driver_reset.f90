@@ -1,4 +1,4 @@
-subroutine dr_reset
+  subroutine dr_reset
   use driver
 ! reset all module variables to default values
   implicit none
@@ -73,4 +73,4 @@ subroutine dr_reset
   dr_time_eddington_exit    = 0.0     ! exiting the super eddington accretion
   dr_time_eddington_elapsed = 0.0     ! duration of eddington accretion
 
-end subroutine dr_reset
+  end subroutine dr_reset

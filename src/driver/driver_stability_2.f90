@@ -1,4 +1,4 @@
-subroutine dr_perform_phase_2
+  subroutine dr_perform_phase_2
   use driver, only: dr_critical_mass
   use     IO, only: IO_save,IO_unit,IO_data,IO_allocate_data,IO_deallocate_data,&
                     IO_save_data,IO_open,IO_path,IO_log,IO_2string
@@ -29,4 +29,4 @@ subroutine dr_perform_phase_2
   end do
   close(IO_unit+7)
   call IO_log("Phase 2 of stability analysis is done")
-end subroutine dr_perform_phase_2
+  end subroutine dr_perform_phase_2

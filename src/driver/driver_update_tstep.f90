@@ -1,5 +1,5 @@
   subroutine dr_set_time_step
-  use rho_ode_solver, only: rho_dt_suggested,rho_reject_step
+        use ode, only: ode_dt_suggested,ode_reject_step
   use   physics
   use    driver, only: dr_res_factor,dr_time,dr_time_step,&
                        dr_time_step_old,dr_time_step_tolerance,&
@@ -20,7 +20,7 @@
   end if
 ! Linear dr_time step refinement for mdot evolution
   dr_time_step_old = dr_time_step 
-  dr_time_step     = rho_dt_suggested
+  dr_time_step     = ode_dt_suggested
   if (abs(cp_mdot_donor/cp_mdot_eddington).ge.1e0) then
     dt           = dr_res_factor*cp_min_timescale
     fac          = ((1.+log10(cp_mdot_donor/cp_mdot_eddington))**4.0)

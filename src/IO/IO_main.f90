@@ -92,11 +92,11 @@
   subroutine IO_set_setup_mode(some_char)
   use      IO, only: IO_log
   use physics, only: year,solar_mass
-  use driver, only: dr_mode_contact,dr_mode_period,&
-                    dr_mode_separation,dr_mode_mdot,&
-                    dr_mode_overflow_eq,dr_mode_separation_eq,&
-                    dr_mode_roche_limit,dr_integration_mode,&
-                    dr_setup_mode
+  use  driver, only: dr_mode_contact,dr_mode_period,&
+                     dr_mode_separation,dr_mode_mdot,&
+                     dr_mode_overflow_eq,dr_mode_separation_eq,&
+                     dr_mode_roche_limit,dr_integration_mode,&
+                     dr_setup_mode
 ! Given a character some_mode which can take the values "contact", "period",
 ! "separation", "separation_eq", "overflow_eq", or "mdot"
 ! this routine assigns the right mode for setup of the program
@@ -133,7 +133,7 @@
   use driver, only: dr_mode_mdot,dr_mode_ballistic,&
                     dr_mode_stability,dr_mode_post,&
                     dr_integration_mode,dr_abort
-  use IO, only: IO_first_pass,IO_log,IO_file
+  use     IO, only: IO_first_pass,IO_log,IO_file
 ! Given a character some_mode which can take the values "contact", "period",
 ! "separation", "separation_eq", "overflow_eq", or "mdot"
 ! this routine assigns the right mode for setup of the program
@@ -174,7 +174,7 @@
                     dr_mode_neutron_star,&
                     dr_donor_mode,dr_accretor_mode,&
                     dr_donor,dr_accretor,dr_abort
-  use IO, only: IO_first_pass,IO_log
+  use     IO, only: IO_first_pass,IO_log
 ! Given a character some_mode which can take the values "he_wd", "co_wd", or "ns"
 ! this routine assigns the right mode for the relevant binary component
 ! donor_accretor. 
@@ -226,7 +226,7 @@
   use driver, only: dr_advection_mode,&
                     dr_mode_direct_impact,dr_mode_disk_accretion,&
                     dr_mode_adaptative
-  use IO, only: IO_first_pass,IO_log
+  use     IO, only: IO_first_pass,IO_log
   implicit none
   character(len=40) :: some_char
   character(len=40) :: piece1

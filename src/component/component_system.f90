@@ -1,4 +1,4 @@
-subroutine cp_binary_parameters
+  subroutine cp_binary_parameters
   use   physics, only: ph_eggleton_formula,ph_eggleton_rcirc,ph_eggleton_rmin,pi,G,stefan_boltzmann
   use    driver, only: dr_setup_mode,dr_mode_period,dr_mode_separation,&
                        dr_mode_overflow_eq,dr_mode_separation_eq,&
@@ -15,6 +15,7 @@ subroutine cp_binary_parameters
                        cp_binary_parameters_mdot,cp_get_L1,cp_get_mdot,cp_setup_var,&
                        cp_v_escape,cp_rtau_wind,cp_teff_wind,cp_L_eddington,&
                        cp_mdot_donor,cp_opacity,cp_total_mass,cp_envelope
+  use       IO, only: IO_log
   implicit none
 ! Binary separation and period are calculated here
   select case (dr_setup_mode) 

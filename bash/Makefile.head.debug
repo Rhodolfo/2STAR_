@@ -1,0 +1,11 @@
+# Compiler and flags
+COMPILER       = gfortran-mp-4.6
+COMPILER_FLAGS = -Jmod -fdefault-real-8 -g -fbounds-check -Wall -fbacktrace -finit-real=nan -pedantic
+
+# Executable name and general rule
+.SUFFIXES:
+.SUFFIXES: .f90 .o 
+
+# General rule
+%.o     : %.f90 
+	${COMPILER} ${COMPILER_FLAGS} -c -o obj/$@ $<

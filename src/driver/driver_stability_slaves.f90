@@ -1,4 +1,4 @@
-function dr_critical_mass(acc_mass,don_mass_lo,don_mass_hi,criterion,error)
+  function dr_critical_mass(acc_mass,don_mass_lo,don_mass_hi,criterion,error)
   use   physics!, only: solar_mass,year
   use    driver, only: dr_mode_contact,dr_mode_mdot,dr_integration_mode,dr_dif_mass_don
   use component

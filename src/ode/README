@@ -1,0 +1,11 @@
+The ODE unit is in charge of solving ODEs, 
+it stores the routines necessary to do so,
+as well as simulation variables (such as ode_dt_suggested)
+that monitor the solution as it evolves.
+
+So far, the Burlisch-Stuer method is the one that 
+has a fully implemented adaptative time step, 
+this is the routine that should be used.
+
+The RG4 currently has no adaptative step size,
+care should be taken when using it.

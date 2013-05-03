@@ -1,4 +1,4 @@
-subroutine dr_perform_ballistic_evolution(setmode,dm,am,invar,donfreq,accfreq)
+  subroutine dr_perform_ballistic_evolution(setmode,dm,am,invar,donfreq,accfreq)
 ! Performs an RG4 integration to obtain the path of a test particle along the
 ! full Roche+Coriolis field, thrown from the L1 point as described by Lubow and
 ! Shu.
@@ -10,8 +10,8 @@ subroutine dr_perform_ballistic_evolution(setmode,dm,am,invar,donfreq,accfreq)
                        dr_integration_mode,dr_phase_point_old,dr_phase_point_new,&
                        dr_interrupting,dr_stop_on_hit,dr_init,dr_setup_mode
   use component, only: cp_donor_mass,cp_accretor_mass,cp_donor_freq,cp_accretor_freq,cp_setup_var
-  use rho_ode_solver, only: rho_rg4_step
-  use             IO, only: IO_save,IO_verb
+  use       ode, only: ode_rg4_step
+  use        IO, only: IO_save,IO_verb
   implicit none
   integer, optional :: setmode
   real,    optional :: dm,am,invar,donfreq,accfreq 
@@ -74,7 +74,7 @@ subroutine dr_perform_ballistic_evolution(setmode,dm,am,invar,donfreq,accfreq)
     do while ( ((dr_time.lt.dr_time_tolerance).and.(.not.dr_exit_trigger)) )
       call dr_interrupt
       if (dr_exit_trigger) exit
-      call rho_rg4_step(dr_time,dr_time_step,&
+      call ode_rg4_step(dr_time,dr_time_step,&
                         dr_phase_point_old,dr_phase_point_new,&
                         stream_source_function)
       call dr_update
@@ -96,5 +96,5 @@ subroutine dr_perform_ballistic_evolution(setmode,dm,am,invar,donfreq,accfreq)
     IO_verb                = dum_verb
   else
   end if
-return
-end subroutine dr_perform_ballistic_evolution
+  return
+  end subroutine dr_perform_ballistic_evolution

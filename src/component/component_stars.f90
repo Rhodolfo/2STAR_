@@ -1,4 +1,4 @@
-subroutine cp_star_parameters
+  subroutine cp_star_parameters
   use   physics, only: ph_wd_radius,ph_wd_zeta,ph_wd_k_factor,ph_wd_k_zeta,&
                        ph_ns_radius,ph_ns_zeta,ph_ns_k_factor,ph_ns_k_zeta,&
                        ph_eggleton_formula,pi
@@ -62,5 +62,5 @@ subroutine cp_star_parameters
   cp_roche_limit       = 2.0*(cp_mass_ratio**(1.0/3.0))*cp_donor_radius
   cp_contact_limit     = cp_donor_radius / ph_eggleton_formula(cp_mass_ratio)
 
-return
-end subroutine cp_star_parameters
+  return
+  end subroutine cp_star_parameters
