@@ -1,5 +1,5 @@
 # Compile main program 
-EXE    = STAR_
+EXE    = 2STAR_
 part   = main.o ${uobjs}
 full   = ${patsubst %, obj/%, ${part}}
 ${EXE}: ${full}
