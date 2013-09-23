@@ -1,5 +1,5 @@
 # io
-obj/io.o                    : obj/io_vars.o obj/io_interface.o obj/mkracken.o 
+obj/io.o                    : obj/io_vars.o obj/io_interface.o obj/Mkracken.o 
 obj/io_interface.o          : obj/io_vars.o
 obj/io_data.o               : obj/io.o 
 obj/io_file_handling.o      : obj/io.o 
