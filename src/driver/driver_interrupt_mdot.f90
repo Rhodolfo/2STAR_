@@ -74,8 +74,10 @@
   if (dr_file_counter.eq.0) then 
     call IO_log("[driver] Writting headers")
     call IO_log("t/T       t         dt        dt_ode    mdot      mdot_old  period    sepa      tscale") 
-    call IO_quick_write(io_path,"env.dat"  ,"# t dt mdot env_mdot env_mass env_radius env_vesc eje_eff")
-    call IO_quick_write(io_path,"pdots.dat","# t dt mdot pdt_tot  pdt_grw  pft_dunno") 
+    call IO_quick_write(io_path,"env.dat"  ,&
+        "# t dt mdot env_mdot env_mdot_in env_mdot_out env_mass env_radius env_vesc eje_eff")
+    call IO_quick_write(io_path,"pdots.dat",&
+        "# t dt mdot pdot_tot  pdot_grw  pdot_tidal_donor pdot_tidal_accrt pdot_mdot pdot_mass_flows period") 
   end if  
   if (((dr_time/dr_time_tolerance).gt.(0.05*dr_screen_counter)).or.dr_interrupting.or.dr_force_write) then
    if (dr_force_write) forcing_message = "(Forced write)"
