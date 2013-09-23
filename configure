@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Setting up the environment
+  mkdir -p obj
+  mkdir -p mod
+
 # Specifying some template files
   units=("driver" "ode" "io" "mkracken" "component" "medium" "physics" "eos" "lusolver")
   makehead="bash/Makefile.head" # Some headers
