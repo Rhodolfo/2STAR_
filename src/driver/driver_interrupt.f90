@@ -1,15 +1,16 @@
   subroutine dr_interrupt
-  use    driver, only: dr_accretion_flow,dr_is_super_eddington,&
-                       dr_force_write,dr_force_counter,dr_file_counter,&
-                       dr_step_counter,dr_integration_mode,&
-                       dr_mode_ballistic,dr_mode_mdot,&
-                       dr_res_factor,dr_abort
-  use component, only: cp_mdot_eddington,cp_initial_mdot_eddington,&
-                       cp_binary_separation,cp_initial_separation,&
-                       cp_binary_period,cp_initial_period
+  use dr_vars, only: dr_accretion_flow,dr_is_super_eddington,&
+                     dr_force_write,dr_force_counter,dr_file_counter,&
+                     dr_step_counter,dr_integration_mode,&
+                     dr_mode_ballistic,dr_mode_mdot,&
+                     dr_res_factor
+  use dr_interface, only: dr_interrupt_ballistic,dr_interrupt_mdot,dr_abort 
+  use ode
   implicit none
   integer           :: dumb = 0
   integer           :: forcing_step
+! Do not call if step was rejected by integrator
+  if (ode_reject_step) return
 ! Force a write after a certain number of steps
   forcing_step  = floor(1./dr_res_factor)
   if (dr_force_counter.ge.forcing_step) then 

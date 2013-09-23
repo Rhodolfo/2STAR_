@@ -1,8 +1,8 @@
   subroutine dr_stop
-  use driver, only: dr_integration_mode,dr_mode_ballistic
-  use     IO, only: IO_plot,IO_path,IO_log
+  use io_vars, only: io_path
+  use io_interface, only: io_plot,io_log
   implicit none
-  call IO_plot
-  call IO_log("[driver] Done, check "//trim(adjustl(IO_path))//" for data and plots")
+  call io_plot
+  call io_log("[driver] Done, check "//trim(adjustl(io_path))//" for data and plots")
   stop
   end subroutine dr_stop

@@ -22,14 +22,19 @@ This README is divided in the following sections
 
   To compile, simply running configure and make will do it:
 $ ./configure && make
-  You can change the compiler in the configure script, default compiler is gfortran.
-  To run it, a line such as:
-
+  You can change the compiler in bash/Makefile.head, default compiler is gfortran.
+  To run it for a test case, you can just: 
+$ ./2STAR_ 
+   To specify your own parameters, a line such as:
 $ ./2STAR_ -mode  mdot   -accmass 1.2   -donmass 0.3 
            -path  test   -accmode he_wd -donmode co_wd
 	   -setup period -period  300
-
-  should do the trick. Hopefully most things are self explanatory,
+  should do the trick.
+  This last line evolves the mass transfer rate of one start to another, 
+  with the accretor being a 1.2 HE WD, the donor being a 0.3 CO WD, 
+  startting the simulation with a period of 300 s. 
+  
+  Hopefully most things are self explanatory,
   documentation will be done at some point. For now, this README 
   and some reading into the code will have to do.
 
@@ -46,9 +51,7 @@ $ ./2STAR_ -mode  mdot   -accmass 1.2   -donmass 0.3
 
 
 
-  Finally, my mdot evolution code is fully functional.
   In case you are using it and you aren't me, here's the fundamentals.
-  This version has now collapsed most functionalities into a single program.
 
 
 

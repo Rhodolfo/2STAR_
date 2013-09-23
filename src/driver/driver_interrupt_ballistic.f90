@@ -1,12 +1,13 @@
   subroutine dr_interrupt_ballistic
-  use        IO, only: IO_log,IO_2string
-  use    driver, only: dr_exit_trigger,dr_line_tolerance,dr_res_factor,&
-                       dr_maximum_radius,dr_exit_trigger,dr_force_write,&
-                       dr_store_ballistic_data,dr_file_counter,dr_screen_counter,&
-                       dr_stop_on_hit,dr_hit_switch,&
-                       dr_interrupting,dr_time,dr_time_step,&
-                       dr_time_tolerance
-  use component, only: cp_arc_distance,cp_distance,cp_hit_radius
+  use dr_vars, only: dr_exit_trigger,dr_line_tolerance,dr_res_factor,&
+                     dr_maximum_radius,dr_exit_trigger,dr_force_write,&
+                     dr_file_counter,dr_screen_counter,&
+                     dr_stop_on_hit,dr_hit_switch,&
+                     dr_interrupting,dr_time,dr_time_step,&
+                     dr_time_tolerance
+  use cp_vars, only: cp_arc_distance,cp_distance,cp_hit_radius
+  use dr_interface, only: dr_store_ballistic_data
+  use io_interface, only: io_log,io_2string
   implicit none
 ! Checking if it's time to end the simulation
   if (.not.dr_exit_trigger) then

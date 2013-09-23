@@ -2,7 +2,7 @@
 ! from the center of mass
 
   function ph_roche_pot(v,v1,v2,m1,m2,ome)
-  use physics, only: ph_norm,ph_grav_pot,ph_cent_pot
+  use ph_interface, only: ph_norm,ph_grav_pot,ph_cent_pot
   implicit none
   real, dimension(:) :: v,v1,v2
   real               :: m1,m2,ome,ph_roche_pot
@@ -15,7 +15,7 @@
 
 
   function ph_roche_acc(v,v1,v2,m1,m2,ome)
-  use physics, only: ph_norm,ph_grav_acc,ph_cent_acc
+  use ph_interface, only: ph_norm,ph_grav_acc,ph_cent_acc
   implicit none 
   real, dimension(:) :: v,v1,v2
   real               :: m1,m2,ome

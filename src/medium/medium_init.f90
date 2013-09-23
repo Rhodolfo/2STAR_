@@ -1,5 +1,5 @@
   subroutine medium_init
-  use physics, only: nucleon_mass
+  use ph_vars, only: ph_amu
   use  medium, only: gamma_ism,gamma_bub,kappa,factor,&
                      xi,eta,zeta,A,B,ism_dens
   use     ode, only: ode_ref_scale
@@ -9,7 +9,7 @@
   gamma_bub = 4./3.
   kappa     = (1.+gamma_ism)/(gamma_ism-1.)
   factor    = 1.-(1./kappa)
-  ism_dens  = nucleon_mass
+  ism_dens  = ph_amu
 ! Other stuff
   xi   = (1.-(factor**(1./3.)))/(factor**(1./3.))
   eta  = ( factor / (gamma_bub - 1.) ) + ( factor / (kappa*(gamma_ism - 1.)) )

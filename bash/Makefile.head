@@ -1,5 +1,5 @@
 # Compiler and flags
-COMPILER       = gfortran-mp-4.6
+COMPILER       = gfortran
 COMPILER_FLAGS = -Jmod -fdefault-real-8 -fbounds-check -fbacktrace -finit-real=nan
 
 # Executable name and general rule

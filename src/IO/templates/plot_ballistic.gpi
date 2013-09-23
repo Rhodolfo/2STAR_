@@ -1,5 +1,7 @@
+data_path = "."
+extension = "ps"
 set term postscript enhanced color
-set output data_path."/ballistic_trayectory.ps"
+set output data_path."/ballistic_trayectory.".extension
 plot data_path."/circle.dat" u 2:3 lc 3 lt -1 with lines title "Accretor",\
      data_path."/ballistic_trayectory.dat" u 3:4 lc 2 lt -1 with lines title "Particle"
 cent_x = (GPVAL_X_MIN+GPVAL_X_MAX)/2.0
@@ -13,4 +15,4 @@ Y_MIN = cent_y - dist
 Y_MAX = cent_y + dist
 set xrange [X_MIN:X_MAX]
 set yrange [Y_MIN:Y_MAX]
-# replot
+replot

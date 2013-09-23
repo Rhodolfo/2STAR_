@@ -1,6 +1,6 @@
   subroutine dr_update
-  use driver, only: dr_integration_mode,dr_mode_ballistic,dr_mode_mdot,&
-                    dr_update_ballistic,dr_update_mdot,dr_abort
+  use dr_vars, only: dr_integration_mode,dr_mode_ballistic,dr_mode_mdot
+  use dr_interface, only: dr_update_ballistic,dr_update_mdot,dr_abort
   implicit none
   select case (dr_integration_mode)
   case (dr_mode_ballistic) 

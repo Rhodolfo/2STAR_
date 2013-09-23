@@ -1,5 +1,5 @@
   subroutine medium_main
-  use     IO, only: IO_path
+  use io_vars, only: IO_path
   use medium, only: medium_calc,medium_init,ism_dens
   implicit none
   real                          :: ma,md

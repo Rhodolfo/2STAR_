@@ -1,5 +1,6 @@
 set term postscript enhanced color
 extension = "ps"
+data_path = "."
 set output data_path."/stability_1.".extension
 set xrange [minmass:maxmass]
 plot data_path."/stability_1.dat" u 1:2 lc 3 lt -1 with lines title "Runaway mass transfer",\

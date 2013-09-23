@@ -87,12 +87,15 @@
 
 ! 3. The source function must use assumed shape arrays for the u argument. 
 !    Meaning that your source function has to be coded as such:
+
+! 4. So far the only procedures that has implemented error control 
+!    are the Bulirsch-Stuer and RG4 integrators.
  
 !    function example(input_array,time_variable)
 !    implicit none
-!    real                                        :: time_variable
-!    real, dimension(:)                          :: input_array
-!    real, dimension(size(your_solution_vector)) :: example
+!    real                               :: time_variable
+!    real, dimension(:)                 :: input_array
+!    real, dimension(size(input_array)) :: example
 !    (Other variable declarations)
 !    (An axample would be:)
 !    real :: two
@@ -167,9 +170,10 @@
   subroutine ode_rg4_step(time_value,time_step,solution_old,solution_new,source_function) 
   implicit none
   real, intent(in) :: time_value,time_step
+  real             :: dt,err
   real, dimension(:), intent(in)  :: solution_old
   real, dimension(:), intent(out) :: solution_new
-  real, dimension(size(solution_old)) :: k1,k2,k3,k4
+  real, dimension(size(solution_old)) :: k1,k2,k3,k4,solution_ref,delta
   interface 
     function source_function(vector,time)
     real              :: time
@@ -177,11 +181,36 @@
     real, dimension(size(vector)) :: source_function
     end function source_function
   end interface
-  k1 = source_function(solution_old                   ,time_value                )
-  k2 = source_function(solution_old + 0.5*time_step*k1,time_value + 0.5*time_step)
-  k3 = source_function(solution_old + 0.5*time_step*k2,time_value + 0.5*time_step)
-  k4 = source_function(solution_old +     time_step*k3,time_value +     time_step)
-  solution_new = solution_old + time_step * ( (k1+2.0*k2+2.0*k3+k4) / 6.0 )
+  dt = time_step
+  k1 = source_function(solution_old            , time_value  )
+  k2 = source_function(solution_old + 0.5*dt*k1, time_value + 0.5*dt)
+  k3 = source_function(solution_old + 0.5*dt*k2, time_value + 0.5*dt)
+  k4 = source_function(solution_old +     dt*k3, time_value +     dt)
+  solution_new = solution_old + dt * ( (k1+2.0*k2+2.0*k3+k4) / 6.0 )
+  if (ode_error_control) then 
+  ! Refining step
+    dt = time_step/2.0
+    k1 = source_function(solution_old            , time_value         )
+    k2 = source_function(solution_old + 0.5*dt*k1, time_value + 0.5*dt)
+    k3 = source_function(solution_old + 0.5*dt*k2, time_value + 0.5*dt)
+    k4 = source_function(solution_old +     dt*k3, time_value +     dt)
+    solution_ref = solution_old + dt * ( (k1+2.0*k2+2.0*k3+k4) / 6.0 )
+  ! Calculate truncation error and then the suggested time step
+    delta   = abs(solution_ref-solution_new)
+    if (allocated(ode_ref_scale)) then 
+      delta = (delta/ode_ref_scale)**2
+    else
+      delta = delta**2
+    end if
+    err                 = abs(sum(delta)) / sqrt(real(size(delta)))
+    ode_dt_suggested    = time_step*((ode_tolerance/err)**(1.0/4.0))
+    if (err.ge.ode_tolerance) then 
+      ode_reject_step = .true.
+    else
+      ode_reject_step = .false.
+    end if
+    solution_new = solution_ref 
+  end if 
   return
   end subroutine ode_rg4_step
 

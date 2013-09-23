@@ -1,5 +1,5 @@
   subroutine dr_reset
-  use driver
+  use dr_vars
 ! reset all module variables to default values
   implicit none
 ! printing modes
@@ -47,24 +47,24 @@
   dr_phase_point_new       = 0.
 
 ! some variables relevant to stability analysis
-  dr_phase    = 0
-  dr_low_mass = 0.1
-  dr_hig_mass = 1.4
+  dr_phase        = 0
+  dr_low_mass     = 0.1
+  dr_hig_mass     = 1.4
   dr_dif_mass_don = 0.001
   dr_dif_mass_acc = 0.001
 
 ! switches for stream evolution
-  dr_hit_switch                 = .false.
-  dr_stop_on_hit                = .false.
-  dr_circularization_switch     = .false.
-  dr_accretor_surface_switch    = .false.
+  dr_hit_switch              = .false.
+  dr_stop_on_hit             = .false.
+  dr_circularization_switch  = .false.
+  dr_accretor_surface_switch = .false.
 
 
 ! super eddington flow modes
-  dr_eddington               = .false.
-  dr_hyper_eddington         = .false.
-  dr_accretion_flow          = dr_is_super_eddington
-  dr_eddington_prescription  = dr_use_han      ! where do we set the potential reference?
+  dr_eddington              = .false.
+  dr_hyper_eddington        = .false.
+  dr_accretion_flow         = dr_is_super_eddington
+  dr_eddington_prescription = dr_use_han
 
 ! super eddington flow parameters
   dr_eddington_switch       = .false. ! switches if super eddington

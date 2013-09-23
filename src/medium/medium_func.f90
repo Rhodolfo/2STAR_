@@ -1,5 +1,5 @@
   function medium_func(x,t)
-  use physics, only: pi
+  use ph_vars, only: ph_pi
   use  medium, only: A,B,ism_dens,medium_Lfunc
   implicit none
 ! Input and output
@@ -14,7 +14,7 @@
 ! Computing
   L  = medium_Lfunc(t)
   f1 = 1./(B*(r**3)*u)
-  f2 = 3.*L/(4.*pi*ism_dens)
+  f2 = 3.*L/(4.*ph_pi*ism_dens)
   f3 = A*(r**2)*(u**3)
 ! Wait, they don't love you like I love you
   medium_func(1) = u

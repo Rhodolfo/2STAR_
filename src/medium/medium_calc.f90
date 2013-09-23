@@ -1,6 +1,6 @@
   subroutine medium_calc(fullpath,ma,md)
-  use      IO, only: IO_path
-  use physics, only: c,pi,G,nucleon_mass,parsec,year,stefan_boltzmann,solar_mass
+  use IO_vars, only: IO_path
+  use ph_vars, only: ph_c,ph_pi,ph_G,ph_amu,ph_parsec,ph_year,ph_sigma_sb,ph_msun
   use  medium, only: tem,mate,mdte,vesc,dens,mdot,time,posi,taup,mdotdon,mdotedd,mdotacc,Lum,sepa,teff,&
                      medium_init,medium_func,medium_Lfunc,sol,solnew,jjcurrent
   use     ode, only: ode_bs_step,ode_rg4_step
@@ -83,16 +83,16 @@
 
   ! Reading in data
     read(30,*) tem
-    time(ii)    = tem(1)*year
-    mdotdon(ii) = abs(tem(5)*solar_mass/year)
-    mdotacc(ii) = abs(tem(9)*solar_mass/year)
-    mdotedd(ii) = tem(16)*solar_mass/year
-    mdte(ii)    = tem(6)*solar_mass
-    mate(ii)    = tem(10)*solar_mass
-    Ledd  = 4.*pi*G*c*mate(ii)/opact
+    time(ii)    = tem(1)*ph_year
+    mdotdon(ii) = abs(tem(5)*ph_msun/ph_year)
+    mdotacc(ii) = abs(tem(9)*ph_msun/ph_year)
+    mdotedd(ii) = tem(16)*ph_msun/ph_year
+    mdte(ii)    = tem(6)*ph_msun
+    mate(ii)    = tem(10)*ph_msun
+    Ledd  = 4.*ph_pi*ph_G*ph_c*mate(ii)/opact
     if (ii.eq.1) then 
       sepa(ii) = tem(3)
-      vesc(ii) = sqrt(2.*G*(mdte(ii)+mate(ii))/sepa(ii))
+      vesc(ii) = sqrt(2.*ph_G*(mdte(ii)+mate(ii))/sepa(ii))
     end if
     sepa(ii)    = sepa(1)
     vesc(ii)    = vesc(1)
@@ -141,10 +141,10 @@
 
     ! This is the wind calculation 
       taui: do while (jj.lt.iimax)
-    ! Putting in data for the density and position
+    ! Putting in data for the density and pos
         if (ii.ge.jj) then 
           posi(jj) = vesc(jj)*(time(ii)-time(jj)) + sepa(ii)
-          dens(jj) = abs(mdot(jj)/(4.*pi*vesc(jj)*(posi(jj)**2)))
+          dens(jj) = abs(mdot(jj)/(4.*ph_pi*vesc(jj)*(posi(jj)**2)))
         else
           posi(jj) = 0.
           dens(jj) = 0.
@@ -163,19 +163,19 @@
           kk   = jj
           opti = .true.
           interp = posi(kk-1) + (posi(kk)-posi(kk-1))*(1.-taup(kk-1))/(taup(kk)-taup(kk-1))
-          tefft  = sqrt(sqrt(Ledd/(4.*pi*stefan_boltzmann*(interp**2))))
+          tefft  = sqrt(sqrt(Ledd/(4.*ph_pi*ph_sigma_sb*(interp**2))))
           end if
         else
           if (.not.opti) then 
           kk   = iimin
           end if
         end if
-        teff(jj) = sqrt(sqrt(Ledd/(4.*pi*stefan_boltzmann*(posi(jj)**2))))
+        teff(jj) = sqrt(sqrt(Ledd/(4.*ph_pi*ph_sigma_sb*(posi(jj)**2))))
       ! I have the optical radius
         if (ii.eq.alloc) then 
           if (jj.eq.iimin) write(67,*) "# radius dens mdot tau vesc teff mdon macc optiflag tautot"
           write(67,*) posi(jj),dens(jj),mdot(jj),taup(jj),vesc(jj),teff(jj),&
-                      mdte(1)/solar_mass,mate(1)/solar_mass,opti,tau
+                      mdte(1)/ph_msun,mate(1)/ph_msun,opti,tau
         end if
         jj = jj + 1
       end do taui
@@ -184,10 +184,10 @@
 
     ! This is the analytical bubble calculation
       n0    = 1.
-      r0    = n0*nucleon_mass
+      r0    = n0*ph_amu
       r23   = r0/1e-23
       t0    = max(timefin-timeedd,0.)
-      t6    = t0/(1e6*year)
+      t6    = t0/(1e6*ph_year)
       ll = ll + 1
     ! Taking the average of mdot
       if (ll.eq.1) then 
@@ -198,18 +198,18 @@
         stop "WHAT IS THIS???"
       end if
     ! Computing parameters for envelope treatment
-      m6    = abs(mdmn)/(1e-6*solar_mass/year)
+      m6    = abs(mdmn)/(1e-6*ph_msun/ph_year)
       v3    = vesc(ii)/(1e3*1e3*1e2)
       Lkin  = 0.5*mdmn*(vesc(ii)**2)
       Luse  = Ledd
       L36   = Luse/1e36
     ! Computing gas pressure
-      Pres  = (7./((3850.*pi)**(2./5.)))*(Luse**(2./5.))*(r0**(3./5.))*(t0**(-4./5.))
+      Pres  = (7./((3850.*ph_pi)**(2./5.)))*(Luse**(2./5.))*(r0**(3./5.))*(t0**(-4./5.))
       P12   = Pres/1e-12
     ! Computing Raddi and effective T
-      rinit =  7.8*((sqrt(m6))*(sqrt(v3))/(sqrt(P12)))*parsec
-      rterm = 52.9*(r23**(-1./5.))*(L36**(1./5.))*(t6**(3./5.))*parsec
-      teffs = sqrt(sqrt(Ledd/(4.*pi*(rterm**2)*stefan_boltzmann)))
+      rinit =  7.8*((sqrt(m6))*(sqrt(v3))/(sqrt(P12)))*ph_parsec
+      rterm = 52.9*(r23**(-1./5.))*(L36**(1./5.))*(t6**(3./5.))*ph_parsec
+      teffs = sqrt(sqrt(Ledd/(4.*ph_pi*(rterm**2)*ph_sigma_sb)))
 
 
 
@@ -232,8 +232,8 @@
 
 
     ! Writting the data to a file
-      write(68,*) time(ii)/year,interp,dens(kk),mdot(kk)*year/solar_mass,taup(kk),tefft,tau,&
-                  rinit,rterm,teffs,Ledd,Lkin,Einj,mdmn*year/solar_mass,md,ma
+      write(68,*) time(ii)/ph_year,interp,dens(kk),mdot(kk)*ph_year/ph_msun,taup(kk),tefft,tau,&
+                  rinit,rterm,teffs,Ledd,Lkin,Einj,mdmn*ph_year/ph_msun,md,ma
     ! sol = solnew
 
 
@@ -252,7 +252,7 @@
   evotype = 0 
   if (switch) then 
     if (mdotdon(alloc).ge.mdotedd(alloc)) then 
-      if (mdotdon(alloc).ge.0.1*(ma+md)*solar_mass/year) then 
+      if (mdotdon(alloc).ge.0.1*(ma+md)*ph_msun/ph_year) then 
         write(88,*) " '"//trim(adjustl(fullpath))//"/dens.dat' u 1:2:($7/$8)   lt palette with lines notitle,\" 
         write(89,*) " '"//trim(adjustl(fullpath))//"/rad.dat'  u 1:6:($15/$16) lt palette with lines notitle,\" 
         evotype = 3
@@ -276,15 +276,15 @@
 ! Saving the data in appropriate places
   open(unit=88,file=trim(adjustl(IO_path))//"/papers",status="old",position="append") 
   if (tau.ge.1.) then 
-    write(88,*) ma,md,posi(kk),dens(kk),mdot(kk)*year/solar_mass,&
-                vesc(kk),tau,taup(kk),time(alloc)/year,timeedd/year,&
-                timefin/year,Ledd,rinit,rterm,evotype,&
-                mdmn*year/solar_mass,mdotdon(alloc)*year/solar_mass
+    write(88,*) ma,md,posi(kk),dens(kk),mdot(kk)*ph_year/ph_msun,&
+                vesc(kk),tau,taup(kk),time(alloc)/ph_year,timeedd/ph_year,&
+                timefin/ph_year,Ledd,rinit,rterm,evotype,&
+                mdmn*ph_year/ph_msun,mdotdon(alloc)*ph_year/ph_msun
   else
     write(88,*) ma,md,1.0      ,1.0     ,1.0                    ,&
-                vesc(kk),tau,taup(kk),time(alloc)/year,timeedd/year,&
-                timefin/year,Ledd,rinit,rterm,evotype,&
-                mdmn*year/solar_mass,mdotdon(alloc)*year/solar_mass
+                vesc(kk),tau,taup(kk),time(alloc)/ph_year,timeedd/ph_year,&
+                timefin/ph_year,Ledd,rinit,rterm,evotype,&
+                mdmn*ph_year/ph_msun,mdotdon(alloc)*ph_year/ph_msun
   end if
   close(88)
 

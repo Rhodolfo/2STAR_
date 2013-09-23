@@ -1,5 +1,6 @@
 set term postscript enhanced color
 extension = "ps"
+data_path = "."
 set ylabel "Density (g/cc)"
 set title "Density at Impact"
 set output data_path."/density".suffix.".".extension

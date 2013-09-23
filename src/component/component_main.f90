@@ -1,24 +1,27 @@
-  subroutine cp_init(mode,donmass,accmass,invar,donfreq,accfreq)
-  use    driver, only: dr_integration_mode,dr_mode_ballistic,dr_mode_mdot,&
-                       dr_setup_mode,dr_eddington,dr_hyper_eddington,dr_abort
-  use component, only: cp_donor_mass,cp_accretor_mass,cp_setup_var,&
-                       cp_donor_freq,cp_accretor_freq,cp_auxiliary_parameters
-  use        IO, only: IO_write_header,IO_2string
+  subroutine cp_init(mode,donmass,accmass,envmass,invar,donfreq,accfreq)
+  use dr_vars, only: dr_integration_mode,dr_mode_ballistic,dr_mode_mdot,&
+                     dr_setup_mode,dr_eddington,dr_hyper_eddington
+  use cp_vars, only: cp_don_mass,cp_acc_mass,cp_setup_var,&
+                     cp_don_freq,cp_acc_freq,cp_env_mass
+  use cp_interface, only: cp_auxiliary_parameters
+  use io_interface, only: io_write_header,io_2string,io_log
   implicit none 
   integer, intent(in) :: mode
-  real   , intent(in) :: donmass,accmass,invar,donfreq,accfreq
+  real   , intent(in) :: donmass,accmass,envmass,invar,donfreq,accfreq
 ! Setting up the module
-  dr_setup_mode    = mode 
-  cp_donor_mass    = donmass
-  cp_accretor_mass = accmass
-  cp_setup_var     = invar
-  cp_donor_freq    = donfreq
-  cp_accretor_freq = accfreq
-  if (cp_donor_mass.le.0.) then 
-    call dr_abort("cp_init","Donor mass is negative = "//trim(adjustl(IO_2string(cp_donor_mass))))
+  dr_setup_mode = mode 
+  cp_don_mass   = donmass
+  cp_acc_mass   = accmass
+  cp_env_mass   = envmass
+  cp_setup_var  = invar
+  cp_don_freq   = donfreq
+  cp_acc_freq   = accfreq
+  if (cp_don_mass.le.0.) then 
+    call io_log("[component] Warning: Donor mass is negative = "//trim(adjustl(io_2string(cp_don_mass))))
+    return
   end if
-  if (cp_accretor_mass.le.0.) then 
-    call dr_abort("cp_init","Donor mass is negative = "//trim(adjustl(IO_2string(cp_accretor_mass))))
+  if (cp_acc_mass.le.0.) then 
+    call io_log("[component] Warning: Accretor mass is negative = "//trim(adjustl(io_2string(cp_acc_mass))))
   end if 
   call cp_auxiliary_parameters
   return
@@ -29,15 +32,16 @@
 
 
   subroutine cp_auxiliary_parameters
-  use driver   , only: dr_hybrid,dr_perform_ballistic_evolution
-  use component, only: cp_star_parameters,cp_binary_parameters,cp_star_parameters
+  use dr_vars, only: dr_hybrid
+  use dr_interface, only: dr_perform_ballistic_evolution
+  use cp_interface, only: cp_star_parameters,cp_binary_parameters,cp_star_parameters
   implicit none
 ! This routine simply sets the stage for the numerical integration, I define the
 ! total mass, the mass quotient, the reduced mass and other parameters relevant
 ! to the test particle trayectory.
 ! Donor and Accretor parameters, as well as adimensional scalable quantities
   call cp_star_parameters
-! Binary system parameters are set here, once a period, separation or mass
+! Binary system parameters are set here, once a peri, sepa or mass
 ! transfer rate is given -> Non-scalable parameters
   call cp_binary_parameters
 ! Stream parameters are set here, mostly used for the test particle evolution

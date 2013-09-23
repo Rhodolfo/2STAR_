@@ -1,11 +1,11 @@
 # Listing dependencies
  
 # main	
-obj/main.o  : obj/driver.o obj/IO.o
-obj/paper.o : obj/driver.o obj/IO.o obj/medium.o
+obj/main.o  : obj/driver.o obj/io.o obj/eos.o obj/component.o obj/eos.o
+obj/paper.o : obj/driver.o obj/io.o obj/medium.o
  
 # driver
-obj/driver.o                     : obj/physics.o 
+obj/driver.o                     : obj/physics.o obj/driver_vars.o obj/driver_interface.o
 obj/driver_abort.o               : obj/physics.o obj/component.o obj/IO.o
 obj/driver_ballistic.o           : obj/driver.o obj/component.o obj/ode.o 
 obj/driver_data.o                : obj/driver.o obj/component.o obj/physics.o obj/IO.o
@@ -26,40 +26,42 @@ obj/driver_stability_1.o         : obj/driver.o obj/IO.o obj/component.o obj/phy
 obj/driver_stability_2.o         : obj/driver.o obj/IO.o 
 obj/driver_stability_3.o         : obj/driver.o obj/IO.o obj/component.o obj/physics.o
 obj/driver_stability_slaves.o    : obj/driver.o obj/IO.o obj/component.o obj/physics.o
-obj/driver_stop.o             : obj/driver.o obj/IO.o
-obj/driver_update.o           : obj/driver.o 
-obj/driver_update_ballistic.o : obj/driver.o obj/component.o obj/physics.o 
-obj/driver_update_mdot.o      : obj/driver.o obj/component.o obj/physics.o obj/ode.o
-obj/driver_update_tstep.o     : obj/driver.o obj/component.o obj/physics.o obj/ode.o obj/IO.o
+obj/driver_stop.o                : obj/driver.o obj/IO.o
+obj/driver_update.o              : obj/driver.o 
+obj/driver_update_ballistic.o    : obj/driver.o obj/component.o obj/physics.o 
+obj/driver_update_mdot.o         : obj/driver.o obj/component.o obj/physics.o obj/ode.o
+obj/driver_update_tstep.o        : obj/driver.o obj/component.o obj/physics.o obj/ode.o obj/IO.o
  
 # ode
  
-# IO
-obj/IO.o                    : obj/Mkracken.o 
-obj/IO_data.o               : obj/IO.o 
-obj/IO_file_handling.o      : obj/IO.o 
-obj/IO_header.o             : obj/IO.o obj/driver.o obj/physics.o obj/component.o
-obj/IO_log.o                : obj/IO.o
-obj/IO_main.o               : obj/IO.o 
-obj/IO_plot.o               : obj/IO.o obj/driver.o obj/physics.o obj/component.o 
-obj/IO_write_header_sweep.o : obj/IO.o 
+# io
+obj/io.o                    : obj/io_vars.o obj/io_interface.o obj/mkracken.o 
+obj/io_interface.o          : obj/io_vars.o
+obj/io_data.o               : obj/io.o 
+obj/io_file_handling.o      : obj/io.o 
+obj/io_header.o             : obj/io.o obj/driver.o obj/physics.o obj/component.o
+obj/io_log.o                : obj/io.o
+obj/io_main.o               : obj/io.o 
+obj/io_plot.o               : obj/io.o obj/driver.o obj/physics.o obj/component.o 
+obj/io_write_header_sweep.o : obj/io.o 
  
 # Mkracken
  
 # component
-obj/component.o               : obj/physics.o
+obj/component.o               : obj/physics.o   obj/component_vars.o obj/component_interface.o
+obj/component_vars.o          : obj/physics_vars.o
 obj/component_L1.o            : obj/component.o obj/driver.o obj/physics.o 
-obj/component_eddington.o     : obj/component.o obj/driver.o obj/physics.o obj/IO.o
+obj/component_eddington.o     : obj/component.o obj/driver.o obj/physics.o obj/io.o
 obj/component_envelope.o      : obj/component.o obj/driver.o obj/physics.o 
 obj/component_evol.o          : obj/component.o obj/driver.o obj/physics.o 
-obj/component_getvirtemp.o    : obj/physics.o 
-obj/component_main.o          : obj/component.o obj/driver.o obj/IO.o
-obj/component_mdot.o          : obj/component.o obj/driver.o obj/physics.o
+obj/component_getvirtemp.o    : obj/component.o obj/physics.o 
+obj/component_main.o          : obj/component.o obj/driver.o obj/io.o
+obj/component_mdot.o          : obj/component.o obj/driver.o obj/physics.o obj/component_eddington.o
 obj/component_reset.o         : obj/component.o 
-obj/component_stars.o         : obj/component.o obj/driver.o obj/physics.o obj/IO.o
+obj/component_stars.o         : obj/component.o obj/driver.o obj/physics.o obj/io.o
 obj/component_stream.o        : obj/component.o obj/physics.o
-obj/component_system.o        : obj/component.o obj/driver.o obj/physics.o obj/IO.o
-obj/component_system_slaves.o : obj/component.o obj/driver.o obj/physics.o obj/IO.o
+obj/component_system.o        : obj/component.o obj/driver.o obj/physics.o obj/io.o obj/component_stars.o obj/component_eddington.o obj/component_system_slaves.o
+obj/component_system_slaves.o : obj/component.o obj/driver.o obj/physics.o obj/io.o
 obj/component_timescales.o    : obj/component.o obj/driver.o obj/physics.o
  
 # medium 
@@ -70,10 +72,24 @@ obj/medium_init.o  : obj/medium.o obj/physics.o obj/ode.o
 obj/medium_main.o  : obj/medium.o obj/IO.o
  
 # physics
+# Declaring variables and interface blocks
+obj/physics.o           : obj/physics_vars.o obj/physics_interface.o 
+# General dependencies
 obj/physics_grav.o      : obj/physics.o
 obj/physics_intertial.o : obj/physics.o 
-obj/physics_main.o      : obj/physics.o 
+obj/physics_main.o      : obj/physics.o obj/lusolver.o obj/IO.o obj/driver.o
 obj/physics_ns.o        : obj/physics.o 
 onj/physics_wd.o        : obj/physics.o 
 obj/physics_roche.o     : obj/physics.o 
+ 
+# EOS
+obj/eos.o                : obj/eos_vars.o obj/eos_interface.o
+obj/eos_helmeos.o        : obj/eos_vector.o obj/eos_table_storage.o obj/eos_cons.o
+obj/eos_helmholtz.o      : obj/eos_vector.o 
+obj/eos_pretty_eos_out.o : obj/eos_vector.o 
+obj/eos_read_helm_table.o: obj/eos_table_storage.o 
+obj/eos_func.o           : obj/eos.o obj/driver.o 
+obj/eos_root.o           : obj/eos.o obj/eos_vector.o obj/lusolver.o
+ 
+# LU
  

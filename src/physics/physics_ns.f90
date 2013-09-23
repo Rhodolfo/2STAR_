@@ -1,10 +1,10 @@
   function ph_ns_radius(mass_value)
-  use   physics, only: solar_mass
+  use ph_vars, only: ph_msun
   implicit none
   real :: mass_value
   real :: ph_ns_radius
 ! Just coding up the mass radius relationship for the NS
-  ph_ns_radius = 15.12 / ( (mass_value / solar_mass)**(1.0/3.0) )
+  ph_ns_radius = 15.12 / ( (mass_value / ph_msun)**(1.0/3.0) )
   ph_ns_radius = 100000.0*ph_ns_radius
   ph_ns_radius = 1.2e6 ! 12 kilometers
   return

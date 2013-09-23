@@ -34,7 +34,7 @@
   end function ph_coriolis2d
 
   function ph_coriolis3d(vec,ome)
-  use physics, only: ph_cross
+  use ph_interface, only: ph_cross
   implicit none
   real, dimension(3) :: vec, ome, ph_coriolis3d
   ph_coriolis3d    = - 2.*ph_cross(ome,vec)
