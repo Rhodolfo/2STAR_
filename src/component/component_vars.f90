@@ -77,6 +77,7 @@
   real :: cp_env_teff         = 0.
   real :: cp_env_vesc         = 0.
   real :: cp_wind_mdot        = 0.
+  real :: cp_env_toosmall     = 0.
 
 ! Period derivatives
   real :: cp_pdot_total       = 0.

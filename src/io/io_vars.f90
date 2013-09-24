@@ -7,8 +7,8 @@
   character(len=io_clen)          :: io_logf = "logfile"
   character(len=10)               :: io_rfrm = "(ES9.2)"
   integer                         :: io_rlen = 9
-  character(len=4)                :: io_ifrm = "(I5)"
-  integer                         :: io_ilen = 5
+  character(len=5)                :: io_ifrm = "(I10)"
+  integer                         :: io_ilen = 10
   logical                         :: io_save = .true.
   logical                         :: io_verb = .true.
   logical                         :: io_first_pass = .true.

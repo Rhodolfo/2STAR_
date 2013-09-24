@@ -12,25 +12,32 @@
   use io_interface, only: io_log
   implicit none
   real :: dt,pow,res,fac,acrit,adot
+
+! Initial time step 
   if (dr_step_counter.eq.0) then 
     call io_log("[driver] Setting initial time step to the binary period")
-    dr_time_step     = 5.*cp_bin_peri
+    dr_time_step     = 10.0*cp_bin_peri
     dr_time_step_old = dr_time_step
     return
   end if
+
 ! Linear dr_time step refinement for mdot evolution
   dr_time_step_old = dr_time_step 
   dr_time_step     = ode_dt_suggested
+
+! Recaling when super Eddington
   if (abs(cp_don_mdot/cp_mdot_edd).ge.1e0) then
     dt           = dr_res_factor*cp_min_tscale
     fac          = ((1.+log10(cp_don_mdot/cp_mdot_edd))**4.0)
     dr_time_step = min(dr_time_step,dt/fac)
   end if
+
 ! Don't let the time step change too much 
-! if (abs(dr_time_step - dr_time_step_old)/dr_time_step_old.ge.0.01) then 
-!   if (dr_time_step.gt.dr_time_step_old) dr_time_step = 1.01*dr_time_step_old
-!   if (dr_time_step.le.dr_time_step_old) dr_time_step = 0.99*dr_time_step_old
-! end if
+  if (abs(dr_time_step - dr_time_step_old)/dr_time_step_old.ge.0.01) then 
+    if (dr_time_step.gt.dr_time_step_old) dr_time_step = 1.01*dr_time_step_old
+    if (dr_time_step.le.dr_time_step_old) dr_time_step = 0.99*dr_time_step_old
+  end if
+
 ! Sanity checks
   if (dr_time_step.lt.0) then 
     call dr_abort("[driver]","Null or negative time step encountered")
@@ -43,4 +50,5 @@
     call io_log("[driver] Time step larger than time remaining, shortening")
   end if
   return
+
   end subroutine dr_set_time_step

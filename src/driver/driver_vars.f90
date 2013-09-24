@@ -95,7 +95,6 @@
 
 ! Scalars used to force data output or step retries
   real :: dr_mdot_new
-  real :: dr_mdot_old 
   real :: dr_mdot_ref
   real :: dr_period_new
   real :: dr_period_ref
