@@ -160,6 +160,23 @@
 
 
 
+! headers
+
+    subroutine dr_header_env(unit,path,file)
+    implicit none
+    integer      , intent(in), optional :: unit
+    character*(*), intent(in), optional :: path,file
+    end subroutine dr_header_env
+
+    subroutine dr_header_pdots(unit,path,file)
+    implicit none
+    integer      , intent(in), optional :: unit
+    character*(*), intent(in), optional :: path,file
+    end subroutine dr_header_pdots
+
+
+
+
 ! source functions
 
     function stream_source_function(v,t)

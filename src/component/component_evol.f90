@@ -200,7 +200,7 @@
   expon          = (3.0/2.0)*cp_bin_peri
   mdot_sys       = cp_ejection_eff*cp_don_mdot
 ! Now do it
-  cp_pdot_mdot   = - (mdot_sys / cp_tot_mass)/2.0
+  cp_pdot_mdot   = - (mdot_sys / cp_tot_mass)/2.0*cp_bin_peri
   cp_pdot_grw    = expon*cp_driver_sepa_grw
   cp_pdot_dontid = expon*cp_driver_sepa_dontid
   cp_pdot_acctid = expon*cp_driver_sepa_acctid

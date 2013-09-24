@@ -26,7 +26,7 @@ CONTAINS
     subroutine linear_solver(n,M,v,x)
     use dr_interface, only: dr_abort
     implicit none
-    integer, intent(in)                      :: n
+    integer, intent(in)                  :: n
     real   , intent(in) , dimension(n,n) :: M
     real   , intent(in) , dimension(n)   :: v
     real   , intent(out), dimension(n)   :: x
@@ -68,8 +68,8 @@ CONTAINS
      integer, parameter :: nmax = 100
      real, parameter :: tiny = 1.5D-16
 
-     real, intent(inout), dimension(N,N) :: A
      integer, intent(in) :: N
+     real, intent(inout), dimension(N,N) :: A
      integer, intent(out) :: D, CODE
      integer, intent(out), dimension(N) :: INDX
      !f2py depend(N) A, indx

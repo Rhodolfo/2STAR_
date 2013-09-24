@@ -1,70 +1,70 @@
-  module IO_interface
+  module io_interface
   interface
 
   ! Command line handling
-    subroutine IO_cli_options
+    subroutine io_cli_options
     implicit none
-    end subroutine IO_cli_options
+    end subroutine io_cli_options
 
 
 
   ! Data handling, always allocate and deallocate data
-    subroutine IO_allocate_data(ii)
+    subroutine io_allocate_data(ii)
     implicit none
     integer, intent(in) :: ii
-    end subroutine IO_allocate_data
-    subroutine IO_deallocate_data
+    end subroutine io_allocate_data
+    subroutine io_deallocate_data
     implicit none
-    end subroutine IO_deallocate_data
-    subroutine IO_save_data(path,file)
+    end subroutine io_deallocate_data
+    subroutine io_save_data(path,file)
     implicit none
     character*(*), intent(in), optional :: path,file
-    end subroutine IO_save_data
+    end subroutine io_save_data
 
 
 
   ! File handling, file opening and such things
-    subroutine IO_open(path,file)
+    subroutine io_open(path,file)
     implicit none
     character*(*), intent(in), optional :: path,file
-    end subroutine IO_open
-    subroutine IO_newline(p,f)
+    end subroutine io_open
+    subroutine io_newline(p,f)
     implicit none
     character*(*) :: p,f
-    end subroutine IO_newline
-    subroutine IO_write_header(unit,path,file)
+    end subroutine io_newline
+    subroutine io_write_header(unit,path,file)
     implicit none
     integer      , intent(in), optional :: unit
     character*(*), intent(in), optional :: path,file
-    end subroutine IO_write_header
-    subroutine IO_quick_write(path,file,message)
+    end subroutine io_write_header
+    subroutine io_quick_write(path,file,message)
     implicit none
     character*(*), intent(in), optional :: path,file
     character*(*), intent(in)           :: message
-    end subroutine IO_quick_write
+    end subroutine io_quick_write
 
 
 
   ! Logging 
-    subroutine IO_log(message)
+    subroutine io_log(message)
     implicit none 
     character*(*) :: message
-    end subroutine IO_log
+    end subroutine io_log
 
 
 
   ! This should go somewhere else, but well
-    subroutine IO_write_header_sweep(p,f)
+    subroutine io_write_header_sweep(p,f)
     implicit none
     character*(*) :: p,f
-    end subroutine IO_write_header_sweep
+    end subroutine io_write_header_sweep
 
 
 
 ! Plotting
-    subroutine IO_plot
+    subroutine io_plot
     implicit none
-    end subroutine IO_plot
+    end subroutine io_plot
 
 
 
@@ -79,9 +79,9 @@
 
 ! String transformation
 
-  interface IO_2string 
-    module procedure IO_int2string,IO_real2string,IO_real2string_array
-  end interface IO_2string
+  interface io_2string 
+    module procedure io_int2string,io_real2string,io_real2string_array
+  end interface io_2string
 
 
 
@@ -89,36 +89,36 @@
 
   contains
 
-    function IO_int2string(ii)
-    use IO_vars, only: IO_ilen,IO_ifrm
+    function io_int2string(ii)
+    use io_vars, only: io_ilen,io_ifrm
     implicit none
     integer                :: ii 
-    character(len=io_ilen) :: IO_int2string
-    write(IO_int2string,IO_Ifrm) ii 
-    end function IO_int2string
+    character(len=io_ilen) :: io_int2string
+    write(io_int2string,io_Ifrm) ii 
+    end function io_int2string
 
-    function IO_real2string(ii)
-    use IO_vars, only: IO_rlen,IO_rfrm
+    function io_real2string(ii)
+    use io_vars, only: io_rlen,io_rfrm
     implicit none
     real                   :: ii
-    character(len=io_rlen) :: IO_real2string
-    write(IO_real2string,IO_rfrm) ii
-    end function IO_real2string
+    character(len=io_rlen) :: io_real2string
+    write(io_real2string,io_rfrm) ii
+    end function io_real2string
 
-    function IO_real2string_array(ii)
-    use IO_vars, only: IO_rlen,IO_rfrm
+    function io_real2string_array(ii)
+    use io_vars, only: io_rlen,io_rfrm
     implicit none
     real, dimension(:)                          :: ii
-    character(len=io_rlen), dimension(size(ii)) :: IO_real2string_array
+    character(len=io_rlen), dimension(size(ii)) :: io_real2string_array
     integer :: jj
     do jj = 1,size(ii)
-    write(IO_real2string_array(jj),IO_rfrm) ii(jj)
+    write(io_real2string_array(jj),io_rfrm) ii(jj)
     end do
-    end function IO_real2string_array
+    end function io_real2string_array
  
 
 
 
 
 
-  end module IO_interface
+  end module io_interface

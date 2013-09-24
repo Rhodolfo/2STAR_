@@ -11,6 +11,8 @@ driver_abort.f90 \
 driver_ballistic.f90 \
 driver_data.f90 \
 driver_func.f90 \
+driver_header_extras.f90 \
+driver_header_main.f90 \
 driver_init.f90 \
 driver_init_ballistic.f90 \
 driver_init_mdot.f90 \

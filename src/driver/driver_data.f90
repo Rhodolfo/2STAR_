@@ -187,24 +187,28 @@
   use ph_vars, only: ph_year,ph_msun
   use dr_vars, only: dr_time,dr_time_step
   use cp_vars, only: cp_don_mdot,cp_env_mdot,cp_env_mass,cp_env_radius,cp_env_vesc,&
-                     cp_ejection_eff,cp_env_mdot_in,cp_env_mdot_out
+                     cp_ejection_eff,cp_env_mdot_in,cp_env_mdot_out,&
+                     cp_env_toosmall,cp_acc_radius,cp_bin_sepa
   use IO_vars, only: IO_data,IO_path,IO_data,IO_save
   use IO_interface, only: IO_allocate_data,IO_deallocate_data,IO_save_data
   implicit none
   if (.not.IO_save) return
   if (allocated(IO_data)) deallocate(IO_data)
-  call IO_allocate_data(10)
-  IO_data(1:10) = (/ &
+  call IO_allocate_data(13)
+  IO_data(1:13) = (/ &
         dr_time/ph_year,&                              ! 1
         dr_time_step/ph_year,&                         ! 2
         cp_don_mdot    *ph_year/ph_msun,&              ! 3
         cp_env_mdot    *ph_year/ph_msun,&              ! 4
         cp_env_mdot_in *ph_year/ph_msun,&              ! 5
         cp_env_mdot_out*ph_year/ph_msun,&              ! 6
-        cp_env_mass,&                                  ! 7
+        cp_env_mass/ph_msun,&                          ! 7
         cp_env_radius,&                                ! 8
         cp_env_vesc,&                                  ! 9
-        cp_ejection_eff&                               ! 10
+        cp_ejection_eff,&                              ! 10
+        cp_env_toosmall,&                              ! 11
+        cp_acc_radius,&                                ! 12
+        cp_bin_sepa&                                   ! 13
         /)
     call IO_save_data(IO_path,"env.dat")
     call IO_deallocate_data

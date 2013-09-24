@@ -30,16 +30,16 @@
 ! Checking for a rejected time step from the ODE integrator
   if (ode_reject_step) then 
     dr_time_step = min(0.6*ode_dt_suggested,0.5*dr_time_step)
-    call io_log("[update] Step was rejected, &
-                 retrying step = "//io_2string(dr_step_counter))
+    call io_log("[update] Step was rejected,&
+               & retrying step = "//io_2string(dr_step_counter))
     return
   else 
   end if
 
 ! Rejecting step if the donor loses too much mass
   if (donmass.le.0.) then 
-    call io_log("[update] Donor mass is negative, &
-                 retrying step = "//io_2string(dr_step_counter))
+    call io_log("[update] Donor mass is negative,&
+               & retrying step = "//io_2string(dr_step_counter))
     dr_time_step    = 0.5*dr_time_step
     ode_reject_step = .true.
     return
@@ -47,8 +47,8 @@
 
 ! Rejecting step if the separation gets negative
   if (invar.le.0.) then 
-    call io_log("[update] Separation is negative, &
-                 retrying step = "//io_2string(dr_step_counter))
+    call io_log("[update] Separation is negative,&
+               & retrying step = "//io_2string(dr_step_counter))
     dr_time_step    = 0.5*dr_time_step
     ode_reject_step = .true. 
     return
@@ -56,8 +56,8 @@
 
 ! Rejecting step if the accretion rate jumps too much
   if ((abs(dr_mdot_new).eq.0).and.(abs(cp_don_mdot).ge.1e-9*ph_msun/ph_year)) then 
-    call io_log("[update] Mass transfer rate jump between steps is too big, &
-                 retrying step = "//io_2string(dr_step_counter))
+    call io_log("[update] Mass transfer rate jump between steps is too big,&
+               & retrying step = "//io_2string(dr_step_counter))
     dr_time_step    = 0.5*dr_time_step
     ode_reject_step = .true. 
     return
@@ -65,8 +65,8 @@
 
 ! Rejecting step if the enevelope mass is negative 
    if (envmass.lt.0.0) then 
-    call io_log("[update] Mass of the envelope is negative, &
-                 retrying step = "//io_2string(dr_step_counter))
+    call io_log("[update] Mass of the envelope is negative,&
+               & retrying step = "//io_2string(dr_step_counter))
     dr_time_step    = 0.5*dr_time_step
     ode_reject_step = .true. 
     return
