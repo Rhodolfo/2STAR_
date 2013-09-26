@@ -2,6 +2,10 @@
 
   interface
 
+      subroutine eos_init
+      implicit none
+      end subroutine eos_init
+ 
       subroutine eos_helmholtz
       implicit none
       end subroutine eos_helmholtz
@@ -9,6 +13,10 @@
       subroutine eos_read_helm_table
       implicit none
       end subroutine eos_read_helm_table
+
+      subroutine eos_create_root_table
+      implicit none
+      end subroutine eos_create_root_table
 
       subroutine eos_helmeos
       implicit none 
@@ -30,6 +38,15 @@
       real, dimension(:) :: input
       real, dimension(size(input)) :: eos_pres_entr_zero
       end function eos_pres_entr_zero
+
+
+
+      function eos_dens_temp_best_guess(input)
+      implicit none
+      real, dimension(2) :: input,eos_dens_temp_best_guess
+      end function eos_dens_temp_best_guess
+
+
 
       subroutine eos_newton_raphson(iguess,fguess,dx,f,ntol,rtol,relax)
       implicit none

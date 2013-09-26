@@ -145,7 +145,7 @@
   subroutine io_set_integration_mode(some_char)
   use dr_vars, only: dr_mode_mdot,dr_mode_ballistic,&
                      dr_mode_stability,dr_mode_post,&
-                     dr_integration_mode
+                     dr_integration_mode,dr_mode_eos_tables
   use io_vars, only: io_first_pass,io_file
   use dr_interface, only: dr_abort
   use io_interface, only: io_log
@@ -173,6 +173,10 @@
     if (io_first_pass) call io_log("[io] Postprocessing mass transfer rate history")
     mode_dude = dr_mode_post 
     io_file   = "mdot_post.dat"
+  else if (trim(adjustl(some_char)).eq."eos_tables") then
+    if (io_first_pass) call io_log("[io] Generating lookup tables for inverse EOS")
+    mode_dude = dr_mode_eos_tables
+    io_file   = "eos_tables.dat" 
   else
     call dr_abort("io_set_integration_mode","INVALID PERFORMANCE MODE")
   end if

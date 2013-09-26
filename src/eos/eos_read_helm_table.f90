@@ -1,4 +1,8 @@
       subroutine eos_read_helm_table
+
+! Note to the Rodolfo:
+! d(imax) t(jmax) hold the table density and temperature
+
       use eos_table_storage
       use eos_vars, only: eos_has_read_table
       use io_interface, only: io_log

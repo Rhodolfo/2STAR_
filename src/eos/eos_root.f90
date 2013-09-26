@@ -1,4 +1,39 @@
-! Basic mathematical functions
+! Gets a first guess for the density and temperature
+  function eos_dens_temp_best_guess(input)
+  use eos_root_table, only: eos_set_root_file, eos_root_file
+  use io_vars, only: io_unit
+  implicit none
+  real, dimension(2) :: input,eos_dens_temp_best_guess
+  real :: ip,ie,od,ot
+  real :: fd,ft,fp,fe,diffp,diffe,diffo,diff
+  integer :: eof,ii,jj,un
+  un = io_unit + 10
+  ip = input(1)
+  ie = input(2)
+! Locating the right data file for the given pressure
+  call eos_set_root_file(ip)
+! Parsing data file
+  eof   = 0
+  diffo = huge(ip)
+  open(unit=un,file="src/eos/rtable/rtable."//eos_root_file,status="old")
+  do while (eof.eq.0) 
+    read(un,*,iostat=eof) fd,ft,fp,fe
+    if (eof.eq.-1) exit
+    diffp = (ip - fp)/ip
+    diffe = (ie - fe)/ie
+    diff  = sqrt(diffp**2+diffe**2)
+    if (diff.lt.diffo) then 
+      od    = fd
+      ot    = ft   
+      diffo = diff
+    end if
+  end do
+  eos_dens_temp_best_guess(1) = od
+  eos_dens_temp_best_guess(2) = ot
+  end function eos_dens_temp_best_guess
+
+
+
 
   subroutine eos_newton_raphson(iguess,fguess,dx,f,ntol,rtol,relax)
   use eos_interface, only: eos_newton_raphson_step
@@ -31,7 +66,6 @@
   g0 = gc
   do while (i.lt.n.and.s.gt.r)
     call eos_newton_raphson_step(gc,dg,dx,f,fc)
-    write(*,*) i,gc,f(gc)
     i   = i + 1
 ! Now that we have a direction, we choose a sign
   ! gp  = gc + rlx*dg
@@ -60,7 +94,7 @@
   use io_interface, only: IO_2string
   use dr_interface, only: dr_abort
   use           lu, only: linear_solver
-  use   eos_vector, only: dpd_row,dpt_row,ded_row,det_row
+  use   eos_vector, only: dpd_row,dpt_row,dsd_row,dst_row
   use   eos_vars
   implicit none
 ! Iinterface variables
@@ -90,13 +124,13 @@
   n  = size(gc)
   if (n.ne.2) stop "LOL"
 ! Getting the derivative (Jacobian)
-  fc    = f(gc)
+  fc = f(gc)
   if (present(ce)) ce = fc
 ! Building the Jacobian
-  J(1,1) = dpd_row(1)*(eos_dens_unit/eos_pres_unit)
-  J(2,1) = dpt_row(1)*(eos_temp_unit/eos_pres_unit)
-  J(1,2) = ded_row(1)*(eos_dens_unit/eos_entr_unit)
-  J(2,2) = det_row(1)*(eos_temp_unit/eos_entr_unit)
+  J(1,1) = dpd_row(1)*(1.0/eos_target_pres)
+  J(1,2) = dpt_row(1)*(1.0/eos_target_pres)
+  J(2,1) = dsd_row(1)*(1.0/eos_target_entr)
+  J(2,2) = dst_row(1)*(1.0/eos_target_entr)
 ! Solve for delta given by J*delta = -f
   b = - fc
   call linear_solver(n,J,b,gn)

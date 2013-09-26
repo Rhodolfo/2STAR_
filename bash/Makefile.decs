@@ -113,10 +113,12 @@ eos_cons.f90 \
 eos_func.f90 \
 eos_helmeos.f90 \
 eos_helmholtz.f90 \
+eos_init.f90 \
 eos_interface.f90 \
 eos_pretty_eos_out.f90 \
 eos_read_helm_table.f90 \
 eos_root.f90 \
+eos_root_table.f90 \
 eos_table_storage.f90 \
 eos_vars.f90 \
 eos_vector.f90 

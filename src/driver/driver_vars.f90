@@ -30,6 +30,7 @@
   integer, parameter :: dr_mode_ballistic   = 1
   integer, parameter :: dr_mode_post        = 2
 ! integer, parameter :: dr_mode_mdot        = 3 is already declared, but is an option for integration_mode
+  integer, parameter :: dr_mode_eos_tables  = 4
 
 ! identifying constants
   integer, parameter :: dr_data_id              = 42
