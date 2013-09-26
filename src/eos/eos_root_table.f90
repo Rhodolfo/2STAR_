@@ -31,6 +31,7 @@
     call eos_read_helm_table
     eos_dens_rt = d
     eos_temp_rt = t
+    call system("mkdir -p src/eos/rtable")
     open(unit=u,file="src/eos/rtable/rtable.dat",status="unknown")
     do i = 1,imax
       eos_dens = eos_dens_rt(i)
