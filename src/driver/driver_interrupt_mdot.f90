@@ -98,7 +98,9 @@
 ! Write when time has elapsed
   if (((dr_time/dr_time_tolerance).ge.(0.0001*dr_file_counter)).or.dr_force_write.or.dr_interrupting) then
     call dr_store_mdot_data
+    if (cp_env_mass.gt.0) then 
     call dr_store_envelope
+    end if
     call dr_store_pdots
     if (dr_head_counter.ge.15) then 
       call io_log("t/T       t         dt        dt_ode    mdot      env_mass  period    sepa      tscale") 

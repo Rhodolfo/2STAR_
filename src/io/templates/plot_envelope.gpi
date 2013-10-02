@@ -1,0 +1,31 @@
+set term postscript enhanced color
+set xlabel  "t(yr)"
+data_path = "."
+extension = "ps"
+
+unset yrange
+
+set title "Envelope Mass and Radius"
+set ylabel  "M(msun)"
+set y2label "R(cm)"
+set y2tics
+set log y
+set log y2
+set output data_path."/env_mass_radius".suffix.".".extension
+plot data_path."/env.dat" u 1:8 lc 3 lt -1 axis x1y2 title "Radius" with lines,\
+     data_path."/env.dat" u 1:7 lc 1 lt -1 title "Mass" with lines
+
+unset ylabel
+unset log y
+unset y2label
+unset y2tics
+
+
+
+set title "Envelope Mdot"
+set ylabel "Mdot(msun/yr)"
+set log y
+set output data_path."/env_mdot".suffix.".".extension
+plot data_path."/env.dat" u 1:(abs($4)) lt -1 lc -1 title "Mdot_total" with lines,\ 
+     data_path."/env.dat" u 1:(abs($5)) lt -1 lc  3 title "Mdot_in" with lines,\ 
+     data_path."/env.dat" u 1:(abs($5)) lt -1 lc  1 title "Mdot_out" with lines
