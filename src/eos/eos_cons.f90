@@ -1,9 +1,9 @@
   module eos_cons
   implicit none
   save
-!
+
 ! mathematical and physical constants (in cgs,except e0 which is in ev)
-!
+
 ! the 2006 codta recommended valeus of the physical constants
 ! by coehn & taylor
 
@@ -39,7 +39,7 @@
                         fine    = qe*qe/(hbar*clight), &
                         hion    = 13.605698140d0)
 
-      parameter        (ssol     = 5.67051d-5, &
+      parameter        (ssol    = 5.67051d-5, &
                         asol    = 4.0d0 * ssol / clight, &
                         weinlam = h*clight/(kerg * 4.965114232d0), &
                         weinfre = 2.821439372d0*kerg/h, &

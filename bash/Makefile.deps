@@ -16,7 +16,7 @@ obj/driver_init_mdot.o           : obj/driver.o obj/io.o obj/component.o obj/phy
 obj/driver_interrupt.o           : obj/driver.o obj/component.o 
 obj/driver_interrupt_ballistic.o : obj/driver.o obj/component.o obj/io.o 
 obj/driver_interrupt_mdot.o      : obj/driver.o obj/component.o obj/physics.o obj/io.o obj/ode.o
-obj/driver_main.o                : obj/driver.o obj/io.o 
+obj/driver_main.o                : obj/driver.o obj/io.o obj/eos.o
 obj/driver_mdot.o                : obj/driver.o obj/component.o obj/physics.o obj/io.o obj/ode.o
 obj/driver_post.o                : obj/driver.o obj/component.o obj/physics.o obj/io.o
 obj/driver_reset.o               : obj/driver.o 
@@ -39,11 +39,9 @@ obj/io.o                    : obj/io_vars.o obj/io_interface.o obj/mkracken.o
 obj/io_interface.o          : obj/io_vars.o
 obj/io_data.o               : obj/io.o 
 obj/io_file_handling.o      : obj/io.o 
-obj/io_header.o             : obj/io.o obj/driver.o obj/physics.o obj/component.o
 obj/io_log.o                : obj/io.o
 obj/io_main.o               : obj/io.o 
 obj/io_plot.o               : obj/io.o obj/driver.o obj/physics.o obj/component.o 
-obj/io_write_header_sweep.o : obj/io.o 
  
 # Mkracken
  
@@ -65,11 +63,13 @@ obj/component_system_slaves.o : obj/component.o obj/driver.o obj/physics.o obj/i
 obj/component_timescales.o    : obj/component.o obj/driver.o obj/physics.o
  
 # medium 
-obj/medium_Lfunc.o : obj/medium.o 
-obj/medium_calc.o  : obj/medium.o obj/physics.o obj/ode.o obj/io.o
-obj/medium_func.o  : obj/medium.o obj/physics.o
-obj/medium_init.o  : obj/medium.o obj/physics.o obj/ode.o
-obj/medium_main.o  : obj/medium.o obj/io.o
+obj/medium.o             : obj/medium_vars.o obj/medium_interface.o
+obj/medium_Lfunc.o       : obj/medium.o 
+obj/medium_calc.o        : obj/medium.o obj/physics.o obj/ode.o obj/io.o
+obj/medium_func.o        : obj/medium.o obj/physics.o
+obj/medium_init.o        : obj/medium.o obj/physics.o obj/ode.o
+obj/medium_main.o        : obj/medium.o obj/io.o
+obj/medium_lightcurve.o  : obj/medium.o obj/physics.o obj/ode.o
  
 # physics
 # Declaring variables and interface blocks

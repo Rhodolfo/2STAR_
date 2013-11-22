@@ -24,6 +24,7 @@
   integer, parameter :: dr_mode_separation_eq = 5
   integer, parameter :: dr_mode_roche_limit   = 6
   real               :: dr_invar              = 0
+  real               :: dr_tmax               = 1e3
 
 ! perform modes
   integer, parameter :: dr_mode_stability   = 0
@@ -63,13 +64,12 @@
   logical :: dr_stop_on_eddington  = .false.
   logical :: dr_ignore_donor_terms = .false.
   logical :: dr_exit_trigger       = .false.
-  logical :: dr_hybrid             = .false.
   logical :: dr_include_tides      = .false.
   logical :: dr_initial_mdot_tstep = .true.
   logical :: dr_threshhold_reached = .false.
 ! setup routine modes
   integer            :: dr_setup_mode       = dr_mode_contact
-!usage modes
+! usage modes
   integer            :: dr_integration_mode = dr_mode_mdot
 ! evolution routine modes
   integer            :: dr_donor_mode           = dr_mode_he_white_dwarf

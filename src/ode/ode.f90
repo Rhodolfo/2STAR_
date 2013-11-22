@@ -55,7 +55,7 @@
 !   order method. Returns u_new that is calculated from u_old and u_mid through the procedure
 !   "source_function."
 
-! - ode_rg4_step(t,dt,u_old,u_new,source_function):
+! - ode_rk4_step(t,dt,u_old,u_new,source_function):
 !   Takes a time step from time "t" to time "dt" using the Runge-Kutta fourth
 !   order method. Returns u_new that is calculated from u_old through the procedure
 !   "source_function."
@@ -167,7 +167,7 @@
 
 
 
-  subroutine ode_rg4_step(time_value,time_step,solution_old,solution_new,source_function) 
+  subroutine ode_rk4_step(time_value,time_step,solution_old,solution_new,source_function) 
   implicit none
   real, intent(in) :: time_value,time_step
   real             :: dt,err
@@ -212,7 +212,7 @@
     solution_new = solution_ref 
   end if 
   return
-  end subroutine ode_rg4_step
+  end subroutine ode_rk4_step
 
 
 

@@ -8,7 +8,6 @@
   use cp_vars, only: cp_setup_var,cp_bin_peri,cp_bin_sepa,&
                      cp_don_mass,cp_acc_mass,cp_bin_peri,cp_bin_sepa
   implicit none
-  write(*,*) cp_bin_peri,cp_setup_var
   cp_bin_peri = cp_setup_var
   if (cp_bin_peri.le.0.0) call io_log("[component] Warning: Input period is negative")
   cp_bin_sepa = ph_kepler_separation(cp_don_mass+cp_acc_mass,cp_bin_peri)

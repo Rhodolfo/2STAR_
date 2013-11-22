@@ -2,7 +2,7 @@
   use dr_vars, only: dr_hit_switch,dr_circularization_switch,dr_accretor_surface_switch,&
                      dr_maximum_radius,dr_line_tolerance,dr_time,dr_time_tolerance,&
                      dr_time_step_tolerance,dr_time_step,dr_phase_point_old,dr_phase_point_new,&
-                     dr_hybrid,dr_res_factor
+                     dr_res_factor
   use cp_vars, only: cp_bin_peri,cp_bin_sepa,cp_distance,&
                      cp_initial_pos,cp_initial_vel,cp_acc_pos,cp_speed,&
                      cp_hit_radius,cp_acc_radius,cp_min_radius,cp_cir_radius
@@ -13,7 +13,7 @@
   implicit none
   integer, intent(in) :: setup_mode
   real   , intent(in) :: donmass,accmass,envmass,invar,donfreq,accfreq 
-  if (.not.dr_hybrid) call cp_init(setup_mode,donmass,accmass,envmass,invar,donfreq,accfreq)
+  call cp_init(setup_mode,donmass,accmass,envmass,invar,donfreq,accfreq)
   dr_hit_switch              = .false.
   dr_circularization_switch  = .false.
   dr_accretor_surface_switch = .false.

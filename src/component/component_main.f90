@@ -32,7 +32,6 @@
 
 
   subroutine cp_auxiliary_parameters
-  use dr_vars, only: dr_hybrid
   use dr_interface, only: dr_perform_ballistic_evolution
   use cp_interface, only: cp_star_parameters,cp_binary_parameters,cp_star_parameters
   implicit none
@@ -46,12 +45,6 @@
   call cp_binary_parameters
 ! Stream parameters are set here, mostly used for the test particle evolution
   call cp_stream_parameters
-! So, one can do a ballistic evolution to get some extra parameters in this
-! case, I don't know how fruitful it is to do so, if the hybrid mode is off,
-! it won't even be called
-  if (dr_hybrid) then 
-    call dr_perform_ballistic_evolution
-  end if
 ! Driver terms and effective exponents for the mdot evolution
   call cp_evolution_coefficients
   return

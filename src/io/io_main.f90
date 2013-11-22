@@ -7,15 +7,16 @@
 ! will run the mdot evolution for a 0.1 Msun donor with a 1.2 Msun accretor
 ! an store the data in data/test
   use ph_vars, only: ph_msun,ph_year
-  use dr_vars, only: dr_res_factor,dr_eddington,dr_hybrid,dr_interrupting,&
+  use dr_vars, only: dr_res_factor,dr_eddington,dr_interrupting,&
                      dr_include_tides,dr_integration_mode,dr_phase,&
                      dr_dif_mass_don,dr_dif_mass_acc,dr_low_mass,dr_hig_mass,&
                      dr_accretor,dr_donor,dr_accretor_mode,dr_donor_mode,&
                      dr_setup_mode,dr_mode_period,dr_mode_separation,dr_mode_mdot,&
-                     dr_mode_contact,dr_invar
+                     dr_mode_contact,dr_invar,dr_tmax
   use cp_vars, only: cp_acc_mass,cp_don_mass,cp_don_tau,cp_acc_tau,&
                      cp_setup_var,cp_don_sync_0,cp_acc_sync_0,&
-                     cp_bin_peri,cp_bin_sepa,cp_don_mdot
+                     cp_bin_peri,cp_bin_sepa,cp_don_mdot,&
+                     cp_driver_reso_norm,cp_driver_drag_norm
   use M_kracken
   use io_vars, only: io_first_pass,io_path,io_file,io_verb
   implicit none
@@ -31,7 +32,6 @@
                      &-accmass 1.0          &
                      &-donmass 0.5          &
                      &-res 0.001            &
-                     &-hybrid .false.       &
                      &-eddington .true.     &
                      &-advection adapt      &                      
                      &-tidal     .false.    &
@@ -43,7 +43,10 @@
                      &-dmdon 0.01           &
                      &-dmacc 0.01           &
                      &-minmass 0.1          &
-                     &-maxmass 1.4        ')
+                     &-maxmass 1.4          & 
+                     &-hydrodrag 0.0        & 
+                     &-linrsdrag 0.0        &
+                     &-tmax      1000.0     ')
   call retrev('cmd_setup',setmode,iflen,ier)  
   call retrev('cmd_mode',intmode,iflen,ier)   
   call retrev('cmd_path',io_path,iflen,ier) 
@@ -51,6 +54,7 @@
   call retrev('cmd_donmode',donmode,iflen,ier)     
   call retrev('cmd_advection',flowmode,iflen,ier)
   dr_invar         = rget('cmd_invar')
+  dr_tmax          = rget('cmd_tmax')
   cp_don_mass      = rget('cmd_donmass')
   cp_acc_mass      = rget('cmd_accmass')
   cp_don_tau       = rget('cmd_dontau')
@@ -59,7 +63,6 @@
   dr_res_factor    = rget('cmd_res')
   io_verb          = lget('cmd_verbose')
   dr_eddington     = lget('cmd_eddington')
-  dr_hybrid        = lget('cmd_hybrid')
   dr_interrupting  = lget('cmd_interrupting')
   dr_include_tides = lget('cmd_tidal')
   dr_phase         = iget('cmd_phase')
@@ -69,6 +72,8 @@
   dr_hig_mass      = rget('cmd_maxmass')
   cp_don_sync_0    = rget('cmd_dontau')
   cp_acc_sync_0    = rget('cmd_acctau')
+  cp_driver_drag_norm = rget('cmd_hydrodrag')
+  cp_driver_reso_norm = rget('cmd_linrsdrag')
 ! Here we introduce ourselves
   call system("mkdir -p "//trim(adjustl(io_path)))
 ! Calling some setup routines, these transform string values to integer values
@@ -78,6 +83,17 @@
   call io_set_advection_mode(flowmode)
   call io_set_star_mode(accmode,dr_accretor)
   call io_set_star_mode(donmode,dr_donor)
+! Are we neglecting hydro drag or linblad drag? 
+  if (cp_driver_drag_norm.gt.0.) then 
+    call io_log("[io] Including hydrodynamical drag")
+  else
+    call io_log("[io] Neglecting hydrodynamical drag")
+  end if 
+  if (cp_driver_reso_norm.gt.0.) then 
+    call io_log("[io] Including Lindblad resonance drag")
+  else
+    call io_log("[io] Neglecting Lindblad resonance drag")
+  end if 
 ! Transforming masses to CGS units
   cp_don_mass = cp_don_mass*ph_msun
   cp_acc_mass = cp_acc_mass*ph_msun

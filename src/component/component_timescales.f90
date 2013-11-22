@@ -77,9 +77,7 @@
                       cp_overflow_tscale,&
                       cp_mass_transfer_tscale,&
                       cp_mass_transfer_change_tscale)
-! write(*,*) "FLAph_G",&
-!           &cp_gravitational_tscale,cp_roche_tscale,&
-!           cp_total_tscale,cp_overflow_tscale,cp_mass_transfer_tscale,cp_mass_transfer_change_tscale
+
   return
   end subroutine cp_timescales
 

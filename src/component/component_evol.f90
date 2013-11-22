@@ -13,17 +13,21 @@
 
 
   subroutine cp_driver_terms
+  use ph_vars, only: ph_G,ph_pi
   use dr_vars, only: dr_include_tides
   use cp_vars, only: cp_bin_sepa,cp_bin_freq,cp_don_mass,cp_acc_mass,&
                      cp_don_radius,cp_acc_radius,cp_don_freq,cp_acc_freq,&
                      cp_don_k_factor,cp_acc_k_factor,cp_don_sync_freq,cp_acc_sync_freq,&
                      cp_driver_sepa,cp_driver_roche,cp_driver_don_radius,&
                      cp_driver_don_freq,cp_driver_acc_freq,&
-                     cp_driver_sepa_grw,cp_driver_sepa_dontid,cp_driver_sepa_acctid
-  use ph_interface, only: ph_kepler_jorb,ph_grw_jdot
+                     cp_driver_sepa_grw,cp_driver_sepa_dontid,cp_driver_sepa_acctid,&
+                     cp_env_mass,cp_env_radius,cp_driver_drag,cp_driver_reso,&
+                     cp_driver_drag_norm,cp_driver_reso_norm
+  use ph_interface, only: ph_kepler_jorb,ph_grw_jdot,ph_eggleton_L1
   implicit none
   real :: j_orb,j_don,j_acc,j_sys,jdot_grw,jdot_sys
   real :: jdot_tid_don,jdot_tid_acc,jdot_tid
+  real :: rhoave,vorb,venv,area,q_d,xL1,torque,adot_drag,angmom,mu1,mu2,coeff,adot_reso
 
 ! Driver terms are those that enter into the evolution equations 
 ! for the sepa and the spins regardless of the mass transfer rate
@@ -65,6 +69,46 @@
   cp_driver_sepa_grw    =   2.0*jdot_sys    /j_orb
   cp_driver_sepa_dontid = - 2.0*jdot_tid_don/j_orb
   cp_driver_sepa_acctid = - 2.0*jdot_tid_acc/j_orb
+
+! Initialize these guys
+  cp_driver_drag = 0.
+  cp_driver_reso = 0.
+
+! Drag term
+  q_d       = cp_don_mass / cp_acc_mass
+  vorb      = cp_bin_freq* q_d     *cp_bin_sepa
+  venv      = cp_bin_freq*(1.- q_d)*cp_bin_sepa
+  torque    = 0.
+  area      = ph_pi*(cp_don_radius**2)
+  if ((cp_env_mass.gt.0.).and.(cp_env_radius.gt.cp_acc_radius)) then 
+    rhoave    = (cp_env_mass/(4.0*ph_pi*log(cp_env_radius/cp_acc_radius)))/(cp_bin_sepa**3)
+    torque    = cp_bin_sepa*area*rhoave*((abs(vorb-venv))**2)
+  else
+    rhoave    = 0.
+  end if
+  cp_driver_drag = abs(torque/(2.0*j_orb)) 
+
+! Resonant term
+  mu1       = cp_acc_mass / (cp_acc_mass + cp_don_mass)
+  mu2       = cp_don_mass / (cp_acc_mass + cp_don_mass)
+  q_d       = (cp_env_mass)*(log(cp_bin_sepa/cp_acc_radius)/log(cp_env_radius/cp_acc_radius))
+  if (q_d.le.0..and.cp_env_mass.le.0.) then
+    q_d     = 0.
+    coeff   = 0.
+  else 
+    q_d   = q_d / (cp_acc_mass + cp_don_mass)
+    coeff   = (2.d0*1.d0/2.d0) & ! 2*L/M 
+            * (1.d0/(mu1*mu2)) & ! alpha / mu1 mu2
+            * ((3d-1)**2)      & ! (H/R)**2
+            * (cp_bin_sepa/cp_env_radius) 
+  end if
+  adot_reso = coeff*q_d*cp_bin_freq
+  cp_driver_reso = abs(adot_reso)
+
+! Include drag
+  cp_driver_sepa =  cp_driver_sepa &
+                 - (cp_driver_drag_norm*cp_driver_drag) &
+                 - (cp_driver_reso_norm*cp_driver_reso)
 
   return
   end subroutine cp_driver_terms

@@ -3,7 +3,7 @@
   use dr_vars, only: dr_setup_mode,dr_mode_period,dr_mode_contact,&
                      dr_integration_mode,dr_mode_mdot,dr_mode_ballistic,&
                      dr_dif_mass_don,dr_low_mass,dr_hig_mass,dr_step_counter,&
-                     dr_time,dr_time_eddington_elapsed,dr_hybrid
+                     dr_time,dr_time_eddington_elapsed
   use cp_vars, only: cp_don_mass,cp_acc_mass,cp_don_freq,cp_acc_freq,cp_initial_peri,&
                      cp_don_mdot,cp_bin_sepa,cp_virtemp,cp_impact_dens,cp_bin_peri,&
                      cp_env_mass
@@ -61,7 +61,6 @@
       call dr_reset
       call io_cli_options
       dr_integration_mode = dr_mode_mdot
-      dr_hybrid           = .false.
       io_verb             = .true.
       io_save             = .true.
       io_path             = trim(adjustl(dumpath))&
@@ -84,7 +83,6 @@
       call io_log("[driver] Done with ballistic evolution")
       call io_log("[driver] Calling plotting routine")
       dr_integration_mode = dr_mode_mdot
-      dr_hybrid = .true.
       call io_plot
       call io_log("[driver] Done with plotting routine")
       io_path = dumpath

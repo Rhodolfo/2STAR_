@@ -84,11 +84,12 @@ uobjs  += ${patsubst %.f90, %.o ,${component}}
 # Source files from medium unit
 medium =\
 medium.f90 \
-medium_Lfunc.f90 \
 medium_calc.f90 \
-medium_func.f90 \
 medium_init.f90 \
-medium_main.f90 
+medium_interface.f90 \
+medium_lightcurve.f90 \
+medium_main.f90 \
+medium_vars.f90 
 uobjs  += ${patsubst %.f90, %.o ,${medium}}
  
 # Source files from physics unit

@@ -188,14 +188,16 @@
   use dr_vars, only: dr_time,dr_time_step
   use cp_vars, only: cp_don_mdot,cp_env_mdot,cp_env_mass,cp_env_radius,cp_env_vesc,&
                      cp_ejection_eff,cp_env_mdot_in,cp_env_mdot_out,&
-                     cp_env_toosmall,cp_acc_radius,cp_bin_sepa
+                     cp_env_toosmall,cp_acc_radius,cp_bin_sepa,&
+                     cp_driver_drag,cp_driver_sepa,cp_zeta_sepa,cp_don_mass,&
+                     cp_driver_reso_norm,cp_driver_reso,cp_driver_drag_norm
   use IO_vars, only: IO_data,IO_path,IO_data,IO_save
   use IO_interface, only: IO_allocate_data,IO_deallocate_data,IO_save_data
   implicit none
   if (.not.IO_save) return
   if (allocated(IO_data)) deallocate(IO_data)
-  call IO_allocate_data(13)
-  IO_data(1:13) = (/ &
+  call IO_allocate_data(18)
+  IO_data(1:18) = (/ &
         dr_time/ph_year,&                              ! 1
         dr_time_step/ph_year,&                         ! 2
         cp_don_mdot    *ph_year/ph_msun,&              ! 3
@@ -208,7 +210,13 @@
         cp_ejection_eff,&                              ! 10
         cp_env_toosmall,&                              ! 11
         cp_acc_radius,&                                ! 12
-        cp_bin_sepa&                                   ! 13
+        cp_bin_sepa,&                                  ! 13
+        cp_driver_drag_norm,&                          ! 14 
+        cp_driver_drag,&                               ! 15
+        cp_driver_reso_norm,&                          ! 16
+        cp_driver_reso,&                               ! 17
+        cp_driver_sepa + &
+        cp_zeta_sepa*cp_don_mdot/cp_don_mass &         ! 18 
         /)
     call IO_save_data(IO_path,"env.dat")
     call IO_deallocate_data

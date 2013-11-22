@@ -1,7 +1,7 @@
   subroutine dr_update_mdot
   use ode, only: ode_reject_step,ode_dt_suggested
   use ph_vars, only: ph_mchandra,ph_year,ph_msun
-  use dr_vars, only: dr_hybrid,dr_include_tides,dr_accretion_flow,&
+  use dr_vars, only: dr_include_tides,dr_accretion_flow,&
                      dr_is_sub_eddington,dr_is_super_eddington,&
                      dr_time,dr_time_step,dr_mode_separation,dr_time_peak,&
                      dr_mdot_vector_old,dr_mdot_vector_new,dr_exit_trigger,&
@@ -109,12 +109,6 @@
     cp_vesc_peak     = cp_vesc
     cp_eje_mass_peak = cp_eje_mass
     cp_mdot_max      = cp_don_mdot
-  end if
-
-! Hybrid mode things
-  if (dr_hybrid) then
-    cp_mintemp = min(cp_mintemp,cp_virtemp)
-    cp_maxtemp = max(cp_maxtemp,cp_virtemp)
   end if
 
 ! Reference mdot

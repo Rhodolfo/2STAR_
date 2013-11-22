@@ -10,7 +10,7 @@ obj/driver_init_mdot.o           : obj/driver.o obj/io.o obj/component.o obj/phy
 obj/driver_interrupt.o           : obj/driver.o obj/component.o 
 obj/driver_interrupt_ballistic.o : obj/driver.o obj/component.o obj/io.o 
 obj/driver_interrupt_mdot.o      : obj/driver.o obj/component.o obj/physics.o obj/io.o obj/ode.o
-obj/driver_main.o                : obj/driver.o obj/io.o 
+obj/driver_main.o                : obj/driver.o obj/io.o obj/eos.o
 obj/driver_mdot.o                : obj/driver.o obj/component.o obj/physics.o obj/io.o obj/ode.o
 obj/driver_post.o                : obj/driver.o obj/component.o obj/physics.o obj/io.o
 obj/driver_reset.o               : obj/driver.o 

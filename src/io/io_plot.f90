@@ -1,7 +1,7 @@
   subroutine io_plot
 ! io_plot hogs io_unit + 1, rmemeber that!
   use dr_vars, only: dr_integration_mode,dr_mode_ballistic,&
-                    dr_mode_mdot,dr_mode_post,dr_mode_stability,dr_hybrid
+                    dr_mode_mdot,dr_mode_post,dr_mode_stability
   use io_vars, only: io_save
   use io_interface, only: io_log
   implicit none
@@ -12,7 +12,6 @@
   case (dr_mode_mdot)
     call io_log("[io_plot] Writing gnuplot files for mdot")
     call io_plot_mdot
-    if (dr_hybrid) call io_plot_post
   case (dr_mode_post)
     call io_log("[io_plot] Writing gnuplot files for mdot postprocessing")
     call io_plot_post
@@ -34,7 +33,6 @@
     real               :: angle
     real,dimension(2)  :: unit_vector,donor_circle,accretor_circle,roche_circle
     open(unit=io_unit+1,file=trim(adjustl(io_path))//"/plot_decs.gpi",status="unknown")
-    write(io_unit+1,*) 'data_path  = "'//trim(adjustl(io_path)),'"'
     close(io_unit+1)
     call system("cat "//trim(adjustl(io_path))//"/plot_decs.gpi src/io/templates/plot_ballistic.gpi &
                  & > "//trim(adjustl(io_path))//"/plot_ballistic.gpi")
@@ -69,7 +67,6 @@
     b = 10.*abs(cp_mdot_max)
   ! Sub eddington stuff
     open(unit=io_unit+1,file=trim(adjustl(io_path))//"/plot_decs.gpi",status="unknown")
-    write(io_unit+1,*) 'data_path  = "'//trim(adjustl(io_path)),'"'
     write(io_unit+1,*) 'suffix     = ""'
     write(io_unit+1,*) 'res_factor = ',dr_res_factor
     write(io_unit+1,*) 'year       = ',ph_year

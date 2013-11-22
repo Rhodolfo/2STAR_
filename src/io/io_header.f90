@@ -11,7 +11,7 @@
   use dr_vars, only: dr_integration_mode,dr_mode_mdot,dr_mode_post,dr_mode_ballistic,&
                      dr_donor_mode,dr_accretor_mode,dr_mode_he_white_dwarf,dr_mode_co_white_dwarf,dr_mode_neutron_star,&
                      dr_advection_mode,dr_mode_direct_impact,dr_mode_disk_accretion,dr_mode_adaptative,&
-                     dr_eddington,dr_hybrid,dr_res_factor,dr_time_step
+                     dr_eddington,dr_res_factor,dr_time_step
   use dr_interface, only: dr_abort
   implicit none
   integer      , intent(in), optional :: unit
@@ -74,13 +74,6 @@
     write(un,*) comment//"dr_eddington          = .false."
   end if
 ! End of Eddington mode conditional
-! Hybrid mode conditional
-  if (dr_hybrid) then 
-    write(un,*) comment//"dr_hybrid             = .true."
-  else 
-    write(un,*) comment//"dr_hybrid             = .false."
-  end if
-! End of Hyrbid mode conditional
 ! Are we dealing with direct impact or disk accretion?
 ! Advection mode conditional
     if (dr_advection_mode.eq.dr_mode_direct_impact) then
@@ -181,13 +174,6 @@
       write(un,*) comment//"25      Mass Transfer Variation Timescale (yr)"
       write(un,*) comment//"26      Solution Relaxation Timescale, &
                                    &tau_star as defined by Ghokale (yr)"
-      if (dr_hybrid.or.dr_integration_mode.eq.dr_mode_post) then
-        write(un,*) comment//"27      Density at L1 (g/cc)"
-        write(un,*) comment//"28      Density at Impact Point (g/cc)"
-        write(un,*) comment//"29      Virial Temperature at Impact (K)" 
-        write(un,*) comment//"30      Burning Timescale (s)"
-      else
-      end if
     else
       call dr_abort("io_write_header","Invalid integration mode for routine")
     end if

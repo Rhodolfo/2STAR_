@@ -1,12 +1,12 @@
   subroutine dr_init_mdot(setup_mode,donmass,accmass,envmass,invar,donfreq,accfreq)
   use     ode, only: ode_ref_scale,ode_error_control
   use ph_vars, only: ph_msun
-  use dr_vars, only: dr_hybrid,dr_accretion_flow,dr_eddington_switch,dr_eddington_exit_switch,&
+  use dr_vars, only: dr_accretion_flow,dr_eddington_switch,dr_eddington_exit_switch,&
                      dr_is_sub_eddington,dr_time_tolerance,dr_time_step_tolerance,dr_time,dr_time_step,&
                      dr_mdot_vector_old,dr_mdot_vector_new,dr_include_tides,dr_res_factor,&
                      dr_time_peak,dr_mdot_new,dr_mdot_ref,dr_initial_mdot_tstep,&
                      sepa_var,mdon_var,macc_var,menv_var,facc_var,fdon_var,dr_step_counter,&
-                     dr_period_new,dr_period_ref
+                     dr_period_new,dr_period_ref,dr_tmax
   use cp_vars, only: cp_mintemp,cp_maxtemp,cp_tot_mass,cp_tot_mass_initial,&
                      cp_initial_mdot_edd,cp_initial_sepa,cp_initial_peri,&
                      cp_mdot_edd,cp_bin_sepa,cp_bin_peri,cp_bin_freq,&
@@ -16,17 +16,13 @@
   use dr_interface, only: dr_set_time_step,dr_abort
   use ph_interface, only: ph_norm
   use cp_interface, only: cp_init
-  use io_interface, only: io_write_header,io_open,io_log
+  use io_interface, only: io_open,io_log
   implicit none
   integer, intent(in) :: setup_mode
   real   , intent(in) :: donmass,accmass,envmass,invar,donfreq,accfreq
   ode_error_control     = .true.
   dr_initial_mdot_tstep = .true.
   call cp_init(setup_mode,donmass,accmass,invar,envmass,donfreq,accfreq)
-  if (dr_hybrid) then 
-    cp_mintemp = cp_virtemp
-    cp_maxtemp = cp_virtemp
-  end if
   cp_initial_mdot_edd       = cp_mdot_edd
   cp_initial_sepa           = cp_bin_sepa
   cp_initial_peri           = cp_bin_peri
@@ -36,7 +32,7 @@
   dr_eddington_switch       = .false.
   dr_eddington_exit_switch  = .false.
   dr_time_peak              = 0.0
-  dr_time_tolerance         = 1e3*max(cp_tau_chr,cp_tau_iso,cp_tau_star,cp_tau)
+  dr_time_tolerance         = dr_tmax*max(cp_tau_chr,cp_tau_iso,cp_tau_star,cp_tau)
   if (cp_roche_radius.ge.1.01*cp_don_radius) then 
     call io_log("[driver] The onset of mass transfer is far away, evolving for 10^4 GRW timescales")
     dr_time_tolerance         = 1e4*cp_gravitational_tscale

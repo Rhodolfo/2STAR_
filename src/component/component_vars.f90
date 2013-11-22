@@ -120,6 +120,10 @@
   real :: cp_driver_don_radius  = 0.
   real :: cp_driver_don_freq    = 0.
   real :: cp_driver_acc_freq    = 0.
+  real :: cp_driver_drag        = 0.
+  real :: cp_driver_reso        = 0.
+  real :: cp_driver_drag_norm   = 0.
+  real :: cp_driver_reso_norm   = 0.
 
 ! Separating out the driver terms for data output
   real :: cp_driver_sepa_grw    = 0.

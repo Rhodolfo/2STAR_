@@ -7,7 +7,7 @@
   use dr_vars, only: dr_time,dr_time_tolerance,dr_time_step,dr_time_step_old,&
                      dr_exit_trigger,dr_interrupting,dr_stop_on_eddington,&
                      dr_force_write,dr_accretion_flow,dr_is_super_eddington,&
-                     dr_screen_counter,dr_file_counter,dr_hybrid,& 
+                     dr_screen_counter,dr_file_counter,& 
                      dr_step_counter,dr_res_factor,dr_mdot_new,dr_mdot_ref,&
                      dr_head_counter,dr_period_new,dr_period_ref,&
                      dr_threshhold_reached
@@ -74,7 +74,7 @@
 ! Checks done, exiting if insane
   forcing_message = "" 
   if (dr_file_counter.eq.0) then 
-    call io_log("[driver] Writting headers for std output and extra files")
+    call io_log("[driver] Writting headers")
     call io_log("t/T       t         dt        dt_ode    mdot      env_mass  period    sepa      tscale") 
     call dr_header_env(io_unit,io_path,"env.dat")
     call dr_header_pdots(io_unit,io_path,"pdots.dat")
@@ -108,7 +108,6 @@
       call io_log("t/T       t         dt        dt_ode    mdot      env_mass  period    sepa      tscale") 
       dr_head_counter = 0
     end if 
-    if (dr_hybrid) call dr_store_full_mdot_data
     if (.not.dr_force_write) dr_file_counter = dr_file_counter + 1
   end if
   io_verb = dumverb

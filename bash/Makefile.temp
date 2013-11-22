@@ -4,9 +4,11 @@ part   = main.o ${uobjs}
 full   = ${patsubst %, obj/%, ${part}}
 ${EXE}: ${full}
 	${COMPILER} -o $@ ${full}
-PST    = PAPER_
-${PST}: ${full}
-	${COMPILER} -o $@ ${full}
+#PST    = PAPER_
+#part   = paper.o ${uobjs}
+#full   = ${patsubst %, obj/%, ${part}}
+#${PST}: ${full}
+#	${COMPILER} -o $@ ${full}
 
 # Cleanup
 clean: 

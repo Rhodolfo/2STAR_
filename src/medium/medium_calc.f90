@@ -1,29 +1,26 @@
   subroutine medium_calc(fullpath,ma,md)
-  use IO_vars, only: IO_path
+  use io_vars, only: io_path
   use ph_vars, only: ph_c,ph_pi,ph_G,ph_amu,ph_parsec,ph_year,ph_sigma_sb,ph_msun
-  use  medium, only: tem,mate,mdte,vesc,dens,mdot,time,posi,taup,mdotdon,mdotedd,mdotacc,Lum,sepa,teff,&
-                     medium_init,medium_func,medium_Lfunc,sol,solnew,jjcurrent
-  use     ode, only: ode_bs_step,ode_rg4_step
+  use md_interface, only: md_init
   implicit none
 ! Inout
   real                          :: ma,md
   character(len=100)            :: fullpath 
 ! Local
   character(len=1)              :: dum
-  integer                       :: comment,alloc,ii,jj,kk,iimin,iimax,ll,evotype,stat
+  integer                       :: comment,alloc,ii,jj,kk,iimin,iimax,ll,evotype,stat,jjcurrent
   logical                       :: switch,super,opti
   real                          :: t,opact,tau,timeedd,n0,Ledd,rterm,l36,T6,teffs,tefft,Lkin,Einj,timefin
   real                          :: t0,r0,r23,P12,Pres,m6,v3,rinit,Luse,mdmn,interp
+! Data arrays
+  real, dimension(30)               :: tem
+  real, dimension(:)  , allocatable :: mate,mdte,vesc,dens,mdot,time,posi,taup,mdotdon,mdotedd,mdotacc,Lum,sepa,teff
 
-
-
-
-
-! I do three things in this code, all of which only apply when super eddington
+! I do three things in this routine, all of which only apply when super eddington
 ! 1. Compute density profiles for free winds, then integrating for the optical depth
 ! 2. Compute the bubble model parameters according to an analytical model
-! 3. Compute the bubble model parameters according to a numerical scheme
-  call medium_init 
+! 3. Compute the bubble model parameters according to a numerical scheme ! ON HOLD
+  call md_init 
 
 
 
@@ -108,9 +105,6 @@
         iimax    = ii 
         timeedd  = time(ii)
         switch   = .true.
-        sol(1)   = tem(3)
-        sol(2)   = vesc(1)
-        solnew   = sol
       else 
       end if
       timefin = time(ii)
@@ -180,8 +174,6 @@
         jj = jj + 1
       end do taui
 
-
-
     ! This is the analytical bubble calculation
       n0    = 1.
       r0    = n0*ph_amu
@@ -195,7 +187,7 @@
       else if (ll.gt.1) then 
         mdmn  = ( real(ll)*mdmn + mdot(ii) ) / real(ll+1)
       else 
-        stop "WHAT IS THIS???"
+        stop "WHAT IS THIS? WHAT IS THIS???"
       end if
     ! Computing parameters for envelope treatment
       m6    = abs(mdmn)/(1e-6*ph_msun/ph_year)
@@ -211,31 +203,9 @@
       rterm = 52.9*(r23**(-1./5.))*(L36**(1./5.))*(t6**(3./5.))*ph_parsec
       teffs = sqrt(sqrt(Ledd/(4.*ph_pi*(rterm**2)*ph_sigma_sb)))
 
-
-
-    ! This is the numerical envelope calculation 
-    ! Ledd    = 4.*pi*G*c*mate(ii)/opact
-    ! Lum(ii) = Ledd + abs(0.5*mdot(ii)*(vesc(ii)**2))
-    ! solnew  = medium_func(sol,time(jjcurrent))
-    ! write(*,*) "tstep"
-    ! write(*,*) sol
-    ! write(*,*) solnew
-    ! write(*,*) sol/solnew
-    ! t = minval(abs(sol/solnew))
-    ! write(*,*) "haz"
-    ! call ode_rg4_step(time(jjcurrent),1e-3*t,sol,solnew,medium_func)
-    ! write(*,*) "step"
-    ! write(*,*) sol
-    ! write(*,*) solnew
-    ! stop
-
-
-
     ! Writting the data to a file
       write(68,*) time(ii)/ph_year,interp,dens(kk),mdot(kk)*ph_year/ph_msun,taup(kk),tefft,tau,&
                   rinit,rterm,teffs,Ledd,Lkin,Einj,mdmn*ph_year/ph_msun,md,ma
-    ! sol = solnew
-
 
     else
       kk = 1
@@ -247,8 +217,8 @@
 
 
 ! Let's classify the system
-  open(unit=88,file=trim(adjustl(IO_path))//"/plot_dens.gpi",status="old",position="append")
-  open(unit=89,file=trim(adjustl(IO_path))//"/plot_temp.gpi",status="old",position="append") 
+  open(unit=88,file=trim(adjustl(io_path))//"/plot_dens.gpi",status="old",position="append")
+  open(unit=89,file=trim(adjustl(io_path))//"/plot_teff.gpi",status="old",position="append") 
   evotype = 0 
   if (switch) then 
     if (mdotdon(alloc).ge.mdotedd(alloc)) then 
@@ -257,11 +227,9 @@
         write(89,*) " '"//trim(adjustl(fullpath))//"/rad.dat'  u 1:6:($15/$16) lt palette with lines notitle,\" 
         evotype = 3
       else
-      ! write(88,*) " '"//trim(adjustl(fullpath))//"/dens.dat' u 1:2 lc 2 lt -1 with lines notitle,\"
         evotype = 2
       end if
     else
-      ! write(88,*) " '"//trim(adjustl(fullpath))//"/dens.dat' u 1:2 lc 1 lt -1 with lines notitle,\"
         evotype = 1
     end if
   else 
@@ -274,7 +242,7 @@
 
 
 ! Saving the data in appropriate places
-  open(unit=88,file=trim(adjustl(IO_path))//"/papers",status="old",position="append") 
+  open(unit=88,file=trim(adjustl(io_path))//"/stability_4.dat",status="old",position="append") 
   if (tau.ge.1.) then 
     write(88,*) ma,md,posi(kk),dens(kk),mdot(kk)*ph_year/ph_msun,&
                 vesc(kk),tau,taup(kk),time(alloc)/ph_year,timeedd/ph_year,&
@@ -288,10 +256,12 @@
   end if
   close(88)
 
+
+
+
+
+! Exit
   write(*,*) trim(adjustl(fullpath))," ",evotype,log10(interp),log10(rinit),log10(rterm)
-
-
-
-
-
+  deallocate(time,mdot,mdte,mate,posi,vesc,dens,taup,mdotdon,mdotedd,mdotacc,Lum,sepa,teff)
+  return 
   end subroutine medium_calc

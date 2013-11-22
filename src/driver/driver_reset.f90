@@ -10,7 +10,6 @@
   dr_stop_on_eddington  = .false.
   dr_ignore_donor_terms = .false.
   dr_exit_trigger       = .false.
-  dr_hybrid             = .false.
   dr_include_tides      = .false.
 ! setup routine modes
   dr_setup_mode         = dr_mode_contact
