@@ -26,18 +26,24 @@
   open(unit=un,file=trim(adjustl(path))//"/"//trim(adjustl(file)),status="unknown")
   write(un,*) "#  1 t(yr)"
   write(un,*) "#  2 dt(yr)"
-  write(un,*) "#  3 mdot_don(msun/yr)"
-  write(un,*) "#  4 mdot_envelope(msun/yr)            = Net mdot of envelope" 
-  write(un,*) "#  5 mdot_ejected_by_binary(msun/yr)   = Mass intake of envelope"
-  write(un,*) "#  6 mdot_ejected_by_envelope(msun/yr) = Mass ejection of envelope"
-  write(un,*) "#  7 envelope_mass(msun)"
-  write(un,*) "#  8 envelope_radius(cm)"
-  write(un,*) "#  9 wind_speed(cm/s)"
-  write(un,*) "# 10 ejection_efficiency(adminensional) == mdot_ejected / mdot_donor"
-  write(un,*) "# 11 envelope_too_small_flag(adimensional) == 0 &
+  write(un,*) "#  3 mdon(msun)"
+  write(un,*) "#  4 macc(msun)" 
+  write(un,*) "#  5 mdot_don(msun/yr)"
+  write(un,*) "#  6 mdot_envelope(msun/yr)            = Net mdot of envelope" 
+  write(un,*) "#  7 mdot_ejected_by_binary(msun/yr)   = Mass intake of envelope"
+  write(un,*) "#  8 mdot_ejected_by_envelope(msun/yr) = Mass ejection of envelope"
+  write(un,*) "#  9 envelope_mass(msun)"
+  write(un,*) "# 10 envelope_radius(cm)"
+  write(un,*) "# 11 wind_speed(cm/s)"
+  write(un,*) "# 12 ejection_efficiency(adminensional) == mdot_ejected / mdot_donor"
+  write(un,*) "# 13 envelope_too_small_flag(adimensional) == 0 &
                 &if envelope is over 1e-6 msun, 1 if not"
-  write(un,*) "# 12 acc_radius(cm)"
-  write(un,*) "# 13 bin_separation(cm)"
+  write(un,*) "# 14 acc_radius(cm)"
+  write(un,*) "# 15 bin_separation(cm)"
+  write(un,*) "# 14 acc_radius(cm)"
+  write(un,*) "# 15 bin_separation(cm)"
+  write(un,*) "# 16 t_mdotdot = mdot / mdotdot (s)"
+  write(un,*) "# 17 t_mdot    = mdon / mdot    (s)" 
   if (.not.is_stdout) &
   close(un)
 

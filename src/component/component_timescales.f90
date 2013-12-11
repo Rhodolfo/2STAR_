@@ -65,8 +65,8 @@
 ! Timescale of change in mass transfer rate
   df_dDR2 = 3.0*(cp_overflow_par**2)/(cp_don_radius**3)
   cp_mdotdot = - 2.0*(cp_mdot_0/cp_don_mass)*df_dDR2*(cp_q_stable-cp_mass_ratio)*(cp_don_mdot-cp_mdot_eq)
-  cp_mass_transfer_change_tscale    = abs(cp_don_mdot/cp_mdotdot)
-  if (cp_mass_transfer_change_tscale.le.0.) cp_mass_transfer_change_tscale = cp_total_tscale
+  cp_mass_transfer_change_tscale = abs(cp_don_mdot/cp_mdotdot)
+  if (cp_mass_transfer_change_tscale.le.0.)    cp_mass_transfer_change_tscale = cp_total_tscale
   if (abs(cp_mdotdot).le.0.)                   cp_mass_transfer_change_tscale = cp_total_tscale
   if (dr_time.le.0.)                           cp_exponential_tscale          = cp_mass_transfer_change_tscale
 

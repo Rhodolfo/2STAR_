@@ -122,8 +122,13 @@
   real :: cp_driver_acc_freq    = 0.
   real :: cp_driver_drag        = 0.
   real :: cp_driver_reso        = 0.
+  real :: cp_drag_vel           = 0.
+  real :: cp_drag_dens          = 0.
+  real :: cp_drag_area          = 0.
+  real :: cp_drag_jorb          = 0.
   real :: cp_driver_drag_norm   = 0.
   real :: cp_driver_reso_norm   = 0.
+  real :: cp_driver_nodrag      = 0.
 
 ! Separating out the driver terms for data output
   real :: cp_driver_sepa_grw    = 0.
@@ -154,6 +159,7 @@
   real :: cp_exponential_tscale           = 0.
   real :: cp_exponential_tscale_old       = 0.
   real :: cp_mdotdot_tscale               = 0.
+  real :: cp_mdot_tscale                  = 0.
   real :: cp_mass_transfer_tscale         = 0.
   real :: cp_mass_transfer_change_tscale  = 0.  
   real :: cp_gravitational_tscale         = 0.

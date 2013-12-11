@@ -8,7 +8,8 @@
                      dr_time_eddington_elapsed,dr_mdot_new,dr_mdot_ref,&
                      dr_accretor_mode,dr_mode_he_white_dwarf,dr_mode_co_white_dwarf,&
                      sepa_var,macc_var,mdon_var,menv_var,facc_var,fdon_var,&
-                     dr_period_ref,dr_period_new,dr_step_counter
+                     dr_period_ref,dr_period_new,dr_step_counter,dr_mdotdot,dr_mdot_old,&
+                     dr_mdot_max
   use cp_vars, only: cp_don_mdot,cp_bin_sepa,cp_driver_sepa,cp_don_radius,cp_mass_ratio,&
                      cp_mdot_max,cp_virtemp,cp_mintemp,cp_maxtemp,cp_bin_peri,&
                      cp_tot_mass,cp_tot_mass_initial,cp_eje_mass,cp_eje_mass_peak,&
@@ -112,8 +113,11 @@
   end if
 
 ! Reference mdot
+  dr_mdot_max   = max(abs(dr_mdot_max),abs(dr_mdot_new))
+  dr_mdot_old   = dr_mdot_new
   dr_mdot_new   = cp_don_mdot
   dr_period_new = cp_bin_peri
+  dr_mdotdot    = abs(dr_mdot_old-dr_mdot_new)/dr_time_step
 
   return
   end subroutine dr_update_mdot

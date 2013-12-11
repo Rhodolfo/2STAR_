@@ -22,7 +22,8 @@
                      cp_driver_don_freq,cp_driver_acc_freq,&
                      cp_driver_sepa_grw,cp_driver_sepa_dontid,cp_driver_sepa_acctid,&
                      cp_env_mass,cp_env_radius,cp_driver_drag,cp_driver_reso,&
-                     cp_driver_drag_norm,cp_driver_reso_norm
+                     cp_driver_drag_norm,cp_driver_reso_norm,&
+                     cp_driver_nodrag,cp_drag_vel,cp_drag_dens,cp_drag_jorb,cp_drag_area
   use ph_interface, only: ph_kepler_jorb,ph_grw_jdot,ph_eggleton_L1
   implicit none
   real :: j_orb,j_don,j_acc,j_sys,jdot_grw,jdot_sys
@@ -75,17 +76,21 @@
   cp_driver_reso = 0.
 
 ! Drag term
-  q_d       = cp_don_mass / cp_acc_mass
-  vorb      = cp_bin_freq* q_d     *cp_bin_sepa
-  venv      = cp_bin_freq*(1.- q_d)*cp_bin_sepa
-  torque    = 0.
-  area      = ph_pi*(cp_don_radius**2)
+  q_d         = cp_don_mass / cp_acc_mass
+  vorb        = cp_bin_freq* q_d     *cp_bin_sepa
+  venv        = cp_bin_freq*(1.- q_d)*cp_bin_sepa
+  torque      = 0.
+  area        = ph_pi*(cp_don_radius**2)
   if ((cp_env_mass.gt.0.).and.(cp_env_radius.gt.cp_acc_radius)) then 
     rhoave    = (cp_env_mass/(4.0*ph_pi*log(cp_env_radius/cp_acc_radius)))/(cp_bin_sepa**3)
     torque    = cp_bin_sepa*area*rhoave*((abs(vorb-venv))**2)
   else
     rhoave    = 0.
   end if
+  cp_drag_vel    = abs(vorb-venv)
+  cp_drag_dens   = rhoave 
+  cp_drag_area   = area
+  cp_drag_jorb   = j_orb
   cp_driver_drag = abs(torque/(2.0*j_orb)) 
 
 ! Resonant term
@@ -106,9 +111,11 @@
   cp_driver_reso = abs(adot_reso)
 
 ! Include drag
+  cp_driver_nodrag = cp_driver_sepa
   cp_driver_sepa =  cp_driver_sepa &
                  - (cp_driver_drag_norm*cp_driver_drag) &
                  - (cp_driver_reso_norm*cp_driver_reso)
+  
 
   return
   end subroutine cp_driver_terms

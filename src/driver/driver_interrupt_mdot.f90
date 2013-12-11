@@ -10,10 +10,11 @@
                      dr_screen_counter,dr_file_counter,& 
                      dr_step_counter,dr_res_factor,dr_mdot_new,dr_mdot_ref,&
                      dr_head_counter,dr_period_new,dr_period_ref,&
-                     dr_threshhold_reached
+                     dr_threshhold_reached,dr_mdotdot,dr_mdot_new,&
+                     dr_mdot_max,dr_mdot_old
   use io_vars, only: io_save,io_verb,io_path,io_unit
   use dr_interface, only: dr_store_mdot_data,dr_store_full_mdot_data,&
-                          dr_store_envelope, dr_store_pdots,&
+                          dr_store_envelope, dr_store_pdots,dr_store_drag,&
                           dr_header_env,dr_header_pdots
   use io_interface, only: io_2string,io_log,io_quick_write
   implicit none
@@ -51,6 +52,11 @@
       dr_threshhold_reached = .true. 
       if (.not.dr_exit_trigger) then 
       call io_log("[driver] Simulation flagged for reaching thresshold") 
+      end if
+    else if (abs(dr_mdot_new/dr_mdotdot).ge.0.1*abs(cp_don_mass/dr_mdot_new)) then 
+      if (dr_time.gt.dr_time_tolerance) then 
+      dr_exit_trigger = .true.
+      call io_log("[driver] Andrea's max criterion reached")
       end if
     else
     end if
@@ -103,6 +109,7 @@
     call dr_store_envelope
     end if
     end if
+    call dr_store_drag
     call dr_store_pdots
     if (dr_head_counter.ge.15) then 
       call io_log("t/T       t         dt        dt_ode    mdot      env_mass  period    sepa      tscale") 

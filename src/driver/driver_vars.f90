@@ -95,8 +95,11 @@
   real               :: dr_maximum_radius         = 0.
 
 ! Scalars used to force data output or step retries
+  real :: dr_mdotdot
   real :: dr_mdot_new
+  real :: dr_mdot_old
   real :: dr_mdot_ref
+  real :: dr_mdot_max
   real :: dr_period_new
   real :: dr_period_ref
 

@@ -40,7 +40,7 @@
   call IO_log("[driver] Beginning time evolution in dr_perform_mdot_evolution")
   DUMVERB = IO_verb
   IO_verb = .false.
-  do while ( (dr_time.lt.dr_time_tolerance).and.(.not.dr_exit_trigger) )   
+  do while (.not.dr_exit_trigger)
     call dr_interrupt
     if (dr_exit_trigger) exit
     call ode_bs_step(dr_time,dr_time_step,&

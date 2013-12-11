@@ -108,6 +108,10 @@
     implicit none
     end subroutine dr_store_envelope
 
+    subroutine dr_store_drag
+    implicit none
+    end subroutine dr_store_drag
+
     subroutine dr_store_pdots
     implicit none
     end subroutine dr_store_pdots

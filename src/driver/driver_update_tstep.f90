@@ -42,12 +42,7 @@
   if (dr_time_step.lt.0) then 
     call dr_abort("[driver]","Null or negative time step encountered")
   else if (dr_time_step.eq.0) then 
-    if (dr_time.ge.dr_time_tolerance) return
     call dr_abort("[driver]","Null time step encountered")
-  end if
-  if (dr_time_step.ge.0.01*dr_time_tolerance) then 
-    dr_time_step = min(dr_time_step,0.01*dr_time_tolerance)
-    call io_log("[driver] Time step larger than time remaining, shortening")
   end if
   return
 

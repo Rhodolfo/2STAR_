@@ -185,38 +185,37 @@
 
   subroutine dr_store_envelope
   use ph_vars, only: ph_year,ph_msun
-  use dr_vars, only: dr_time,dr_time_step
+  use dr_vars, only: dr_time,dr_time_step,dr_mdotdot
   use cp_vars, only: cp_don_mdot,cp_env_mdot,cp_env_mass,cp_env_radius,cp_env_vesc,&
                      cp_ejection_eff,cp_env_mdot_in,cp_env_mdot_out,&
                      cp_env_toosmall,cp_acc_radius,cp_bin_sepa,&
                      cp_driver_drag,cp_driver_sepa,cp_zeta_sepa,cp_don_mass,&
-                     cp_driver_reso_norm,cp_driver_reso,cp_driver_drag_norm
+                     cp_driver_reso_norm,cp_driver_reso,cp_driver_drag_norm,&
+                     cp_mdotdot,cp_don_mass,cp_acc_mass
   use IO_vars, only: IO_data,IO_path,IO_data,IO_save
   use IO_interface, only: IO_allocate_data,IO_deallocate_data,IO_save_data
   implicit none
   if (.not.IO_save) return
   if (allocated(IO_data)) deallocate(IO_data)
-  call IO_allocate_data(18)
-  IO_data(1:18) = (/ &
+  call IO_allocate_data(17)
+  IO_data(1:17) = (/ &
         dr_time/ph_year,&                              ! 1
         dr_time_step/ph_year,&                         ! 2
-        cp_don_mdot    *ph_year/ph_msun,&              ! 3
-        cp_env_mdot    *ph_year/ph_msun,&              ! 4
-        cp_env_mdot_in *ph_year/ph_msun,&              ! 5
-        cp_env_mdot_out*ph_year/ph_msun,&              ! 6
-        cp_env_mass/ph_msun,&                          ! 7
-        cp_env_radius,&                                ! 8
-        cp_env_vesc,&                                  ! 9
-        cp_ejection_eff,&                              ! 10
-        cp_env_toosmall,&                              ! 11
-        cp_acc_radius,&                                ! 12
-        cp_bin_sepa,&                                  ! 13
-        cp_driver_drag_norm,&                          ! 14 
-        cp_driver_drag,&                               ! 15
-        cp_driver_reso_norm,&                          ! 16
-        cp_driver_reso,&                               ! 17
-        cp_driver_sepa + &
-        cp_zeta_sepa*cp_don_mdot/cp_don_mass &         ! 18 
+        cp_don_mass/ph_msun,&                          ! 3
+        cp_acc_mass/ph_msun,&                          ! 4
+        cp_don_mdot    *ph_year/ph_msun,&              ! 5
+        cp_env_mdot    *ph_year/ph_msun,&              ! 6
+        cp_env_mdot_in *ph_year/ph_msun,&              ! 7
+        cp_env_mdot_out*ph_year/ph_msun,&              ! 8
+        cp_env_mass/ph_msun,&                          ! 9
+        cp_env_radius,&                                ! 10
+        cp_env_vesc,&                                  ! 11
+        cp_ejection_eff,&                              ! 12
+        cp_env_toosmall,&                              ! 13
+        cp_acc_radius,&                                ! 14
+        cp_bin_sepa,&                                  ! 15
+        abs(cp_don_mdot/dr_mdotdot ),&                 ! 16
+        abs(cp_don_mass/cp_don_mdot) &                 ! 17
         /)
     call IO_save_data(IO_path,"env.dat")
     call IO_deallocate_data
@@ -251,3 +250,41 @@
   call IO_save_data(IO_path,"pdots.dat")
   call IO_deallocate_data
   end subroutine dr_store_pdots
+
+
+  subroutine dr_store_drag
+  use ph_vars, only: ph_year,ph_msun
+  use dr_vars, only: dr_time,dr_time_step
+  use cp_vars, only: cp_don_mdot,cp_env_mdot,cp_env_mass,cp_env_radius,cp_env_vesc,&
+                     cp_ejection_eff,cp_env_mdot_in,cp_env_mdot_out,&
+                     cp_env_toosmall,cp_acc_radius,cp_bin_sepa,&
+                     cp_driver_drag,cp_driver_sepa,cp_zeta_sepa,cp_don_mass,&
+                     cp_driver_reso_norm,cp_driver_reso,cp_driver_drag_norm,&
+                     cp_drag_vel,cp_drag_area,cp_drag_dens,cp_driver_nodrag
+  use IO_vars, only: IO_data,IO_path,IO_data,IO_save
+  use IO_interface, only: IO_allocate_data,IO_deallocate_data,IO_save_data
+  implicit none
+  if (.not.IO_save) return
+  if (allocated(IO_data)) deallocate(IO_data)
+  call IO_allocate_data(14)
+  IO_data(1:14) = (/ &
+        dr_time/ph_year,&                              ! 1
+        dr_time_step/ph_year,&                         ! 2
+        cp_don_mdot    *ph_year/ph_msun,&              ! 3
+        cp_env_mdot    *ph_year/ph_msun,&              ! 4
+        cp_env_mass/ph_msun,&                          ! 5
+        cp_drag_dens,&                                 ! 6
+        cp_drag_area,&                                 ! 7
+        cp_drag_vel,&                                  ! 8
+        cp_driver_drag_norm,&                          ! 9
+        cp_driver_drag,&                               ! 10
+        cp_driver_reso_norm,&                          ! 11
+        cp_driver_reso,&                               ! 12
+        cp_driver_sepa + &
+        cp_zeta_sepa*cp_don_mdot/cp_don_mass,&         ! 13 
+        cp_driver_nodrag + &                          
+        cp_zeta_sepa*cp_don_mdot/cp_don_mass &         ! 14 
+        /)
+    call IO_save_data(IO_path,"drag.dat")
+    call IO_deallocate_data
+  end subroutine dr_store_drag
