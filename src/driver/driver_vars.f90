@@ -140,4 +140,9 @@
   real    :: dr_time_eddington_elapsed = 0.0     ! duration of eddington accretion
   real    :: dr_time_peak              = 0.0     ! time at which mdot peaks
 
+! time quotients for andrea
+  real :: dr_tmdon     ! tmdon =  mdon / mdot
+  real :: dr_tmdot     ! tmdot =  mdot / mdotdot
+  real :: dr_quotchk   ! quot  = tmdon / tmdot
+
   end module dr_vars

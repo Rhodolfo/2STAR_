@@ -1,7 +1,7 @@
   subroutine dr_interrupt_mdot
   use     ode, only: ode_dt_suggested
   use ph_vars, only: ph_G,ph_msun,ph_year
-  use cp_vars, only: cp_bin_sepa,cp_bin_peri,cp_don_radius,&
+  use cp_vars, only: cp_bin_sepa,cp_bin_peri,cp_don_radius,cp_don_mass,&
                      cp_don_mdot,cp_mdot_edd,cp_mdot_eq,cp_don_mass,cp_tot_mass,&
                      cp_min_tscale,cp_pot_ra,cp_pot_l1,cp_env_mass
   use dr_vars, only: dr_time,dr_time_tolerance,dr_time_step,dr_time_step_old,&
@@ -11,7 +11,7 @@
                      dr_step_counter,dr_res_factor,dr_mdot_new,dr_mdot_ref,&
                      dr_head_counter,dr_period_new,dr_period_ref,&
                      dr_threshhold_reached,dr_mdotdot,dr_mdot_new,&
-                     dr_mdot_max,dr_mdot_old
+                     dr_mdot_max,dr_mdot_old,dr_mdotdot,dr_quotchk,dr_tmdon,dr_tmdot
   use io_vars, only: io_save,io_verb,io_path,io_unit
   use dr_interface, only: dr_store_mdot_data,dr_store_full_mdot_data,&
                           dr_store_envelope, dr_store_pdots,dr_store_drag,&
@@ -53,7 +53,7 @@
       if (.not.dr_exit_trigger) then 
       call io_log("[driver] Simulation flagged for reaching thresshold") 
       end if
-    else if (abs(dr_mdot_new/dr_mdotdot).ge.0.1*abs(cp_don_mass/dr_mdot_new)) then 
+    else if (abs(dr_mdot_new/dr_mdotdot).ge.0.5*abs(cp_don_mass/dr_mdot_new)) then 
       if (dr_time.gt.dr_time_tolerance) then 
       dr_exit_trigger = .true.
       call io_log("[driver] Andrea's max criterion reached")
@@ -76,6 +76,25 @@
   if ((abs(cp_don_mdot).eq.0.).and.(dr_file_counter.ge.1)) then 
     dr_force_write = .true.
   end if
+
+! If the time is greater than the analytical evolution timescale, 
+! then just write when the t_mdot / t_mdotdot has changed by a certain ammount
+  if (dr_time.ge.dr_time_tolerance) then 
+    dr_force_write = .false.
+    dr_tmdon       = abs(cp_don_mass/cp_don_mdot)
+    dr_tmdot       = abs(cp_don_mdot/dr_mdotdot)
+    if (dr_quotchk.le.0.1) then 
+      call io_log("[driver] Time tolerance has been reached, the mass transfer history &
+                  &is probably flattening out, writting out only when tmdot/tmdon has chaged by 0.05")
+    end if
+    if (dr_tmdot/dr_tmdon.ge.dr_quotchk) then 
+      dr_force_write = .true.
+      dr_quotchk     = dr_quotchk + 0.05
+    end if  
+  else
+    dr_quotchk     = 0.1
+  end if
+
 
 ! Checks done, exiting if insane
   forcing_message = "" 
