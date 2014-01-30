@@ -85,11 +85,11 @@
     dr_tmdot       = abs(cp_don_mdot/dr_mdotdot)
     if (dr_quotchk.le.0.1) then 
       call io_log("[driver] Time tolerance has been reached, the mass transfer history &
-                  &is probably flattening out, writting out only when tmdot/tmdon has chaged by 0.05")
+                  &is probably flattening out, writting out only when tmdot/tmdon has chaged by 0.1")
     end if
     if (dr_tmdot/dr_tmdon.ge.dr_quotchk) then 
       dr_force_write = .true.
-      dr_quotchk     = dr_quotchk + 0.05
+      dr_quotchk     = dr_quotchk + 0.1
     end if  
   else
     dr_quotchk     = 0.1
