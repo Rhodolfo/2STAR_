@@ -53,7 +53,7 @@
       if (.not.dr_exit_trigger) then 
       call io_log("[driver] Simulation flagged for reaching thresshold") 
       end if
-    else if (abs(dr_mdot_new/dr_mdotdot).ge.0.5*abs(cp_don_mass/dr_mdot_new)) then 
+    else if (abs(dr_mdot_new/dr_mdotdot).ge.0.1*abs(cp_don_mass/dr_mdot_new)) then 
       if (dr_time.gt.dr_time_tolerance) then 
       dr_exit_trigger = .true.
       call io_log("[driver] Andrea's max criterion reached")
@@ -79,21 +79,21 @@
 
 ! If the time is greater than the analytical evolution timescale, 
 ! then just write when the t_mdot / t_mdotdot has changed by a certain ammount
-  if (dr_time.ge.dr_time_tolerance) then 
-    dr_force_write = .false.
-    dr_tmdon       = abs(cp_don_mass/cp_don_mdot)
-    dr_tmdot       = abs(cp_don_mdot/dr_mdotdot)
-    if (dr_quotchk.le.0.1) then 
-      call io_log("[driver] Time tolerance has been reached, the mass transfer history &
-                  &is probably flattening out, writting out only when tmdot/tmdon has chaged by 0.1")
-    end if
-    if (dr_tmdot/dr_tmdon.ge.dr_quotchk) then 
-      dr_force_write = .true.
-      dr_quotchk     = dr_quotchk + 0.1
-    end if  
-  else
-    dr_quotchk     = 0.1
-  end if
+! if (dr_time.ge.dr_time_tolerance) then 
+!   dr_force_write = .false.
+!   dr_tmdon       = abs(cp_don_mass/cp_don_mdot)
+!   dr_tmdot       = abs(cp_don_mdot/dr_mdotdot)
+!   if (dr_quotchk.le.0.1) then 
+!     call io_log("[driver] Time tolerance has been reached, the mass transfer history &
+!                 &is probably flattening out, writting out only when tmdot/tmdon has chaged by 0.1")
+!   end if
+!   if (dr_tmdot/dr_tmdon.ge.dr_quotchk) then 
+!     dr_force_write = .true.
+!     dr_quotchk     = dr_quotchk + 0.1
+!   end if  
+! else
+!   dr_quotchk     = 0.1
+! end if
 
 
 ! Checks done, exiting if insane

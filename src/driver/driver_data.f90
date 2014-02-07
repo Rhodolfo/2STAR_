@@ -185,7 +185,7 @@
 
   subroutine dr_store_envelope
   use ph_vars, only: ph_year,ph_msun
-  use dr_vars, only: dr_time,dr_time_step,dr_mdotdot
+  use dr_vars, only: dr_time,dr_time_step,dr_mdotdot,dr_time_tolerance
   use cp_vars, only: cp_don_mdot,cp_env_mdot,cp_env_mass,cp_env_radius,cp_env_vesc,&
                      cp_ejection_eff,cp_env_mdot_in,cp_env_mdot_out,&
                      cp_env_toosmall,cp_acc_radius,cp_bin_sepa,&
@@ -218,6 +218,7 @@
         abs(cp_don_mass/cp_don_mdot) &                 ! 17
         /)
     call IO_save_data(IO_path,"env.dat")
+    if (dr_time.ge.0.8*dr_time_tolerance) call IO_save_data(IO_path,"env_late.dat")
     call IO_deallocate_data
   end subroutine dr_store_envelope
 

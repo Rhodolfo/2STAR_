@@ -6,33 +6,33 @@ VPATH += src
  
 # Source files from driver unit
 driver =\
+driver.f90 \
 driver_abort.f90 \
 driver_ballistic.f90 \
 driver_data.f90 \
-driver.f90 \
 driver_func.f90 \
 driver_header_extras.f90 \
 driver_header_main.f90 \
-driver_init_ballistic.f90 \
 driver_init.f90 \
+driver_init_ballistic.f90 \
 driver_init_mdot.f90 \
 driver_interface.f90 \
-driver_interrupt_ballistic.f90 \
 driver_interrupt.f90 \
+driver_interrupt_ballistic.f90 \
 driver_interrupt_mdot.f90 \
 driver_main.f90 \
 driver_mdot.f90 \
 driver_post.f90 \
 driver_reset.f90 \
 driver_restore_defaults.f90 \
+driver_stability.f90 \
 driver_stability_1.f90 \
 driver_stability_2.f90 \
 driver_stability_3.f90 \
-driver_stability.f90 \
 driver_stability_slaves.f90 \
 driver_stop.f90 \
-driver_update_ballistic.f90 \
 driver_update.f90 \
+driver_update_ballistic.f90 \
 driver_update_mdot.f90 \
 driver_update_tstep.f90 \
 driver_vars.f90 
@@ -45,8 +45,8 @@ uobjs  += ${patsubst %.f90, %.o ,${ode}}
  
 # Source files from io unit
 io =\
-io_data.f90 \
 io.f90 \
+io_data.f90 \
 io_file_handling.f90 \
 io_header.f90 \
 io_interface.f90 \
@@ -64,13 +64,13 @@ uobjs  += ${patsubst %.f90, %.o ,${mkracken}}
  
 # Source files from component unit
 component =\
+component.f90 \
+component_L1.f90 \
 component_eddington.f90 \
 component_envelope.f90 \
 component_evol.f90 \
-component.f90 \
 component_getvirtemp.f90 \
 component_interface.f90 \
-component_L1.f90 \
 component_main.f90 \
 component_mdot.f90 \
 component_stars.f90 \
@@ -83,8 +83,8 @@ uobjs  += ${patsubst %.f90, %.o ,${component}}
  
 # Source files from medium unit
 medium =\
-medium_calc.f90 \
 medium.f90 \
+medium_calc.f90 \
 medium_init.f90 \
 medium_interface.f90 \
 medium_lightcurve.f90 \
@@ -94,8 +94,8 @@ uobjs  += ${patsubst %.f90, %.o ,${medium}}
  
 # Source files from physics unit
 physics =\
-physics_eggleton.f90 \
 physics.f90 \
+physics_eggleton.f90 \
 physics_grav.f90 \
 physics_inertial.f90 \
 physics_interface.f90 \
@@ -109,8 +109,8 @@ uobjs  += ${patsubst %.f90, %.o ,${physics}}
  
 # Source files from eos unit
 eos =\
-eos_cons.f90 \
 eos.f90 \
+eos_cons.f90 \
 eos_func.f90 \
 eos_helmeos.f90 \
 eos_helmholtz.f90 \
