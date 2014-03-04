@@ -11,7 +11,8 @@
                      dr_step_counter,dr_res_factor,dr_mdot_new,dr_mdot_ref,&
                      dr_head_counter,dr_period_new,dr_period_ref,&
                      dr_threshhold_reached,dr_mdotdot,dr_mdot_new,&
-                     dr_mdot_max,dr_mdot_old,dr_mdotdot,dr_quotchk,dr_tmdon,dr_tmdot
+                     dr_mdot_max,dr_mdot_old,dr_mdotdot,dr_quotchk,dr_tmdon,dr_tmdot,&
+                     dr_time_contact,dr_time_peak
   use io_vars, only: io_save,io_verb,io_path,io_unit
   use dr_interface, only: dr_store_mdot_data,dr_store_full_mdot_data,&
                           dr_store_envelope, dr_store_pdots,dr_store_drag,&
@@ -53,10 +54,11 @@
       if (.not.dr_exit_trigger) then 
       call io_log("[driver] Simulation flagged for reaching thresshold") 
       end if
-    else if (abs(dr_mdot_new/dr_mdotdot).ge.0.1*abs(cp_don_mass/dr_mdot_new)) then 
+    else if (abs(dr_mdot_new/dr_mdotdot).ge.0.3*abs(cp_don_mass/dr_mdot_new)) then 
       if (dr_time.gt.dr_time_tolerance) then 
       dr_exit_trigger = .true.
       call io_log("[driver] Andrea's max criterion reached")
+      write(*,*) "t,tco,tpe,tsto",dr_time,dr_time_contact,dr_time_peak,dr_time_contact+2.0*(dr_time_peak-dr_time_contact)
       end if
     else
     end if
@@ -102,6 +104,7 @@
     call io_log("[driver] Writting headers")
     call io_log("t/T       t         dt        dt_ode    mdot      env_mass  period    sepa      tscale") 
     call dr_header_env(io_unit,io_path,"env.dat")
+    call dr_header_env(io_unit,io_path,"env_late.dat") 
     call dr_header_pdots(io_unit,io_path,"pdots.dat")
   end if  
   if (((dr_time/dr_time_tolerance).gt.(0.05*dr_screen_counter)).or.dr_interrupting.or.dr_force_write) then

@@ -4,7 +4,7 @@
   use cp_vars, only: cp_don_mass,cp_acc_mass,cp_setup_var,&
                      cp_don_freq,cp_acc_freq,cp_env_mass
   use cp_interface, only: cp_auxiliary_parameters
-  use io_interface, only: io_write_header,io_2string,io_log
+  use io_interface, only: io_2string,io_log
   implicit none 
   integer, intent(in) :: mode
   real   , intent(in) :: donmass,accmass,envmass,invar,donfreq,accfreq

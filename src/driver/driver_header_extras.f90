@@ -44,6 +44,8 @@
   write(un,*) "# 15 bin_separation(cm)"
   write(un,*) "# 16 t_mdotdot = mdot / mdotdot (s)"
   write(un,*) "# 17 t_mdot    = mdon / mdot    (s)" 
+  write(un,*) "# 18 t_mdotdot_env = mdot_env / mdotdot_env (s)"
+  write(un,*) "# 19 t_mdot_env    = mdon_env / mdot_env    (s)"  
   if (.not.is_stdout) &
   close(un)
 

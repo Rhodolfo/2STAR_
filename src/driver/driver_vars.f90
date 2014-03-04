@@ -89,8 +89,11 @@
   real               :: dr_time                   = 0.
   real               :: dr_time_step              = 0.
   real               :: dr_time_step_old          = 0.
+  real               :: dr_time_step_max          = 0.
   real               :: dr_time_tolerance         = 0.
   real               :: dr_time_step_tolerance    = 0.
+! real               :: dr_time_peak              = 0. 
+  real               :: dr_time_contact           = 0.
   real               :: dr_line_tolerance         = 0.
   real               :: dr_maximum_radius         = 0.
 
@@ -102,6 +105,11 @@
   real :: dr_mdot_max
   real :: dr_period_new
   real :: dr_period_ref
+
+! Scalars use to see if the envelope is losing mass at a steady rate
+  real :: dr_mdotdot_env
+  real :: dr_mdot_new_env
+  real :: dr_mdot_old_env
 
 ! vectors that store values for solving differential equations
 ! for an mdot evolution 

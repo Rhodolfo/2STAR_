@@ -6,7 +6,7 @@
                      dr_mdot_vector_old,dr_mdot_vector_new,dr_include_tides,dr_res_factor,&
                      dr_time_peak,dr_mdot_new,dr_mdot_ref,dr_initial_mdot_tstep,&
                      sepa_var,mdon_var,macc_var,menv_var,facc_var,fdon_var,dr_step_counter,&
-                     dr_period_new,dr_period_ref,dr_tmax
+                     dr_period_new,dr_period_ref,dr_tmax,dr_time_contact,dr_time_step_max
   use cp_vars, only: cp_mintemp,cp_maxtemp,cp_tot_mass,cp_tot_mass_initial,&
                      cp_initial_mdot_edd,cp_initial_sepa,cp_initial_peri,&
                      cp_mdot_edd,cp_bin_sepa,cp_bin_peri,cp_bin_freq,&
@@ -32,11 +32,13 @@
   dr_eddington_switch       = .false.
   dr_eddington_exit_switch  = .false.
   dr_time_peak              = 0.0
+  dr_time_contact           = 0.0
   dr_time_tolerance         = dr_tmax*max(cp_tau_chr,cp_tau_iso,cp_tau_star,cp_tau)
   if (cp_roche_radius.ge.1.01*cp_don_radius) then 
     call io_log("[driver] The onset of mass transfer is far away, evolving for 10^4 GRW timescales")
     dr_time_tolerance         = 1e4*cp_gravitational_tscale
   end if
+  dr_time_step_max          = 0.0
   dr_time_step_tolerance    = dr_res_factor*dr_time_tolerance
   dr_time                   = 0.
   dr_step_counter           = 0
