@@ -77,5 +77,6 @@
     mdot_source_function(facc_var) = cp_driver_acc_freq+cp_zeta_acc_freq*cp_acc_mdot/cp_acc_mass
   else
   end if
+! write(*,*) "[dr_func]",mdot_source_function,dr_include_tides
   return
   end function mdot_source_function

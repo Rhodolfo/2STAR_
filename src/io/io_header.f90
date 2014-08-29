@@ -7,7 +7,9 @@
                      cp_roche_radius,cp_overflow_par,cp_don_mdot,cp_mdot_eq,cp_mdot_edd,&
                      cp_stream_theta,cp_stream_cs,cp_stream_temp,&
                      cp_mass_transfer_tscale,cp_gravitational_tscale,cp_total_tscale,&
-                     cp_tau_star,cp_L_edd,cp_initial_pos,cp_initial_vel
+                     cp_tau_star,cp_L_edd,cp_initial_pos,cp_initial_vel,&
+                     cp_acc_freq,cp_don_freq,cp_acc_sync_time,cp_don_sync_time,&
+                     cp_acc_sync_0,cp_don_sync_0
   use dr_vars, only: dr_integration_mode,dr_mode_mdot,dr_mode_post,dr_mode_ballistic,&
                      dr_donor_mode,dr_accretor_mode,dr_mode_he_white_dwarf,dr_mode_co_white_dwarf,dr_mode_neutron_star,&
                      dr_advection_mode,dr_mode_direct_impact,dr_mode_disk_accretion,dr_mode_adaptative,&
@@ -37,7 +39,7 @@
     comment = "# "
   end select
 ! On tot he header
-  write(un,*) comment//"INITIAL DATA AND DERIVED QUANTITITES"
+  write(un,*) comment//"INITIAL DATA AND DERIVED QUANTITIES"
   write(un,*) comment//""
   write(un,*) comment//"MODES AND FLAGS"
 ! Writting out the integration mode
@@ -94,9 +96,13 @@
     write(un,*) comment//"Donor mass         =",cp_don_mass/ph_msun,"msun"
     write(un,*) comment//"Donor radius       =",cp_don_radius    ,"cm"
     write(un,*) comment//"Donor dens         =",cp_don_dens   ,"g/cc" 
+    write(un,*) comment//"Donor frequency    =",cp_don_freq   ,"s"   
+    write(un,*) comment//"Donor sync time    =",cp_don_sync_time/ph_year,"yr"      
     write(un,*) comment//"Accretor mass      =",cp_acc_mass/ph_msun,"msun"
     write(un,*) comment//"Accretor radius    =",cp_acc_radius ,"cm"
     write(un,*) comment//"Accretor dens      =",cp_acc_dens,"g/cc"
+    write(un,*) comment//"Accretor frequency =",cp_acc_freq   ,"s"    
+    write(un,*) comment//"Accretor sync time =",cp_acc_sync_time/ph_year,"yr"     
     write(un,*) comment//" "
     write(un,*) comment//"BINARY ORBIT PARAMETERS"
     write(un,*) comment//"Binary separation  =",cp_bin_sepa,"cm"
@@ -154,26 +160,34 @@
       write(un,*) comment//"5       Mdot_2(msun/yr) "
       write(un,*) comment//"6       M_2(msun)       "
       write(un,*) comment//"7       R_2(cm)         "
-      write(un,*) comment//"8       R_L(cm)         "
-      write(un,*) comment//"9       Mdot_1(msun/yr) "
-      write(un,*) comment//"10      M_1(msun/yr)    "
-      write(un,*) comment//"11      R_1(cm)         "
-      write(un,*) comment//"12      R_circ(cm)      "
-      write(un,*) comment//"13      R_minim(cm)     "
-      write(un,*) comment//"14      R_accret(cm)    "
-      write(un,*) comment//"15      Mdot_eq(msun/yr)"
-      write(un,*) comment//"16      Mdot_ed(msun/yr)"
-      write(un,*) comment//"17      Mdotmir(msun/yr)"
-      write(un,*) comment//"18      acc_eff         "
-      write(un,*) comment//"19      q_a             "
-      write(un,*) comment//"20      q_stable        "
-      write(un,*) comment//"21      Gravitational Wave Loss Timescale (yr)"
-      write(un,*) comment//"22      Separation Timescale (yr)"
-      write(un,*) comment//"23      Overflow Timescale (yr)"
-      write(un,*) comment//"24      Mass Transfer Timescale (yr)"
-      write(un,*) comment//"25      Mass Transfer Variation Timescale (yr)"
-      write(un,*) comment//"26      Solution Relaxation Timescale, &
+      write(un,*) comment//"8       F_2(s)          "
+      write(un,*) comment//"9       R_L(cm)         "
+      write(un,*) comment//"10      Mdot_1(msun/yr) "
+      write(un,*) comment//"11      M_1(msun/yr)    "
+      write(un,*) comment//"12      R_1(cm)         "
+      write(un,*) comment//"13      F_1(s)          "
+      write(un,*) comment//"14      R_circ(cm)      "
+      write(un,*) comment//"15      R_minim(cm)     "
+      write(un,*) comment//"16      R_accret(cm)    "
+      write(un,*) comment//"17      Mdot_eq(msun/yr)"
+      write(un,*) comment//"18      Mdot_ed(msun/yr)"
+      write(un,*) comment//"19      acc_eff         "
+      write(un,*) comment//"20      q_a             "
+      write(un,*) comment//"21      q_stable        "
+      write(un,*) comment//"22      Gravitational Wave Loss Timescale (yr)"
+      write(un,*) comment//"23      Separation Timescale (yr)"
+      write(un,*) comment//"24      Overflow Timescale (yr)"
+      write(un,*) comment//"25      Mass Transfer Timescale (yr)"
+      write(un,*) comment//"26      Mass Transfer Variation Timescale (yr)"
+      write(un,*) comment//"27      Solution Relaxation Timescale, &
                                    &tau_star as defined by Ghokale (yr)"
+      write(un,*) comment//"28      Mdot_env(msun/yr)"
+      write(un,*) comment//"29      Env_mass         "
+      write(un,*) comment//"30      Env_radius       "
+      write(un,*) comment//"31      Env_teff         "
+      write(un,*) comment//"32      End_wind_mdot    "
+ 
+
     else
       call dr_abort("io_write_header","Invalid integration mode for routine")
     end if

@@ -44,6 +44,10 @@
     implicit none
     end subroutine cp_binary_parameters
 
+    subroutine cp_binary_tides
+    implicit none
+    end subroutine cp_binary_tides
+
     subroutine cp_binary_parameters_period
     implicit none
     end subroutine cp_binary_parameters_period

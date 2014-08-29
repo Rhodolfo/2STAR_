@@ -8,11 +8,11 @@
   use cp_vars, only: cp_don_mass,cp_acc_mass,cp_don_radius,cp_acc_radius,&
                      cp_don_pos,cp_acc_pos,cp_don_sync_0,cp_acc_sync_0,&
                      cp_don_sync_time,cp_acc_sync_time,&
-                     cp_don_sync_freq,cp_acc_sync_freq,&
                      cp_bin_freq,cp_min_radius,cp_cir_radius,cp_roche_radius,&
                      cp_mass_ratio,cp_bin_sepa,cp_bin_peri, &
                      cp_roche_limit,cp_contact_limit,cp_overflow_par,cp_setup_var,&
-                     cp_vesc,cp_L_edd,cp_don_mdot,cp_opacity,cp_tot_mass,cp_don_mdot
+                     cp_vesc,cp_L_edd,cp_don_mdot,cp_opacity,cp_tot_mass,cp_don_mdot,&
+                     cp_acc_freq,cp_don_freq
   use ph_interface, only: ph_eggleton_formula,ph_eggleton_rcirc,ph_eggleton_rmin 
   use dr_interface, only: dr_abort
   use cp_interface, only: cp_binary_parameters_period,cp_binary_parameters_separation,&
@@ -61,31 +61,5 @@
   call cp_get_mdot
   call cp_envelope
 
-! Let's handle some tidal terms
-  if (dr_initial_mdot_tstep) then 
-    call IO_log("[component] Saving initial syncronization timescales and relevant data")
-    cp_don_sync_0      = cp_don_sync_0/((cp_mass_ratio**2)*((cp_bin_sepa/cp_don_radius)**6))
-    cp_acc_sync_0      = cp_acc_sync_0/(((1./cp_mass_ratio)**2)*((cp_bin_sepa/cp_acc_radius)**6))
-  end if
-  cp_don_sync_time     = cp_don_sync_0*(cp_mass_ratio**2)*((cp_bin_sepa/cp_don_radius)**6)
-  cp_acc_sync_time     = cp_acc_sync_0*((1./cp_mass_ratio)**2)*((cp_bin_sepa/cp_acc_radius)**6)
-  if (.not.dr_include_tides) then
-    cp_don_sync_time   = 1e7
-    cp_acc_sync_time   = 1e7
-  end if
-  cp_don_sync_freq     = 0.
-  cp_acc_sync_freq     = 0.
-  if (cp_don_sync_time.gt.0.) then
-    cp_don_sync_freq   = 1./cp_don_sync_time
-  else
-    call dr_abort("cp_binary_parameters","Donor syncronization time is negative")
-  end if
-  if (cp_acc_sync_time.gt.0.) then 
-    cp_acc_sync_freq   = 1./cp_acc_sync_time
-  else
-    call dr_abort("cp_binary_parameters","Accretor syncronization time is negative") 
-  end if
-
-! Additional things that depend on mdot
   return
   end subroutine cp_binary_parameters

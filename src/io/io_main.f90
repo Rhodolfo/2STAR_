@@ -13,7 +13,7 @@
                      dr_accretor,dr_donor,dr_accretor_mode,dr_donor_mode,&
                      dr_setup_mode,dr_mode_period,dr_mode_separation,dr_mode_mdot,&
                      dr_mode_contact,dr_invar,dr_tmax
-  use cp_vars, only: cp_acc_mass,cp_don_mass,cp_don_tau,cp_acc_tau,&
+  use cp_vars, only: cp_acc_mass,cp_don_mass,&
                      cp_setup_var,cp_don_sync_0,cp_acc_sync_0,&
                      cp_bin_peri,cp_bin_sepa,cp_don_mdot,&
                      cp_driver_reso_norm,cp_driver_drag_norm
@@ -35,8 +35,8 @@
                      &-eddington .true.     &
                      &-advection adapt      &                      
                      &-tidal     .false.    &
-                     &-dontau    1.0        &
-                     &-acctau    1.0        &
+                     &-dontau    1000.0     &
+                     &-acctau    1000.0     &
                      &-verbose .true.       &
                      &-interrupting .false. &
                      &-phase 0              &
@@ -57,9 +57,6 @@
   dr_tmax          = rget('cmd_tmax')
   cp_don_mass      = rget('cmd_donmass')
   cp_acc_mass      = rget('cmd_accmass')
-  cp_don_tau       = rget('cmd_dontau')
-  cp_acc_mass      = rget('cmd_accmass')
-  cp_acc_tau       = rget('cmd_acctau')
   dr_res_factor    = rget('cmd_res')
   io_verb          = lget('cmd_verbose')
   dr_eddington     = lget('cmd_eddington')

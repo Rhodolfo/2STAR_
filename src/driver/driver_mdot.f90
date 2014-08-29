@@ -1,13 +1,13 @@
   subroutine dr_perform_mdot_evolution(setmode,dm,am,invar,donfreq,accfreq)
 ! Integrates the evolution equations for the peri, masses and
 ! frequencies (if tides are included).
-  use     ode, only: ode_bs_step,ode_error_control,ode_dt_suggested
+  use     ode, only: ode_bs_step,ode_error_control,ode_dt_suggested,ode_rk4_step
   use dr_vars, only: dr_time,dr_time_tolerance,dr_time_step,&
                      dr_exit_trigger,dr_setup_mode,&
-                     dr_mdot_vector_old,dr_mdot_vector_new
+                     dr_mdot_vector_old,dr_mdot_vector_new,dr_include_tides
   use cp_vars, only: cp_don_mass,cp_acc_mass,cp_don_freq,&
                      cp_acc_freq,cp_setup_var,cp_bin_sepa,&
-                     cp_env_mass
+                     cp_env_mass,cp_don_sync_0
   use io_vars, only: io_verb
   use dr_interface, only: dr_init,mdot_source_function,dr_interrupt,dr_update
   use io_interface, only: io_log
@@ -43,9 +43,15 @@
   do while (.not.dr_exit_trigger)
     call dr_interrupt
     if (dr_exit_trigger) exit
-    call ode_bs_step(dr_time,dr_time_step,&
-                    dr_mdot_vector_old,dr_mdot_vector_new,&
-                    mdot_source_function)  
+    if (.not.dr_include_tides) then 
+      call ode_bs_step(dr_time,dr_time_step,&
+                       dr_mdot_vector_old,dr_mdot_vector_new,&
+                       mdot_source_function)  
+    else  
+      call ode_bs_step(dr_time,dr_time_step,&
+                       dr_mdot_vector_old,dr_mdot_vector_new,&
+                       mdot_source_function)   
+    end if
     call dr_update
   end do
   call IO_log("[driver] Loop is done")

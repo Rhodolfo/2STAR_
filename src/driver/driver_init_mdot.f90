@@ -46,7 +46,7 @@
   if (allocated(dr_mdot_vector_old)) deallocate(dr_mdot_vector_old)
   if (allocated(dr_mdot_vector_new)) deallocate(dr_mdot_vector_new) 
   if (allocated(ode_ref_scale))      deallocate(ode_ref_scale)
-  call IO_log("[driver] Allocating data arrays for mdot evolution, saving data in arrauys")
+  call IO_log("[driver] Allocating data arrays for mdot evolution, saving data in arrays")
   if (dr_include_tides) then 
     allocate(dr_mdot_vector_old(6),dr_mdot_vector_new(6),ode_ref_scale(6))
     dr_mdot_vector_old(SEPA_VAR) = cp_bin_sepa

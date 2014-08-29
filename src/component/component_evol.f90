@@ -17,7 +17,7 @@
   use dr_vars, only: dr_include_tides
   use cp_vars, only: cp_bin_sepa,cp_bin_freq,cp_don_mass,cp_acc_mass,&
                      cp_don_radius,cp_acc_radius,cp_don_freq,cp_acc_freq,&
-                     cp_don_k_factor,cp_acc_k_factor,cp_don_sync_freq,cp_acc_sync_freq,&
+                     cp_don_k_factor,cp_acc_k_factor,cp_don_sync_time,cp_acc_sync_time,&
                      cp_driver_sepa,cp_driver_roche,cp_driver_don_radius,&
                      cp_driver_don_freq,cp_driver_acc_freq,&
                      cp_driver_sepa_grw,cp_driver_sepa_dontid,cp_driver_sepa_acctid,&
@@ -43,10 +43,12 @@
   jdot_sys     = jdot_grw ! Mass loss is incorporated in the zeta terms, since it goes as don_mdot
 ! Handle tidal terms
   if (dr_include_tides) then 
-    jdot_tid_don = cp_don_sync_freq*cp_don_k_factor*&
-                   cp_don_mass*(cp_don_radius**2)*(cp_bin_freq-cp_don_freq)
-    jdot_tid_acc = cp_acc_sync_freq*cp_acc_k_factor*&
-                   cp_acc_mass*(cp_acc_radius**2)*(cp_bin_freq-cp_acc_freq)
+    jdot_tid_don = cp_don_k_factor*&
+                   cp_don_mass*(cp_don_radius**2)*(cp_bin_freq-cp_don_freq)/&
+                   cp_don_sync_time
+    jdot_tid_acc = cp_acc_k_factor*&
+                   cp_acc_mass*(cp_acc_radius**2)*(cp_bin_freq-cp_acc_freq)/&
+                   cp_acc_sync_time
     jdot_tid     = jdot_tid_don + jdot_tid_acc
   else 
     jdot_tid_don = 0.
@@ -63,8 +65,8 @@
   cp_driver_don_radius = 0.0
 
 ! Driver for the spins
-  cp_driver_don_freq = (cp_bin_freq-cp_don_freq)*cp_don_sync_freq
-  cp_driver_acc_freq = (cp_bin_freq-cp_acc_freq)*cp_acc_sync_freq
+  cp_driver_don_freq = (cp_bin_freq-cp_don_freq)/cp_don_sync_time
+  cp_driver_acc_freq = (cp_bin_freq-cp_acc_freq)/cp_acc_sync_time
 
 ! Separating out just for data output
   cp_driver_sepa_grw    =   2.0*jdot_sys    /j_orb
@@ -112,10 +114,9 @@
 
 ! Include drag
   cp_driver_nodrag = cp_driver_sepa
-  cp_driver_sepa =  cp_driver_sepa &
-                 - (cp_driver_drag_norm*cp_driver_drag) &
-                 - (cp_driver_reso_norm*cp_driver_reso)
-  
+  cp_driver_sepa   =  cp_driver_sepa &
+                   - (cp_driver_drag_norm*cp_driver_drag) &
+                   - (cp_driver_reso_norm*cp_driver_reso) 
 
   return
   end subroutine cp_driver_terms
@@ -226,15 +227,19 @@
 
 ! Calculating zeta terms for the spins
   if (dr_include_tides) then 
-    lambda = 1. + cp_don_k_zeta + 2.*cp_don_zeta
-    cp_zeta_don_freq    = (j_2/cp_don_k_factor*(cp_don_radius*2))-lambda*cp_don_freq
-    lambda = 1. + cp_acc_k_zeta + 2.*cp_acc_zeta 
-    cp_zeta_acc_freq = (j_1/cp_acc_k_factor*(cp_acc_radius*2))-lambda*cp_acc_freq
+  ! donor
+    lambda           = 1. + cp_don_k_zeta + 2.*cp_don_zeta
+    j_2              = j_2 / ((cp_don_k_factor*(cp_don_radius**2))) 
+    cp_zeta_don_freq = j_2 - lambda*cp_don_freq 
+  ! accretor
+    lambda           = 1. + cp_acc_k_zeta + 2.*cp_acc_zeta 
+    j_1              = j_1 / ((cp_acc_k_factor*(cp_acc_radius**2)))
+    cp_zeta_acc_freq = j_1 - lambda*cp_acc_freq
   else
     cp_zeta_don_freq = 0.
     cp_zeta_acc_freq = 0.
   end if
-
+ 
 ! Calculating q_stable
   cp_q_stable = cp_q_a + 0.5*(cp_don_zeta-ph_eggleton_formula_zeta(cp_mass_ratio,cp_accretion_eff))
 

@@ -1,5 +1,5 @@
   subroutine dr_update_mdot
-  use ode, only: ode_reject_step,ode_dt_suggested
+  use ode, only: ode_reject_step,ode_dt_suggested,ode_ref_scale
   use ph_vars, only: ph_mchandra,ph_year,ph_msun
   use dr_vars, only: dr_include_tides,dr_accretion_flow,&
                      dr_is_sub_eddington,dr_is_super_eddington,&
@@ -28,6 +28,10 @@
   donmass = dr_mdot_vector_new(mdon_var)
   accmass = dr_mdot_vector_new(macc_var)
   envmass = dr_mdot_vector_new(menv_var)
+  if (dr_include_tides) then
+    ode_ref_scale(fdon_var) = max(1./cp_bin_peri,ode_ref_scale(fdon_var))
+    ode_ref_scale(facc_var) = max(1./cp_bin_peri,ode_ref_scale(fdon_var))
+  end if
 
 ! Checking for a rejected time step from the ODE integrator
   if (ode_reject_step) then 

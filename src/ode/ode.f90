@@ -322,10 +322,14 @@
 ! On to the BS method:
 ! Doing the first integration
   call ode_mm_step(time_value,time_step,solution_old,solution_dum,source_function,n(1))
+! write(*,*) "[ode-ba]",solution_old  
+! write(*,*) "[ode-ba]",solution_dum  
   T(:,1,1) = solution_dum(:)
 ! Let's complete the tableau
   do ii = 1,kmax
     call ode_mm_step(time_value,time_step,solution_old,solution_dum,source_function,n(ii))
+!   write(*,*) "[ode-ii]",solution_old  
+!   write(*,*) "[ode-ba]",solution_dum  
     T(:,ii,1) = solution_dum(:) 
     do jj = 2,ii
       T(:,ii,jj) = T(:,ii,jj-1) + (T(:,ii,jj-1)-T(:,ii-1,jj-1))/((real(n(ii))/(real(n(ii-jj+1))))**2-1)

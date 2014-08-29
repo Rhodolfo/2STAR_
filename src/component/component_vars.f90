@@ -47,9 +47,7 @@
   real :: cp_don_k_zeta       = 0.
   real :: cp_don_sync_0       = 0.
   real :: cp_don_sync_time    = 0.
-  real :: cp_don_sync_freq    = 0.
   real :: cp_don_dens         = 0.
-  real :: cp_don_tau          = 0. 
   real :: cp_don_mdot         = 0.
 
 ! Accretor variables
@@ -61,9 +59,7 @@
   real :: cp_acc_k_zeta       = 0.
   real :: cp_acc_sync_0       = 0.
   real :: cp_acc_sync_time    = 0.
-  real :: cp_acc_sync_freq    = 0.
   real :: cp_acc_dens         = 0.
-  real :: cp_acc_tau          = 0.
   real :: cp_acc_mdot
 
 ! Envelope variables

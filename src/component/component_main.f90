@@ -32,8 +32,10 @@
 
 
   subroutine cp_auxiliary_parameters
+  use cp_vars
   use dr_interface, only: dr_perform_ballistic_evolution
-  use cp_interface, only: cp_star_parameters,cp_binary_parameters,cp_star_parameters
+  use cp_interface, only: cp_star_parameters,cp_binary_parameters,& 
+                          cp_binary_tides,cp_stream_parameters,cp_evolution_coefficients
   implicit none
 ! This routine simply sets the stage for the numerical integration, I define the
 ! total mass, the mass quotient, the reduced mass and other parameters relevant
@@ -43,6 +45,8 @@
 ! Binary system parameters are set here, once a peri, sepa or mass
 ! transfer rate is given -> Non-scalable parameters
   call cp_binary_parameters
+! Tides
+  call cp_binary_tides
 ! Stream parameters are set here, mostly used for the test particle evolution
   call cp_stream_parameters
 ! Driver terms and effective exponents for the mdot evolution

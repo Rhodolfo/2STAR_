@@ -21,7 +21,7 @@ unset y2tics
 set title "Overflow"
 set ylabel "{/Symbol D}(Rsun)"
 set output data_path."/overflow".suffix.".".extension
-plot data_path."/mdot.dat" u 1:($7-$8) lt -1 lc 3 title "Overflow" with lines
+plot data_path."/mdot.dat" u 1:($7-$9) lt -1 lc 3 title "Overflow" with lines
 
 set ylabel "Mass(M)"
 unset log y
@@ -30,32 +30,32 @@ unset y2tics
 set title "Mass of Components"
 set output data_path."/mass".suffix.".".extension
 plot data_path."/mdot.dat" u 1:6  lt -1 lc 3 title "Donor Mass" with lines,\
-     data_path."/mdot.dat" u 1:10 lt -1 lc 2 title "Accretor Mass" with lines,\
-     data_path."/mdot.dat" u 1:($6+$10) lt -1 lc 1 title "Total Mass" with lines
+     data_path."/mdot.dat" u 1:11 lt -1 lc 2 title "Accretor Mass" with lines,\
+     data_path."/mdot.dat" u 1:($6+$11) lt -1 lc 1 title "Total Mass" with lines
 
 set ylabel "Ratio"
 set title "Mass Ratio"
 set output data_path."/q".suffix.".".extension
-plot data_path."/mdot.dat" u 1:($6/$10) lt -1 lc 3 title "q" with lines,\
-     data_path."/mdot.dat" u 1:20 lt 0 lc 3 title "q_s" with lines,\
-     data_path."/mdot.dat" u 1:19 lt 0 lc 2 title "q_a" with lines
+plot data_path."/mdot.dat" u 1:($6/$11) lt -1 lc 3 title "q" with lines,\
+     data_path."/mdot.dat" u 1:21 lt 0 lc 3 title "q_s" with lines,\
+     data_path."/mdot.dat" u 1:20 lt 0 lc 2 title "q_a" with lines
 
 set ylabel "Efficiency"
 set title "Accretion Efficiency"
 set output data_path."/eff".suffix.".".extension
-plot data_path."/mdot.dat" u 1:18 lt -1 lc 3 title "Beta" with lines
+plot data_path."/mdot.dat" u 1:19 lt -1 lc 3 title "Beta" with lines
 
 set ylabel "Timescale (yr)"
 set log y
 set format y "10^{%L}"
 set title "Characteristic Timescales as a Function of Time"
 set output data_path."/timescales".suffix.".".extension
-plot data_path."/mdot.dat" u 1:21 lt -1 lc 1 title "GR Waves" with lines,\
-     data_path."/mdot.dat" u 1:22 lt -1 lc 2 title "Separation" with lines,\
-     data_path."/mdot.dat" u 1:23 lt -1 lc 3 title "Overflow" with lines,\
-     data_path."/mdot.dat" u 1:24 lt -1 lc 4 title "Mass Transfer" with lines,\
-     data_path."/mdot.dat" u 1:25 lt -1 lc 5 title "Mass Transfer Variation" with lines,\
-     data_path."/mdot.dat" u 1:26 lt -1 lc 6 title "Relaxation Timescale" with lines,\
+plot data_path."/mdot.dat" u 1:22 lt -1 lc 1 title "GR Waves" with lines,\
+     data_path."/mdot.dat" u 1:23 lt -1 lc 2 title "Separation" with lines,\
+     data_path."/mdot.dat" u 1:24 lt -1 lc 3 title "Overflow" with lines,\
+     data_path."/mdot.dat" u 1:25 lt -1 lc 4 title "Mass Transfer" with lines,\
+     data_path."/mdot.dat" u 1:26 lt -1 lc 5 title "Mass Transfer Variation" with lines,\
+     data_path."/mdot.dat" u 1:27 lt -1 lc 6 title "Relaxation Timescale" with lines,\
      data_path."/mdot.dat" u 1:($2/res_factor)  lt 0 lc 7 title "Time step x res_factor" with lines,\
      data_path."/mdot.dat" u 1:($4/year) lt -1 lc 8 title "Period" with lines
 set format y "%g"
@@ -64,16 +64,16 @@ set ylabel "Radius (cm)"
 unset log y
 set title "Radius of Accretor, Disk or Direct Impact"
 set output data_path."/disk_impact".suffix.".".extension
-plot data_path."/mdot.dat" u 1:11 lt -1 lc 3 title "Accretor Radius" with lines,\
-     data_path."/mdot.dat" u 1:12 lt -1 lc 1 title "Circularization Radius" with lines,\
-     data_path."/mdot.dat" u 1:13 lt -3 lc 2 title "Minimum Approach" with lines
+plot data_path."/mdot.dat" u 1:12 lt -1 lc 3 title "Accretor Radius" with lines,\
+     data_path."/mdot.dat" u 1:13 lt -1 lc 1 title "Circularization Radius" with lines,\
+     data_path."/mdot.dat" u 1:14 lt -3 lc 2 title "Minimum Approach" with lines
 
 set ylabel "Radius (cm)"
 unset log y
 set title "Radius of Donor and Roche Lobe"
 set output data_path."/donor_radius".suffix.".".extension
 plot data_path."/mdot.dat" u 1:7 lt -1 lc 3 title "Donor Radius" with lines,\
-     data_path."/mdot.dat" u 1:8 lt -1 lc 1 title "Roche Radius" with lines
+     data_path."/mdot.dat" u 1:9 lt -1 lc 1 title "Roche Radius" with lines
 
 set title   "Mass Transfer Rate"
 set ylabel  "M_{dot}(M/yr)"
@@ -82,7 +82,7 @@ set log y
 set format y "10^{%L}"
 set output data_path."/mdot".suffix.".".extension
 plot data_path."/mdot.dat" u 1:(-$5)  lc -1 lt -1  lw 1 title "M_{dot}" with lines,\
-     data_path."/mdot.dat" u 1:(-$15) lc -1 lt  0  lw 3 title "M_{dotEq}" with lines,\
-     data_path."/mdot.dat" u 1:16     lc -1 lt  2  lw 3 title "M_{dotEd}" with lines
+     data_path."/mdot.dat" u 1:(-$17) lc -1 lt  0  lw 3 title "M_{dotEq}" with lines,\
+     data_path."/mdot.dat" u 1:18     lc -1 lt  2  lw 3 title "M_{dotEd}" with lines
 unset log y
 set format y "%g"

@@ -9,14 +9,15 @@
                      cp_q_a,cp_q_stable,cp_gravitational_tscale,cp_total_tscale,&
                      cp_overflow_tscale,cp_mass_transfer_tscale,&
                      cp_mass_transfer_change_tscale,cp_tau_star,&
-                     cp_env_mdot,cp_env_mass,cp_env_radius,cp_env_teff,cp_wind_mdot
+                     cp_env_mdot,cp_env_mass,cp_env_radius,cp_env_teff,cp_wind_mdot,&
+                     cp_acc_freq,cp_don_freq
   use IO_vars, only: IO_data,IO_path,IO_data,IO_save
   use IO_interface, only: IO_allocate_data,IO_deallocate_data,IO_save_data
   implicit none
   if (.not.IO_save) return
   if (allocated(IO_data)) deallocate(IO_data)
-  call IO_allocate_data(30)
-  IO_data(1:30) = (/ &
+  call IO_allocate_data(32)
+  IO_data(1:32) = (/ &
         dr_time/ph_year,&                              !  1
         dr_time_step/ph_year,&                         !  2
         cp_bin_sepa,&                                  !  3
@@ -24,29 +25,31 @@
         cp_don_mdot*ph_year/ph_msun,&                  !  5
         cp_don_mass/ph_msun,&                          !  6
         cp_don_radius,&                                !  7
-        cp_roche_radius,&                              !  8
-        cp_acc_mdot*ph_year/ph_msun,&                  !  9
-        cp_acc_mass/ph_msun,&                          ! 10
-        cp_acc_radius,&                                ! 11
-        cp_cir_radius,&                                ! 12
-        cp_min_radius,&                                ! 13
-        cp_accretion_radius,&                          ! 14
-        cp_mdot_eq*ph_year/ph_msun,&                   ! 15
-        cp_mdot_edd*ph_year/ph_msun,&                  ! 16
-        cp_accretion_eff, &                            ! 17
-        cp_q_a, &                                      ! 18
-        cp_q_stable,&                                  ! 19
-        cp_gravitational_tscale/ph_year,&              ! 20
-        cp_total_tscale/ph_year,&                      ! 21
-        cp_overflow_tscale/ph_year,&                   ! 22
-        cp_mass_transfer_tscale/ph_year,&              ! 23
-        cp_mass_transfer_change_tscale/ph_year,&       ! 24
-        cp_tau_star/ph_year,&                          ! 25
-        cp_env_mdot,&                                  ! 26
-        cp_env_mass,&                                  ! 27
-        cp_env_radius,&                                ! 28
-        cp_env_teff,&                                  ! 29
-        cp_wind_mdot&                                  ! 30
+        cp_don_freq,&                                  !  8 
+        cp_roche_radius,&                              !  9
+        cp_acc_mdot*ph_year/ph_msun,&                  ! 10
+        cp_acc_mass/ph_msun,&                          ! 11
+        cp_acc_radius,&                                ! 12
+        cp_acc_freq,&                                  ! 13
+        cp_cir_radius,&                                ! 14
+        cp_min_radius,&                                ! 15
+        cp_accretion_radius,&                          ! 16
+        cp_mdot_eq*ph_year/ph_msun,&                   ! 17
+        cp_mdot_edd*ph_year/ph_msun,&                  ! 18
+        cp_accretion_eff,&                             ! 19
+        cp_q_a,&                                       ! 20
+        cp_q_stable,&                                  ! 21
+        cp_gravitational_tscale/ph_year,&              ! 22
+        cp_total_tscale/ph_year,&                      ! 23
+        cp_overflow_tscale/ph_year,&                   ! 24
+        cp_mass_transfer_tscale/ph_year,&              ! 25
+        cp_mass_transfer_change_tscale/ph_year,&       ! 26
+        cp_tau_star/ph_year,&                          ! 27
+        cp_env_mdot,&                                  ! 28
+        cp_env_mass,&                                  ! 29
+        cp_env_radius,&                                ! 30
+        cp_env_teff,&                                  ! 31
+        cp_wind_mdot&                                  ! 32
         /)
     call IO_save_data(IO_path,"mdot.dat")
     call IO_deallocate_data
@@ -85,7 +88,8 @@
                      cp_overflow_tscale,cp_mass_transfer_tscale,&
                      cp_mass_transfer_change_tscale,cp_tau_star,&
                      cp_env_mdot,cp_env_mass,cp_env_radius,cp_env_teff,cp_wind_mdot,&
-                     cp_impact_dens,cp_initial_dens,cp_virtemp,cp_ekin
+                     cp_impact_dens,cp_initial_dens,cp_virtemp,cp_ekin,&
+                     cp_acc_freq,cp_don_freq
   use IO_vars, only: IO_data,IO_path,IO_data,IO_save
   use IO_interface, only: IO_allocate_data,IO_deallocate_data,IO_save_data
   use ph_interface, only: ph_triple_alpha_timescale
@@ -95,8 +99,8 @@
   if (allocated(IO_data)) deallocate(IO_data)
   tburn = ph_triple_alpha_timescale(cp_virtemp,cp_impact_dens)
   tdyn  = sqrt(2.*(cp_acc_radius**3.)/(ph_G*cp_acc_mass)) 
-  call IO_allocate_data(36)
-  IO_data(1:36) = (/ &
+  call IO_allocate_data(38)
+  IO_data(1:38) = (/ &
         dr_time/ph_year,&                              !  1
         dr_time_step/ph_year,&                         !  2
         cp_bin_sepa,&                                  !  3
@@ -104,35 +108,37 @@
         cp_don_mdot*ph_year/ph_msun,&                  !  5
         cp_don_mass/ph_msun,&                          !  6
         cp_don_radius,&                                !  7
+        cp_don_freq,&                                  !  8 
         cp_roche_radius,&                              !  8
-        cp_acc_mdot*ph_year/ph_msun,&                  !  9
-        cp_acc_mass/ph_msun,&                          ! 10
-        cp_acc_radius,&                                ! 11
-        cp_cir_radius,&                                ! 12
-        cp_min_radius,&                                ! 13
-        cp_accretion_radius,&                          ! 14
-        cp_mdot_eq*ph_year/ph_msun,&                   ! 15
-        cp_mdot_edd*ph_year/ph_msun,&                  ! 16
-        cp_accretion_eff, &                            ! 17
-        cp_q_a, &                                      ! 18
-        cp_q_stable,&                                  ! 19
-        cp_gravitational_tscale/ph_year,&              ! 20
-        cp_total_tscale/ph_year,&                      ! 21
-        cp_overflow_tscale/ph_year,&                   ! 22
-        cp_mass_transfer_tscale/ph_year,&              ! 23
-        cp_mass_transfer_change_tscale/ph_year,&       ! 24
-        cp_tau_star/ph_year,&                          ! 25
-        cp_env_mdot,&                                  ! 26
-        cp_env_mass,&                                  ! 27
-        cp_env_radius,&                                ! 28
-        cp_env_teff,&                                  ! 29
-        cp_wind_mdot,&                                 ! 30 
-        cp_initial_dens,&                              ! 31
-        cp_impact_dens,&                               ! 32
-        cp_virtemp,&                                   ! 33
-        cp_ekin,&                                      ! 34
-        tburn,&                                        ! 35
-        tdyn&                                          ! 36
+        cp_acc_mdot*ph_year/ph_msun,&                  ! 10
+        cp_acc_mass/ph_msun,&                          ! 11
+        cp_acc_radius,&                                ! 12
+        cp_acc_freq,&                                  ! 13
+        cp_cir_radius,&                                ! 14
+        cp_min_radius,&                                ! 15
+        cp_accretion_radius,&                          ! 16
+        cp_mdot_eq*ph_year/ph_msun,&                   ! 17
+        cp_mdot_edd*ph_year/ph_msun,&                  ! 18
+        cp_accretion_eff, &                            ! 19
+        cp_q_a, &                                      ! 20
+        cp_q_stable,&                                  ! 21
+        cp_gravitational_tscale/ph_year,&              ! 22
+        cp_total_tscale/ph_year,&                      ! 23
+        cp_overflow_tscale/ph_year,&                   ! 24
+        cp_mass_transfer_tscale/ph_year,&              ! 25
+        cp_mass_transfer_change_tscale/ph_year,&       ! 26
+        cp_tau_star/ph_year,&                          ! 27
+        cp_env_mdot,&                                  ! 28
+        cp_env_mass,&                                  ! 29
+        cp_env_radius,&                                ! 30
+        cp_env_teff,&                                  ! 31
+        cp_wind_mdot,&                                 ! 32 
+        cp_initial_dens,&                              ! 33
+        cp_impact_dens,&                               ! 34
+        cp_virtemp,&                                   ! 35
+        cp_ekin,&                                      ! 36
+        tburn,&                                        ! 37
+        tdyn&                                          ! 38
         /)
   call IO_save_data(IO_path,"mdot_post.dat")
   call IO_deallocate_data

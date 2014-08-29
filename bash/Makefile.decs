@@ -77,6 +77,7 @@ component_stars.f90 \
 component_stream.f90 \
 component_system.f90 \
 component_system_slaves.f90 \
+component_tides.f90 \
 component_timescales.f90 \
 component_vars.f90 
 uobjs  += ${patsubst %.f90, %.o ,${component}}
